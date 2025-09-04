@@ -1,0 +1,143 @@
+# ==============================================
+# ROOT LEVEL PROJECT GITIGNORE
+# ==============================================
+# This file ignores items at the project root level
+
+# ==============================================
+# IDE & EDITOR FILES
+# ==============================================
+# Visual Studio Code
+.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# IntelliJ IDEA
+.idea/
+.idea/*
+*.iml
+*.ipr
+*.iws
+.idea_modules/
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Atom
+.atom/
+
+# ==============================================
+# OPERATING SYSTEM FILES
+# ==============================================
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.tmp
+*.temp
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ==============================================
+# ENVIRONMENT & SECURITY
+# ==============================================
+# Environment files
+.env
+.env.local
+.env.*.local
+.envrc
+
+# Certificates & keys
+*.pem
+*.key
+*.p12
+*.cer
+*.crt
+
+# ==============================================
+# LOGS & TEMPORARY FILES
+# ==============================================
+# Log files
+*.log
+logs/
+
+# Temporary directories
+tmp/
+temp/
+.tmp/
+
+# Cache directories
+.cache/
+
+# ==============================================
+# BACKUP & ARCHIVE FILES
+# ==============================================
+*.bak
+*.backup
+*.old
+*.orig
+*.zip
+*.tar.gz
+*.rar
+
+# ==============================================
+# DATABASE FILES
+# ==============================================
+*.db
+*.sqlite
+*.sqlite3
+
+# ==============================================
+# DOCUMENTATION BUILD
+# ==============================================
+docs/_build/
+site/
+
+# ==============================================
+# PROJECT SPECIFIC
+# ==============================================
+# Add any project-wide files or folders here

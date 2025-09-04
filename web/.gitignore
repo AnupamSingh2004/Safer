@@ -1,0 +1,226 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# ==============================================
+# DEPENDENCIES
+# ==============================================
+# Node.js dependencies
+/node_modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Yarn
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+yarn.lock
+
+# Package-lock files (uncomment if using npm exclusively)
+# package-lock.json
+
+# ==============================================
+# TESTING
+# ==============================================
+/coverage
+*.lcov
+.nyc_output
+coverage/
+.jest/
+
+# ==============================================
+# NEXT.JS SPECIFIC
+# ==============================================
+/.next/
+/out/
+.next/
+out/
+
+# ==============================================
+# BUILD & PRODUCTION
+# ==============================================
+/build
+build/
+/dist
+dist/
+
+# ==============================================
+# ENVIRONMENT VARIABLES
+# ==============================================
+# Environment files (can opt-in for committing if needed)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+.env.example
+
+# ==============================================
+# IDE & EDITOR FILES
+# ==============================================
+# Visual Studio Code
+.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# IntelliJ IDEA
+.idea/
+.idea/*
+*.iml
+*.ipr
+*.iws
+.idea_modules/
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Atom
+.atom/
+
+# ==============================================
+# OPERATING SYSTEM FILES
+# ==============================================
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.tmp
+*.temp
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ==============================================
+# LOGS
+# ==============================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# ==============================================
+# RUNTIME & CACHE
+# ==============================================
+# Node.js
+.npm
+.node_repl_history
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# ==============================================
+# CERTIFICATES & SECURITY
+# ==============================================
+*.pem
+*.key
+*.p12
+*.cer
+*.crt
+
+# ==============================================
+# DEPLOYMENT & HOSTING
+# ==============================================
+# Vercel
+.vercel
+.vercel.json
+
+# Netlify
+.netlify
+
+# ==============================================
+# TYPESCRIPT
+# ==============================================
+*.tsbuildinfo
+next-env.d.ts
+tsconfig.tsbuildinfo
+
+# ==============================================
+# MISCELLANEOUS
+# ==============================================
+# Temporary folders
+tmp/
+temp/
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+
+# ==============================================
+# PROJECT SPECIFIC
+# ==============================================
+# Add any project-specific files or folders here

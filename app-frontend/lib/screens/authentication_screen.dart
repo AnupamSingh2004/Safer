@@ -110,7 +110,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                         ],
                       ),
                       child: const Icon(
-                        Icons.account_balance,
+                        Icons.security,
                         size: 60,
                         color: Colors.white,
                       ),

@@ -120,7 +120,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
 
                     // App Title
                     Text(
-                      'Juris-Lead',
+                      'SafeTour',
                       style: theme.textTheme.headlineLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: colorScheme.primary,
@@ -130,7 +130,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                     const SizedBox(height: 8),
 
                     Text(
-                      'Your AI-Powered Legal Assistant',
+                      'Your Smart Tourist Safety Companion',
                       style: theme.textTheme.titleMedium?.copyWith(
                         color: colorScheme.onSurface.withValues(alpha: 0.7),
                       ),
@@ -141,23 +141,23 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
 
                     // Feature Highlights
                     _buildFeatureHighlight(
-                      Icons.psychology_outlined,
-                      'AI Legal Analysis',
-                      'Get instant analysis of your legal cases',
+                      Icons.shield_outlined,
+                      'Real-time Safety Monitoring',
+                      'AI-powered safety score and location tracking',
                       colorScheme,
                     ),
                     const SizedBox(height: 16),
                     _buildFeatureHighlight(
-                      Icons.people_outline,
-                      'Find Legal Experts',
-                      'Connect with qualified lawyers and advocates',
+                      Icons.emergency_outlined,
+                      'Emergency Response',
+                      'Instant panic button and emergency contacts',
                       colorScheme,
                     ),
                     const SizedBox(height: 16),
                     _buildFeatureHighlight(
-                      Icons.build_outlined,
-                      'Legal Tools',
-                      'Access comprehensive legal research tools',
+                      Icons.explore_outlined,
+                      'Smart Travel Assistant',
+                      'Geo-fencing alerts and travel recommendations',
                       colorScheme,
                     ),
 
@@ -208,7 +208,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                                 size: 24,
                               ),
                         label: Text(
-                          _isLoading ? 'Signing In...' : 'Continue with Google',
+                          _isLoading ? 'Signing In...' : 'Sign In with Google',
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -388,18 +388,18 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
       final user = result['user'] as Map<String, dynamic>;
       
       await prefs.setBool('is_logged_in', true);
-      await prefs.setString('user_name', user['displayName'] ?? user['email'] ?? 'User');
+      await prefs.setString('user_name', user['displayName'] ?? user['email'] ?? 'Tourist');
       await prefs.setString('user_email', user['email'] ?? '');
       await prefs.setString('user_photo', user['photoUrl'] ?? '');
-      await prefs.setString('user_type', 'client'); // Default to client, can be changed later
-      await prefs.setString('subscription_type', 'free');
+      await prefs.setString('user_type', 'tourist'); // Default to tourist
+      await prefs.setString('subscription_type', 'basic');
       await prefs.setBool('is_premium', false);
       await prefs.setString('join_date', DateTime.now().toIso8601String());
       
-      // Initialize statistics
-      await prefs.setInt('cases_analyzed', 0);
-      await prefs.setInt('documents_processed', 0);
-      await prefs.setInt('ai_consultations', 0);
+      // Initialize tourist-specific statistics
+      await prefs.setInt('places_visited', 0);
+      await prefs.setInt('safety_alerts', 0);
+      await prefs.setInt('emergency_contacts', 0);
       
       debugPrint('User data saved successfully');
     } catch (e) {
@@ -412,18 +412,18 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
       final prefs = await SharedPreferences.getInstance();
       
       await prefs.setBool('is_logged_in', true);
-      await prefs.setString('user_name', 'John Doe (Mock)');
-      await prefs.setString('user_email', 'john.doe@example.com');
+      await prefs.setString('user_name', 'Tourist User (Mock)');
+      await prefs.setString('user_email', 'tourist@example.com');
       await prefs.setString('user_photo', '');
-      await prefs.setString('user_type', 'client');
-      await prefs.setString('subscription_type', 'free');
+      await prefs.setString('user_type', 'tourist');
+      await prefs.setString('subscription_type', 'basic');
       await prefs.setBool('is_premium', false);
       await prefs.setString('join_date', DateTime.now().toIso8601String());
       
       // Initialize statistics with some mock data
-      await prefs.setInt('cases_analyzed', 5);
-      await prefs.setInt('documents_processed', 12);
-      await prefs.setInt('ai_consultations', 3);
+      await prefs.setInt('places_visited', 3);
+      await prefs.setInt('safety_alerts', 1);
+      await prefs.setInt('emergency_contacts', 2);
       
       debugPrint('Mock user data saved successfully');
     } catch (e) {

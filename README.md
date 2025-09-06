@@ -52,7 +52,7 @@ The Smart Tourist Safety Monitoring & Incident Response System is a comprehensiv
 
 #### Backend Infrastructure
 ```
-🔧 API Server (Backend services in Next.js)
+🔧 Unified API Server (Next.js - Serves Both Web & Mobile)
 ├── Runtime: Node.js + TypeScript
 ├── Framework: Next.js API Routes
 ├── Database: PostgreSQL + Prisma ORM
@@ -61,7 +61,24 @@ The Smart Tourist Safety Monitoring & Incident Response System is a comprehensiv
 ├── Authentication: JWT + OAuth 2.0
 ├── Real-time: Socket.io
 ├── Message Queue: Bull Queue
+├── Mobile APIs: RESTful endpoints for Flutter
+├── Web APIs: Server-side rendered pages + APIs
 └── Monitoring: Winston + Sentry
+
+📱 Mobile App Integration (Flutter → Next.js APIs)
+├── HTTP Client: Dio/http package
+├── Authentication: JWT tokens
+├── Real-time: Socket.io client
+├── File Upload: Multipart form data
+├── Push Notifications: Firebase FCM
+└── Offline Support: Hive/SQLite local storage
+
+🌐 Web Dashboard Integration (Next.js → Next.js APIs)
+├── Internal API calls: fetch/axios
+├── Server-side rendering: getServerSideProps
+├── Client-side state: React hooks
+├── Real-time updates: Socket.io
+└── Authentication: NextAuth.js sessions
 
 ⛓️ Blockchain Network
 ├── Platform: Ethereum/Polygon
@@ -72,11 +89,474 @@ The Smart Tourist Safety Monitoring & Incident Response System is a comprehensiv
 
 🤖 AI/ML Services
 ├── Framework: TensorFlow/PyTorch
-├── APIs: Python FastAPI
+├── APIs: Python FastAPI (called by Next.js)
 ├── Models: Anomaly Detection, Route Prediction
 ├── Deployment: Docker + Kubernetes
 └── Data Pipeline: Apache Kafka
 ```
+
+### 📡 Unified Backend Architecture (Next.js)
+
+#### Why One Backend for Both Mobile & Web?
+
+**✅ Advantages:**
+- **Single Source of Truth** - One database, one authentication system
+- **Shared Business Logic** - Tourist management, alerts, analytics
+- **Consistent APIs** - Same endpoints for both platforms
+- **Easier Maintenance** - One codebase to maintain and deploy
+- **Real-time Sync** - WebSocket connections work for both
+- **Cost Effective** - Single server infrastructure
+
+#### API Structure for Both Platforms
+```typescript
+// Next.js API Routes Structure
+web/src/app/api/
+├── auth/                     # Authentication (Mobile + Web)
+│   ├── login/route.ts       # POST /api/auth/login
+│   ├── register/route.ts    # POST /api/auth/register  
+│   ├── refresh/route.ts     # POST /api/auth/refresh
+│   └── verify/route.ts      # GET /api/auth/verify
+├── mobile/                  # Mobile-specific endpoints
+│   ├── profile/route.ts     # GET/PUT /api/mobile/profile
+│   ├── safety-score/route.ts # GET /api/mobile/safety-score
+│   ├── panic/route.ts       # POST /api/mobile/panic
+│   └── tracking/route.ts    # POST /api/mobile/tracking
+├── dashboard/               # Web dashboard endpoints
+│   ├── overview/route.ts    # GET /api/dashboard/overview
+│   ├── tourists/route.ts    # GET /api/dashboard/tourists
+│   └── analytics/route.ts   # GET /api/dashboard/analytics
+├── shared/                  # Shared endpoints (Mobile + Web)
+│   ├── tourists/
+│   │   ├── route.ts        # CRUD operations
+│   │   └── [id]/route.ts   # Individual tourist
+│   ├── alerts/
+│   │   ├── route.ts        # Alert management
+│   │   └── [id]/route.ts   # Individual alert
+│   ├── zones/route.ts      # Geofencing zones
+│   └── notifications/route.ts # Push notifications
+└── webhooks/                # External integrations
+    ├── blockchain/route.ts  # Blockchain events
+    └── payment/route.ts     # Payment confirmations
+```
+
+#### Flutter Mobile App Integration
+
+##### API Service Configuration
+```dart
+// lib/services/api_service.dart
+import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+class ApiService {
+  static const String baseUrl = 'https://your-domain.com/api'; // Your Next.js API
+  // For development: 'http://localhost:3000/api'
+  
+  late Dio _dio;
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  
+  ApiService() {
+    _dio = Dio(BaseOptions(
+      baseUrl: baseUrl,
+      connectTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(seconds: 30),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    ));
+    
+    _setupInterceptors();
+  }
+  
+  void _setupInterceptors() {
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          // Add JWT token to all requests
+          final token = await _storage.read(key: 'auth_token');
+          if (token != null) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          handler.next(options);
+        },
+        onError: (error, handler) async {
+          if (error.response?.statusCode == 401) {
+            // Token expired, try to refresh
+            await _refreshToken();
+            // Retry the original request
+            final opts = error.requestOptions;
+            final token = await _storage.read(key: 'auth_token');
+            opts.headers['Authorization'] = 'Bearer $token';
+            final cloneReq = await _dio.fetch(opts);
+            return handler.resolve(cloneReq);
+          }
+          handler.next(error);
+        },
+      ),
+    );
+  }
+  
+  // Authentication APIs
+  Future<Map<String, dynamic>> login(String email, String password) async {
+    final response = await _dio.post('/auth/login', data: {
+      'email': email,
+      'password': password,
+      'platform': 'mobile',
+    });
+    
+    if (response.data['token'] != null) {
+      await _storage.write(key: 'auth_token', value: response.data['token']);
+    }
+    
+    return response.data;
+  }
+  
+  // Tourist APIs
+  Future<Map<String, dynamic>> registerTourist(Map<String, dynamic> touristData) async {
+    final response = await _dio.post('/mobile/profile', data: touristData);
+    return response.data;
+  }
+  
+  Future<Map<String, dynamic>> updateLocation(double lat, double lng) async {
+    final response = await _dio.post('/mobile/tracking', data: {
+      'latitude': lat,
+      'longitude': lng,
+      'timestamp': DateTime.now().toIso8601String(),
+      'accuracy': 10.0,
+    });
+    return response.data;
+  }
+  
+  // Safety APIs
+  Future<Map<String, dynamic>> triggerPanicAlert(Map<String, dynamic> alertData) async {
+    final response = await _dio.post('/mobile/panic', data: alertData);
+    return response.data;
+  }
+  
+  Future<double> getSafetyScore() async {
+    final response = await _dio.get('/mobile/safety-score');
+    return response.data['safetyScore'].toDouble();
+  }
+  
+  // File Upload (for KYC documents)
+  Future<Map<String, dynamic>> uploadKycDocuments(List<String> filePaths) async {
+    final formData = FormData();
+    
+    for (int i = 0; i < filePaths.length; i++) {
+      formData.files.add(MapEntry(
+        'documents',
+        await MultipartFile.fromFile(filePaths[i]),
+      ));
+    }
+    
+    final response = await _dio.post('/shared/tourists/kyc-upload', data: formData);
+    return response.data;
+  }
+  
+  Future<void> _refreshToken() async {
+    try {
+      final refreshToken = await _storage.read(key: 'refresh_token');
+      final response = await _dio.post('/auth/refresh', data: {
+        'refresh_token': refreshToken,
+      });
+      
+      await _storage.write(key: 'auth_token', value: response.data['token']);
+    } catch (e) {
+      // Refresh failed, redirect to login
+      await _storage.deleteAll();
+      // Navigate to login screen
+    }
+  }
+}
+```
+
+##### WebSocket Integration for Real-time Updates
+```dart
+// lib/services/websocket_service.dart
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+
+class WebSocketService {
+  static const String socketUrl = 'https://your-domain.com'; // Same Next.js server
+  
+  late IO.Socket _socket;
+  bool _isConnected = false;
+  
+  void connect(String userId) {
+    _socket = IO.io(socketUrl, 
+      IO.OptionBuilder()
+        .setTransports(['websocket'])
+        .enableAutoConnect()
+        .setExtraHeaders({'user_id': userId})
+        .build()
+    );
+    
+    _socket.onConnect((_) {
+      print('Connected to WebSocket');
+      _isConnected = true;
+      _socket.emit('join_tourist', {'touristId': userId});
+    });
+    
+    _socket.onDisconnect((_) {
+      print('Disconnected from WebSocket');
+      _isConnected = false;
+    });
+    
+    // Listen for alerts from authorities
+    _socket.on('alert_response', (data) {
+      _handleAlertResponse(data);
+    });
+    
+    // Listen for geo-fence violations
+    _socket.on('geofence_alert', (data) {
+      _handleGeofenceAlert(data);
+    });
+    
+    // Listen for emergency broadcasts
+    _socket.on('emergency_broadcast', (data) {
+      _handleEmergencyBroadcast(data);
+    });
+  }
+  
+  void sendLocationUpdate(double lat, double lng) {
+    if (_isConnected) {
+      _socket.emit('location_update', {
+        'latitude': lat,
+        'longitude': lng,
+        'timestamp': DateTime.now().toIso8601String(),
+      });
+    }
+  }
+  
+  void sendPanicAlert(Map<String, dynamic> alertData) {
+    if (_isConnected) {
+      _socket.emit('panic_alert', alertData);
+    }
+  }
+  
+  void _handleAlertResponse(dynamic data) {
+    // Show notification to user
+    // Update UI with response from authorities
+  }
+  
+  void _handleGeofenceAlert(dynamic data) {
+    // Show warning about entering restricted area
+  }
+  
+  void _handleEmergencyBroadcast(dynamic data) {
+    // Show emergency notification
+  }
+  
+  void disconnect() {
+    _socket.disconnect();
+    _isConnected = false;
+  }
+}
+```
+
+#### Next.js Backend Configuration for Mobile
+
+##### Mobile-specific API Routes
+```typescript
+// web/src/app/api/mobile/profile/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { verifyJWT } from '@/lib/auth';
+import { prisma } from '@/lib/database';
+
+export async function GET(request: NextRequest) {
+  try {
+    const token = request.headers.get('authorization')?.replace('Bearer ', '');
+    const user = await verifyJWT(token);
+    
+    const tourist = await prisma.touristProfile.findUnique({
+      where: { userId: user.id },
+      include: {
+        emergencyContacts: true,
+        currentLocation: true,
+      }
+    });
+    
+    return NextResponse.json({ tourist });
+  } catch (error) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const token = request.headers.get('authorization')?.replace('Bearer ', '');
+    const user = await verifyJWT(token);
+    const body = await request.json();
+    
+    const updatedTourist = await prisma.touristProfile.update({
+      where: { userId: user.id },
+      data: {
+        emergencyContacts: body.emergencyContacts,
+        travelItinerary: body.travelItinerary,
+        // Update other fields
+      }
+    });
+    
+    return NextResponse.json({ tourist: updatedTourist });
+  } catch (error) {
+    return NextResponse.json({ error: 'Update failed' }, { status: 500 });
+  }
+}
+```
+
+```typescript
+// web/src/app/api/mobile/panic/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { verifyJWT } from '@/lib/auth';
+import { createAlert } from '@/lib/alerts';
+import { notifyAuthorities } from '@/lib/notifications';
+
+export async function POST(request: NextRequest) {
+  try {
+    const token = request.headers.get('authorization')?.replace('Bearer ', '');
+    const user = await verifyJWT(token);
+    const { location, message, severity = 'critical' } = await request.json();
+    
+    // Create alert in database
+    const alert = await createAlert({
+      touristId: user.touristProfile.id,
+      type: 'PANIC',
+      severity,
+      location,
+      description: message,
+      status: 'ACTIVE'
+    });
+    
+    // Notify authorities immediately
+    await notifyAuthorities(alert);
+    
+    // Send real-time update via WebSocket
+    global.io?.emit('alert_generated', { alert });
+    
+    // Estimate response time based on location
+    const responseTime = await calculateResponseTime(location);
+    
+    return NextResponse.json({
+      alert,
+      estimatedResponseTime: responseTime,
+      message: 'Help is on the way!'
+    });
+    
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to send alert' }, { status: 500 });
+  }
+}
+```
+
+##### Shared Authentication System
+```typescript
+// web/src/lib/auth.ts
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import { prisma } from './database';
+
+export async function authenticateUser(email: string, password: string, platform: 'web' | 'mobile') {
+  const user = await prisma.user.findUnique({
+    where: { email },
+    include: { touristProfile: true }
+  });
+  
+  if (!user || !await bcrypt.compare(password, user.passwordHash)) {
+    throw new Error('Invalid credentials');
+  }
+  
+  const tokenPayload = {
+    id: user.id,
+    email: user.email,
+    role: user.role,
+    platform,
+    touristProfile: user.touristProfile
+  };
+  
+  const token = jwt.sign(tokenPayload, process.env.JWT_SECRET!, { expiresIn: '24h' });
+  const refreshToken = jwt.sign({ userId: user.id }, process.env.JWT_REFRESH_SECRET!, { expiresIn: '7d' });
+  
+  return { token, refreshToken, user };
+}
+
+export async function verifyJWT(token: string | null) {
+  if (!token) throw new Error('No token provided');
+  
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
+    return decoded;
+  } catch (error) {
+    throw new Error('Invalid token');
+  }
+}
+```
+
+### 🚀 **Deployment Strategy - Single Backend**
+
+#### Docker Configuration
+```dockerfile
+# web/Dockerfile
+FROM node:18-alpine AS base
+
+# Install dependencies
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+
+# Build application
+FROM base AS build
+RUN npm ci
+COPY . .
+RUN npm run build
+
+# Production image
+FROM base AS runtime
+COPY --from=build /app/.next ./.next
+COPY --from=build /app/public ./public
+COPY --from=build /app/package.json ./package.json
+
+# Expose ports for both web and mobile API access
+EXPOSE 3000
+
+CMD ["npm", "start"]
+```
+
+#### Environment Variables (Shared)
+```bash
+# .env.production
+# Database
+DATABASE_URL="postgresql://username:password@host:5432/tourist_safety_db"
+
+# Authentication (Used by both web and mobile)
+JWT_SECRET="your-jwt-secret"
+JWT_REFRESH_SECRET="your-refresh-secret"
+NEXTAUTH_SECRET="your-nextauth-secret"
+
+# External APIs
+GOOGLE_MAPS_API_KEY="your-google-maps-key"
+FIREBASE_SERVER_KEY="your-firebase-key" # For mobile push notifications
+
+# Blockchain
+BLOCKCHAIN_RPC_URL="https://polygon-rpc.com"
+
+# File Storage
+AWS_ACCESS_KEY_ID="your-aws-key"
+AWS_SECRET_ACCESS_KEY="your-aws-secret"
+AWS_REGION="your-region"
+AWS_BUCKET_NAME="tourist-safety-uploads"
+
+# Redis (for caching and real-time features)
+REDIS_URL="redis://localhost:6379"
+```
+
+### ✅ **Benefits of Unified Backend Approach**
+
+1. **🔄 Real-time Sync**: Both platforms get instant updates
+2. **🔐 Shared Authentication**: Single login system
+3. **📊 Consistent Data**: Same database for web and mobile
+4. **🛠️ Easy Maintenance**: One codebase to update
+5. **💰 Cost Effective**: Single server deployment
+6. **🔒 Security**: Centralized security policies
+7. **📈 Scalability**: Scale once for both platforms
 
 ## 🏛️ System Components & Flow
 

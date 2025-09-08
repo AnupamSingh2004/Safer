@@ -1,0 +1,505 @@
+// web/src/lib/utils.ts
+
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+import {
+  ALERT_PRIORITY,
+  ALERT_STATUS,
+  SAFETY_SCORE,
+  ZONE_RISK_LEVELS,
+  DATE_FORMATS
+} from "./constants";
+
+// Tailwind CSS class merging utility
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+// ==================== DATE & TIME UTILITIES ====================
+
+export function formatDate(date: Date | string, format?: keyof typeof DATE_FORMATS): string {
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+
+  if (isNaN(dateObj.getTime())) {
+    return 'Invalid Date';
+  }
+
+  // Ensure format is a valid key for DATE_FORMATS
+  const formatStr = format ? DATE_FORMATS[format] : DATE_FORMATS.display;
+
+  // Simple date formatting (replace with date-fns or similar in production)
+  const day = dateObj.getDate().toString().padStart(2, '0');
+  const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
+  const year = dateObj.getFullYear();
+  const hours = dateObj.getHours().toString().padStart(2, '0');
+  const minutes = dateObj.getMinutes().toString().padStart(2, '0');
+  const seconds = dateObj.getSeconds().toString().padStart(2, '0');
+
+  const monthNames = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
+
+  switch (formatStr) {
+    case DATE_FORMATS.display:
+      return `${monthNames[dateObj.getMonth()]} ${day}, ${year}`;
+    case DATE_FORMATS.displayWithTime:
+      return `${monthNames[dateObj.getMonth()]} ${day}, ${year} ${hours}:${minutes}`;
+    case DATE_FORMATS.api:
+      return `${year}-${month}-${day}`;
+    case DATE_FORMATS.apiWithTime:
+      return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}Z`;
+    case DATE_FORMATS.time:
+      return `${hours}:${minutes}`;
+    case DATE_FORMATS.timeWithSeconds:
+      return `${hours}:${minutes}:${seconds}`;
+    default:
+      return dateObj.toLocaleDateString();
+  }
+}
+
+export function getRelativeTime(date: Date | string): string {
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+  const now = new Date();
+  const diffInSeconds = Math.floor((now.getTime() - dateObj.getTime()) / 1000);
+
+  if (diffInSeconds < 60) {
+    return 'Just now';
+  } else if (diffInSeconds < 3600) {
+    const minutes = Math.floor(diffInSeconds / 60);
+    return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+  } else if (diffInSeconds < 86400) {
+    const hours = Math.floor(diffInSeconds / 3600);
+    return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+  } else if (diffInSeconds < 604800) {
+    const days = Math.floor(diffInSeconds / 86400);
+    return `${days} day${days !== 1 ? 's' : ''} ago`;
+  } else {
+    return formatDate(dateObj);
+  }
+}
+
+export function isDateInFuture(date: Date | string): boolean {
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+  return dateObj > new Date();
+}
+
+export function addDays(date: Date | string, days: number): Date {
+  const dateObj = typeof date === 'string' ? new Date(date) : new Date(date);
+  dateObj.setDate(dateObj.getDate() + days);
+  return dateObj;
+}
+
+// ==================== STRING UTILITIES ====================
+
+export function capitalize(str: string): string {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
+export function capitalizeWords(str: string): string {
+  if (!str) return '';
+  return str.split(' ').map(capitalize).join(' ');
+}
+
+export function truncateText(text: string, maxLength: number = 100): string {
+  if (!text || text.length <= maxLength) return text;
+  return text.substring(0, maxLength).trim() + '...';
+}
+
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+export function generateId(prefix = 'id'): string {
+  return `${prefix}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+}
+
+export function maskSensitiveData(data: string, visibleChars = 4): string {
+  if (!data || data.length <= visibleChars) return data;
+  const visible = data.slice(-visibleChars);
+  const masked = '*'.repeat(Math.max(0, data.length - visibleChars));
+  return masked + visible;
+}
+
+// ==================== NUMBER & FORMATTING UTILITIES ====================
+
+export function formatNumber(num: number, options?: Intl.NumberFormatOptions): string {
+  return new Intl.NumberFormat('en-IN', options).format(num);
+}
+
+export function formatCurrency(amount: number, currency = 'INR'): string {
+  return new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency,
+  }).format(amount);
+}
+
+export function formatPercentage(value: number, decimals = 1): string {
+  return `${(value * 100).toFixed(decimals)}%`;
+}
+
+export function roundToDecimals(num: number, decimals = 2): number {
+  return Math.round((num + Number.EPSILON) * Math.pow(10, decimals)) / Math.pow(10, decimals);
+}
+
+// ==================== SAFETY SCORE UTILITIES ====================
+
+export function getSafetyScoreInfo(score: number) {
+  for (const [key, config] of Object.entries(SAFETY_SCORE)) {
+    // Add type assertion here
+    if (score >= config.min && score <= config.max) {
+      return {
+        level: key.toLowerCase(),
+        ...config,
+        score,
+      };
+    }
+  }
+  return {
+    level: 'unknown',
+    color: 'secondary',
+    label: 'Unknown',
+    score,
+  };
+}
+
+export function getZoneRiskInfo(level: number) {
+  for (const [key, config] of Object.entries(ZONE_RISK_LEVELS)) {
+    // Add type assertion here
+    if (config.level === level) {
+      return {
+        key: key.toLowerCase(),
+        ...config,
+      };
+    }
+  }
+  return {
+    key: 'unknown',
+    level: 0,
+    color: 'secondary',
+    label: 'Unknown Risk',
+  };
+}
+
+// ==================== ALERT UTILITIES ====================
+
+export function getAlertPriorityInfo(priority: string) {
+  // Use a type guard or direct access if 'priority' is guaranteed to be a key
+  // Or, ensure ALERT_PRIORITY is a union type if it's not 'as const'
+  const priorityKey = priority as keyof typeof ALERT_PRIORITY;
+
+  const priorityMap = {
+    [ALERT_PRIORITY.CRITICAL]: { color: 'destructive', icon: '🚨', weight: 4 },
+    [ALERT_PRIORITY.HIGH]: { color: 'destructive', icon: '⚠️', weight: 3 },
+    [ALERT_PRIORITY.MEDIUM]: { color: 'warning', icon: '⚡', weight: 2 },
+    [ALERT_PRIORITY.LOW]: { color: 'secondary', icon: 'ℹ️', weight: 1 },
+  };
+
+  return priorityMap[priorityKey] || {
+    color: 'secondary',
+    icon: '❓',
+    weight: 0,
+  };
+}
+
+export function getAlertStatusInfo(status: string) {
+  const statusKey = status as keyof typeof ALERT_STATUS;
+
+  const statusMap = {
+    [ALERT_STATUS.ACTIVE]: { color: 'destructive', icon: '🔴' },
+    [ALERT_STATUS.ACKNOWLEDGED]: { color: 'warning', icon: '🟡' },
+    [ALERT_STATUS.IN_PROGRESS]: { color: 'primary', icon: '🔵' },
+    [ALERT_STATUS.RESOLVED]: { color: 'success', icon: '🟢' },
+    [ALERT_STATUS.CLOSED]: { color: 'secondary', icon: '⚫' },
+    [ALERT_STATUS.FALSE_ALARM]: { color: 'secondary', icon: '⚪' },
+  };
+
+  return statusMap[statusKey] || {
+    color: 'secondary',
+    icon: '❓',
+  };
+}
+
+// ==================== COLOR UTILITIES ====================
+
+export function getColorByValue(value: number, min: number, max: number): string {
+  const ratio = (value - min) / (max - min);
+
+  if (ratio <= 0.25) return '#ef4444'; // red
+  if (ratio <= 0.5) return '#f59e0b';  // orange
+  if (ratio <= 0.75) return '#eab308'; // yellow
+  return '#22c55e'; // green
+}
+
+export function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16),
+  } : null;
+}
+
+export function rgbToHex(r: number, g: number, b: number): string {
+  return `#${[r, g, b].map(x => {
+    const hex = x.toString(16);
+    return hex.length === 1 ? '0' + hex : hex;
+  }).join('')}`;
+}
+
+// ==================== COORDINATE & LOCATION UTILITIES ====================
+
+export function calculateDistance(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): number {
+  const R = 6371; // Earth's radius in kilometers
+  const dLat = (lat2 - lat1) * (Math.PI / 180);
+  const dLon = (lon2 - lon1) * (Math.PI / 180);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * (Math.PI / 180)) *
+    Math.cos(lat2 * (Math.PI / 180)) *
+    Math.sin(dLon / 2) *
+    Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+export function isValidCoordinate(lat: number, lon: number): boolean {
+  return (
+    lat >= -90 && lat <= 90 &&
+    lon >= -180 && lon <= 180 &&
+    !isNaN(lat) && !isNaN(lon)
+  );
+}
+
+export function formatCoordinates(lat: number, lon: number, precision = 6): string {
+  return `${lat.toFixed(precision)}, ${lon.toFixed(precision)}`;
+}
+
+// ==================== VALIDATION UTILITIES ====================
+
+export function isValidEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+export function isValidPhone(phone: string): boolean {
+  const phoneRegex = /^[+]?[\d\s\-\(\)]{10,15}$/;
+  return phoneRegex.test(phone);
+}
+
+export function isValidAadhar(aadhar: string): boolean {
+  const aadharRegex = /^\d{4}\s?\d{4}\s?\d{4}$/;
+  return aadharRegex.test(aadhar);
+}
+
+export function isValidPassport(passport: string): boolean {
+  const passportRegex = /^[A-PR-WY][1-9]\d\s?\d{4}[1-9]$/;
+  return passportRegex.test(passport);
+}
+
+export function isValidBlockchainAddress(address: string): boolean {
+  const ethereumRegex = /^0x[a-fA-F0-9]{40}$/;
+  return ethereumRegex.test(address);
+}
+
+// ==================== ARRAY & OBJECT UTILITIES ====================
+
+export function groupBy<T>(array: T[], key: keyof T): Record<string, T[]> {
+  return array.reduce((groups, item) => {
+    const group = String(item[key]);
+    groups[group] = groups[group] || [];
+    groups[group].push(item);
+    return groups;
+  }, {} as Record<string, T[]>);
+}
+
+export function sortBy<T>(array: T[], key: keyof T, direction: 'asc' | 'desc' = 'asc'): T[] {
+  return [...array].sort((a, b) => {
+    const aVal = a[key];
+    const bVal = b[key];
+
+    if (aVal < bVal) return direction === 'asc' ? -1 : 1;
+    if (aVal > bVal) return direction === 'asc' ? 1 : -1;
+    return 0;
+  });
+}
+
+export function uniqueBy<T>(array: T[], key: keyof T): T[] {
+  const seen = new Set();
+  return array.filter(item => {
+    const value = item[key];
+    if (seen.has(value)) {
+      return false;
+    }
+    seen.add(value);
+    return true;
+  });
+}
+
+export function omit<T, K extends keyof T>(obj: T, keys: K[]): Omit<T, K> {
+  const result = { ...obj };
+  keys.forEach(key => delete result[key]);
+  return result;
+}
+
+export function pick<T, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {
+  const result = {} as Pick<T, K>;
+  keys.forEach(key => {
+    if (key in obj) {
+      result[key] = obj[key];
+    }
+  });
+  return result;
+}
+
+// ==================== FILE & UPLOAD UTILITIES ====================
+
+export function formatFileSize(bytes: number): string {
+  if (bytes === 0) return '0 Bytes';
+
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+export function getFileExtension(filename: string): string {
+  return filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2);
+}
+
+export function isImageFile(filename: string): boolean {
+  const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
+  const extension = getFileExtension(filename).toLowerCase();
+  return imageExtensions.includes(extension);
+}
+
+// ==================== URL & QUERY UTILITIES ====================
+
+export function buildQueryString(params: Record<string, string | number | boolean>): string {
+  const searchParams = new URLSearchParams();
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      searchParams.append(key, String(value));
+    }
+  });
+
+  return searchParams.toString();
+}
+
+export function parseQueryString(query: string): Record<string, string> {
+  const params = new URLSearchParams(query);
+  const result: Record<string, string> = {};
+
+  params.forEach((value, key) => {
+    result[key] = value;
+  });
+
+  return result;
+}
+
+// ==================== DEBOUNCE & THROTTLE ====================
+
+export function debounce<T extends (...args: any[]) => any>(
+  func: T,
+  wait: number
+): (...args: Parameters<T>) => void {
+  let timeout: NodeJS.Timeout | null = null;
+
+  return (...args: Parameters<T>) => {
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
+}
+
+export function throttle<T extends (...args: any[]) => any>(
+  func: T,
+  limit: number
+): (...args: Parameters<T>) => void {
+  let inThrottle = false;
+
+  return (...args: Parameters<T>) => {
+    if (!inThrottle) {
+      func(...args);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
+}
+
+// ==================== STORAGE UTILITIES ====================
+
+export function setLocalStorage(key: string, value: any): void {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.warn('Failed to set localStorage:', error);
+  }
+}
+
+export function getLocalStorage<T>(key: string, defaultValue: T): T {
+  try {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : defaultValue;
+  } catch (error) {
+    console.warn('Failed to get localStorage:', error);
+    return defaultValue;
+  }
+}
+
+export function removeLocalStorage(key: string): void {
+  try {
+    localStorage.removeItem(key);
+  } catch (error) {
+    console.warn('Failed to remove localStorage:', error);
+  }
+}
+
+// ==================== ERROR HANDLING ====================
+
+export function handleApiError(error: any): string {
+  if (error?.response?.data?.message) {
+    return error.response.data.message;
+  }
+
+  if (error?.message) {
+    return error.message;
+  }
+
+  return 'An unexpected error occurred';
+}
+
+export function isNetworkError(error: any): boolean {
+  return !error?.response && error?.message?.includes('Network Error');
+}
+
+// ==================== DEVELOPMENT UTILITIES ====================
+
+export function log(...args: any[]): void {
+  if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
+    console.log(...args);
+  }
+}
+
+export function warn(...args: any[]): void {
+  if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
+    console.warn(...args);
+  }
+}
+
+export function error(...args: any[]): void {
+  if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
+    console.error(...args);
+  }
+}

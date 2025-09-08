@@ -152,7 +152,7 @@ export const userCreateSchema = z.object({
 
 // ==================== TOURIST SCHEMAS ====================
 
-export const touristRegistrationSchema = z.object({
+const baseTouristSchema = z.object({
   // Personal Information
   firstName: nameSchema,
   lastName: nameSchema,
@@ -201,7 +201,9 @@ export const touristRegistrationSchema = z.object({
   consentTracking: z.boolean(),
   consentDataSharing: z.boolean(),
   consentEmergency: z.boolean(),
-}).refine(
+});
+
+export const touristRegistrationSchema = baseTouristSchema.refine(
   (data) => new Date(data.checkOutDate) > new Date(data.checkInDate),
   {
     message: 'Check-out date must be after check-in date',
@@ -209,7 +211,7 @@ export const touristRegistrationSchema = z.object({
   }
 );
 
-export const touristUpdateSchema = touristRegistrationSchema.partial().omit({
+export const touristUpdateSchema = baseTouristSchema.partial().omit({
   identityType: true,
   identityNumber: true,
 });

@@ -3,7 +3,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
+import { Providers } from "@/components/providers/providers";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -32,9 +32,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} font-sans antialiased`}
       >
-        <ThemeProvider>
+        <Providers>
           {children}
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

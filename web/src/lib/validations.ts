@@ -66,7 +66,8 @@ export const blockchainAddressSchema = z
 export const loginSchema = z.object({
   email: emailSchema,
   password: z.string().min(1, 'Password is required'),
-  remember: z.boolean().optional(),
+  role: z.enum(['super_admin', 'tourism_admin', 'police_admin', 'operator', 'viewer']).default('operator'),
+  rememberMe: z.boolean().optional(),
 });
 
 export const registerSchema = z.object({

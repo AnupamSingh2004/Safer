@@ -1,6 +1,6 @@
 /**
  * Smart Tourist Safety System - Login Form Component
- * Professional login form with validation and security features
+ * Enhanced professional login form with validation, animations, and security features
  */
 
 'use client';
@@ -9,7 +9,19 @@ import React, { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Eye, EyeOff, Loader2, Shield, AlertTriangle, CheckCircle } from 'lucide-react';
+import { 
+  Eye, 
+  EyeOff, 
+  Loader2, 
+  Shield, 
+  AlertTriangle, 
+  CheckCircle, 
+  Clock,
+  Lock,
+  Mail,
+  User,
+  ChevronDown
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/stores/auth-store';
 import { loginSchema } from '@/lib/validations';
@@ -36,7 +48,7 @@ export function LoginForm({
   className,
   redirectTo,
   showRememberMe = true,
-  showRoleSelection = false,
+  showRoleSelection = true,
   onSuccess,
   onError,
 }: LoginFormProps) {
@@ -53,7 +65,7 @@ export function LoginForm({
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, touchedFields },
     watch,
     setValue,
   } = useForm<LoginCredentials>({
@@ -67,8 +79,14 @@ export function LoginForm({
     },
   });
 
+  // Get form values for real-time validation feedback
+  const emailValue = watch('email');
+  const passwordValue = watch('password');
+  const roleValue = watch('role');
+
   // Get redirect URL from search params
   const redirect = searchParams?.get('redirect') || redirectTo || '/dashboard';
+  const message = searchParams?.get('message');
 
   // Clear errors when component mounts
   useEffect(() => {
@@ -104,7 +122,8 @@ export function LoginForm({
         setLoginAttempts(0);
         onSuccess?.();
         
-        // Redirect to intended page
+        // Show success state briefly before redirect
+        await new Promise(resolve => setTimeout(resolve, 500));
         router.push(redirect);
       } else {
         setLoginAttempts(prev => prev + 1);
@@ -135,26 +154,82 @@ export function LoginForm({
 
   const remainingLockoutMinutes = getRemainingLockoutTime();
 
+  // Role options with better descriptions
+  const roleOptions = [
+    { 
+      value: 'super_admin', 
+      label: 'Super Administrator', 
+      description: 'Full system access and management',
+      icon: Shield
+    },
+    { 
+      value: 'tourism_admin', 
+      label: 'Tourism Administrator', 
+      description: 'Tourism department management',
+      icon: User
+    },
+    { 
+      value: 'police_admin', 
+      label: 'Police Administrator', 
+      description: 'Law enforcement management',
+      icon: Shield
+    },
+    { 
+      value: 'operator', 
+      label: 'System Operator', 
+      description: 'Day-to-day operations management',
+      icon: User
+    },
+    { 
+      value: 'viewer', 
+      label: 'Viewer', 
+      description: 'Read-only dashboard access',
+      icon: Eye
+    },
+  ];
+
   return (
-    <div className={cn('w-full max-w-md space-y-6', className)}>
+    <div className={cn(
+      'w-full max-w-lg space-y-6',
+      className
+    )}>
       {/* Header */}
       <div className="text-center space-y-2">
-        <div className="flex items-center justify-center w-16 h-16 mx-auto bg-primary/10 rounded-2xl">
-          <Shield className="w-8 h-8 text-primary" />
+        <div className="flex items-center justify-center w-16 h-16 mx-auto bg-gradient-to-br from-primary to-primary-600 rounded-2xl shadow-lg">
+          <Shield className="w-8 h-8 text-white" />
         </div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          Welcome Back
-        </h1>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          Sign in to Smart Tourist Safety Dashboard
-        </p>
+        <div className="space-y-1">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            Welcome Back
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Sign in to Smart Tourist Safety Dashboard
+          </p>
+        </div>
       </div>
+
+      {/* Success Message */}
+      {message === 'registration-success' && (
+        <div className="flex items-center gap-3 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl animate-in slide-in-from-top-2 duration-500">
+          <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0" />
+          <div className="text-sm">
+            <p className="font-medium text-green-800 dark:text-green-200">
+              Registration Successful
+            </p>
+            <p className="text-green-600 dark:text-green-400">
+              Please sign in with your new credentials.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Account Lockout Warning */}
       {isLocked && remainingLockoutMinutes && (
-        <div className="flex items-center gap-3 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-          <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0" />
-          <div className="text-sm">
+        <div className="flex items-center gap-3 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl animate-in slide-in-from-top-2 duration-500">
+          <div className="flex items-center justify-center w-8 h-8 bg-red-100 dark:bg-red-900/40 rounded-full">
+            <Clock className="w-4 h-4 text-red-600 dark:text-red-400" />
+          </div>
+          <div className="text-sm flex-1">
             <p className="font-medium text-red-800 dark:text-red-200">
               Account Temporarily Locked
             </p>
@@ -167,13 +242,13 @@ export function LoginForm({
 
       {/* Error Message */}
       {error && !isLocked && (
-        <div className="flex items-center gap-3 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+        <div className="flex items-center gap-3 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl animate-in slide-in-from-top-2 duration-500">
           <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0" />
-          <div className="text-sm text-red-600 dark:text-red-400">
+          <div className="text-sm text-red-600 dark:text-red-400 flex-1">
             {error}
             {loginAttempts >= 3 && (
-              <p className="mt-1 text-xs">
-                {5 - loginAttempts} attempts remaining before account lockout.
+              <p className="mt-1 text-xs font-medium">
+                ⚠️ {5 - loginAttempts} attempts remaining before account lockout.
               </p>
             )}
           </div>
@@ -181,24 +256,38 @@ export function LoginForm({
       )}
 
       {/* Login Form */}
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Role Selection */}
         {showRoleSelection && (
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <User className="w-4 h-4 inline mr-2" />
               Login As
             </label>
-            <select
-              {...register('role')}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent"
-              disabled={isSubmitting || isLocked}
-            >
-              <option value="admin">Administrator</option>
-              <option value="operator">Operator</option>
-              <option value="viewer">Viewer</option>
-            </select>
+            <div className="relative">
+              <select
+                {...register('role')}
+                className={cn(
+                  'w-full px-4 py-3 pl-10 pr-10 border rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white',
+                  'focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200',
+                  'appearance-none cursor-pointer',
+                  errors.role 
+                    ? 'border-red-300 dark:border-red-600' 
+                    : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
+                )}
+                disabled={isSubmitting || isLocked}
+              >
+                {roleOptions.map(role => (
+                  <option key={role.value} value={role.value}>
+                    {role.label} - {role.description}
+                  </option>
+                ))}
+              </select>
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
+              <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+            </div>
             {errors.role && (
-              <p className="text-sm text-red-600 dark:text-red-400">
+              <p className="text-sm text-red-600 dark:text-red-400 animate-in slide-in-from-top-1 duration-200">
                 {errors.role.message}
               </p>
             )}
@@ -211,6 +300,7 @@ export function LoginForm({
             htmlFor="email" 
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
+            <Mail className="w-4 h-4 inline mr-2" />
             Email Address
           </label>
           <div className="relative">
@@ -218,22 +308,24 @@ export function LoginForm({
               {...register('email')}
               type="email"
               id="email"
-              placeholder="Enter your email"
+              placeholder="Enter your email address"
               className={cn(
-                'w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-transparent transition-colors',
+                'w-full px-4 py-3 pl-10 border rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white',
+                'placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200',
                 errors.email 
                   ? 'border-red-300 dark:border-red-600' 
-                  : 'border-gray-300 dark:border-gray-600'
+                  : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
               )}
               disabled={isSubmitting || isLocked}
               autoComplete="email"
             />
-            {watch('email') && !errors.email && (
-              <CheckCircle className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-green-500" />
+            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
+            {emailValue && !errors.email && touchedFields.email && (
+              <CheckCircle className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-green-500 animate-in zoom-in-50 duration-200" />
             )}
           </div>
           {errors.email && (
-            <p className="text-sm text-red-600 dark:text-red-400">
+            <p className="text-sm text-red-600 dark:text-red-400 animate-in slide-in-from-top-1 duration-200">
               {errors.email.message}
             </p>
           )}
@@ -245,6 +337,7 @@ export function LoginForm({
             htmlFor="password" 
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
+            <Lock className="w-4 h-4 inline mr-2" />
             Password
           </label>
           <div className="relative">
@@ -254,18 +347,20 @@ export function LoginForm({
               id="password"
               placeholder="Enter your password"
               className={cn(
-                'w-full px-3 py-2 pr-10 border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-transparent transition-colors',
+                'w-full px-4 py-3 pl-10 pr-12 border rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white',
+                'placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200',
                 errors.password 
                   ? 'border-red-300 dark:border-red-600' 
-                  : 'border-gray-300 dark:border-gray-600'
+                  : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
               )}
               disabled={isSubmitting || isLocked}
               autoComplete="current-password"
             />
+            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors duration-200"
               disabled={isSubmitting || isLocked}
             >
               {showPassword ? (
@@ -276,29 +371,29 @@ export function LoginForm({
             </button>
           </div>
           {errors.password && (
-            <p className="text-sm text-red-600 dark:text-red-400">
+            <p className="text-sm text-red-600 dark:text-red-400 animate-in slide-in-from-top-1 duration-200">
               {errors.password.message}
             </p>
           )}
         </div>
 
-        {/* Remember Me */}
+        {/* Remember Me & Forgot Password */}
         {showRememberMe && (
           <div className="flex items-center justify-between">
-            <label className="flex items-center space-x-2">
+            <label className="flex items-center space-x-3 cursor-pointer">
               <input
                 {...register('rememberMe')}
                 type="checkbox"
-                className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary focus:ring-2"
+                className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary focus:ring-2 transition-all duration-200"
                 disabled={isSubmitting || isLocked}
               />
-              <span className="text-sm text-gray-600 dark:text-gray-400">
-                Remember me
+              <span className="text-sm text-gray-600 dark:text-gray-400 select-none">
+                Remember me for 30 days
               </span>
             </label>
             <a
               href="/auth/forgot-password"
-              className="text-sm text-primary hover:text-primary-600 font-medium"
+              className="text-sm text-primary hover:text-primary-600 font-medium transition-colors duration-200 hover:underline"
             >
               Forgot password?
             </a>
@@ -310,9 +405,12 @@ export function LoginForm({
           type="submit"
           disabled={!isValid || isSubmitting || isLocked}
           className={cn(
-            'w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-primary border border-transparent rounded-lg transition-colors',
-            'hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary',
-            'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary'
+            'w-full flex items-center justify-center px-6 py-3 text-sm font-medium text-white',
+            'bg-gradient-to-r from-primary to-primary-600 border border-transparent rounded-xl',
+            'hover:from-primary-600 hover:to-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary',
+            'transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]',
+            'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:from-primary disabled:hover:to-primary-600',
+            'shadow-lg hover:shadow-xl'
           )}
         >
           {isSubmitting ? (
@@ -321,29 +419,31 @@ export function LoginForm({
               Signing In...
             </>
           ) : (
-            'Sign In'
+            <>
+              <Shield className="w-4 h-4 mr-2" />
+              Sign In Securely
+            </>
           )}
         </button>
       </form>
 
       {/* Footer */}
-      <div className="text-center">
+      <div className="text-center space-y-4">
         <p className="text-sm text-gray-600 dark:text-gray-400">
           Need an account?{' '}
           <a
             href="/auth/register"
-            className="text-primary hover:text-primary-600 font-medium"
+            className="text-primary hover:text-primary-600 font-medium transition-colors duration-200 hover:underline"
           >
             Contact Administrator
           </a>
         </p>
-      </div>
 
-      {/* Security Notice */}
-      <div className="text-center text-xs text-gray-500 dark:text-gray-400">
-        <p>
-          This is a secure government system. Unauthorized access is prohibited.
-        </p>
+        {/* Security Notice */}
+        <div className="flex items-center justify-center gap-2 text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50 px-4 py-2 rounded-lg">
+          <Shield className="w-3 h-3" />
+          <span>Secure government system • Unauthorized access prohibited</span>
+        </div>
       </div>
     </div>
   );
@@ -355,33 +455,51 @@ export function LoginForm({
 
 export function LoginFormSkeleton() {
   return (
-    <div className="w-full max-w-md space-y-6 animate-pulse">
+    <div className="w-full max-w-md space-y-8 animate-pulse">
       {/* Header Skeleton */}
-      <div className="text-center space-y-2">
-        <div className="w-16 h-16 mx-auto bg-gray-200 dark:bg-gray-700 rounded-2xl" />
-        <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-48 mx-auto" />
-        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-64 mx-auto" />
+      <div className="text-center space-y-3">
+        <div className="w-20 h-20 mx-auto bg-gray-200 dark:bg-gray-700 rounded-3xl" />
+        <div className="space-y-2">
+          <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-48 mx-auto" />
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-64 mx-auto" />
+        </div>
       </div>
 
       {/* Form Skeleton */}
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24" />
-          <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded" />
-        </div>
+      <div className="space-y-6">
+        {/* Role Selection Skeleton */}
         <div className="space-y-2">
           <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-20" />
-          <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded" />
+          <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded-xl" />
         </div>
-        <div className="flex items-center justify-between">
+        
+        {/* Email Skeleton */}
+        <div className="space-y-2">
           <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24" />
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-32" />
+          <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded-xl" />
         </div>
-        <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded" />
+        
+        {/* Password Skeleton */}
+        <div className="space-y-2">
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-20" />
+          <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded-xl" />
+        </div>
+        
+        {/* Remember Me Skeleton */}
+        <div className="flex items-center justify-between">
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-32" />
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-28" />
+        </div>
+        
+        {/* Submit Button Skeleton */}
+        <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded-xl" />
       </div>
 
       {/* Footer Skeleton */}
-      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-48 mx-auto" />
+      <div className="space-y-4">
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-48 mx-auto" />
+        <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded-lg" />
+      </div>
     </div>
   );
 }

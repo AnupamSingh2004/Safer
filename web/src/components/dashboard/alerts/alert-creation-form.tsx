@@ -183,7 +183,6 @@ export function AlertCreationForm({
       setValue('priority', template.priority as any);
       setValue('title', template.title);
       setValue('description', template.description);
-      setValue('actions', template.actions);
       setSelectedTemplate(templateId);
     }
   };
@@ -198,7 +197,7 @@ export function AlertCreationForm({
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         status: 'pending',
-        touristId: touristId || undefined,
+        touristId: touristId || data.touristId || 'unknown',
       };
 
       if (onSubmit) {
@@ -220,8 +219,8 @@ export function AlertCreationForm({
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setValue('coordinates.latitude', position.coords.latitude);
-          setValue('coordinates.longitude', position.coords.longitude);
+          setValue('location.latitude', position.coords.latitude);
+          setValue('location.longitude', position.coords.longitude);
         },
         (error) => {
           console.error('Location error:', error);
@@ -309,21 +308,6 @@ export function AlertCreationForm({
                 <p className="text-gray-600 dark:text-gray-400 mb-4">
                   {watchedValues.description || 'Alert description will appear here...'}
                 </p>
-                
-                {watchedValues.actions && watchedValues.actions.length > 0 && (
-                  <div className="space-y-2">
-                    <h5 className="text-sm font-medium text-gray-900 dark:text-white">
-                      Recommended Actions:
-                    </h5>
-                    <ul className="space-y-1">
-                      {watchedValues.actions.filter(Boolean).map((action, index) => (
-                        <li key={index} className="text-sm text-gray-600 dark:text-gray-400">
-                          • {action}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
               </div>
             </div>
           </div>
@@ -453,7 +437,7 @@ export function AlertCreationForm({
                   <input
                     type="number"
                     step="any"
-                    {...register('coordinates.latitude', { valueAsNumber: true })}
+                    {...register('location.latitude', { valueAsNumber: true })}
                     className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
                     placeholder="0.000000"
                   />
@@ -475,12 +459,13 @@ export function AlertCreationForm({
                 <input
                   type="number"
                   step="any"
-                  {...register('coordinates.longitude', { valueAsNumber: true })}
+                  {...register('location.longitude', { valueAsNumber: true })}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="0.000000"
                 />
               </div>
 
+              {/* Radius field commented out - not in schema
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Alert Radius (meters)
@@ -492,7 +477,9 @@ export function AlertCreationForm({
                   placeholder="1000"
                 />
               </div>
+              */}
 
+              {/* Zone ID field commented out - not in schema
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Target Zone (Optional)
@@ -503,10 +490,11 @@ export function AlertCreationForm({
                   placeholder="Zone ID or name"
                 />
               </div>
+              */}
             </div>
           </div>
 
-          {/* Recommended Actions */}
+          {/* Recommended Actions - Commented out as actions field not in schema
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-medium text-gray-900 dark:text-white">
@@ -543,8 +531,9 @@ export function AlertCreationForm({
               ))}
             </div>
           </div>
+          */}
 
-          {/* Notification Channels */}
+          {/* Notification Channels - Commented out as channels field not in schema
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
             <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-6">
               Notification Channels
@@ -570,6 +559,7 @@ export function AlertCreationForm({
               })}
             </div>
           </div>
+          */}
 
           {/* Form Actions */}
           <div className="flex items-center justify-between bg-white dark:bg-gray-800 p-6 rounded-lg shadow">

@@ -5,7 +5,7 @@
 
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Shield, MapPin, Users, AlertTriangle, TrendingUp, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -31,17 +31,54 @@ export function AuthLayout({
   children,
   title = APP_CONFIG.name,
   subtitle = APP_CONFIG.tagline,
-  showStats = true,
-  showFeatures = true,
+  showStats: enableStats = true,
+  showFeatures: enableFeatures = true,
 }: AuthLayoutProps) {
+  const [isLeftVisible, setIsLeftVisible] = useState(false);
+  const [isRightVisible, setIsRightVisible] = useState(false);
+  const [areStatsVisible, setAreStatsVisible] = useState(false);
+  const [areFeaturesVisible, setAreFeaturesVisible] = useState(false);
+
+  useEffect(() => {
+    // Trigger the left animation first
+    const leftTimer = setTimeout(() => {
+      setIsLeftVisible(true);
+    }, 100);
+
+    // Trigger the right animation slightly after
+    const rightTimer = setTimeout(() => {
+      setIsRightVisible(true);
+    }, 300);
+
+    // Animate stats section
+    const statsTimer = setTimeout(() => {
+      setAreStatsVisible(true);
+    }, 500);
+
+    // Animate features section
+    const featuresTimer = setTimeout(() => {
+      setAreFeaturesVisible(true);
+    }, 700);
+
+    return () => {
+      clearTimeout(leftTimer);
+      clearTimeout(rightTimer);
+      clearTimeout(statsTimer);
+      clearTimeout(featuresTimer);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       <div className="flex min-h-screen">
         {/* Left Side - Branding & Information */}
-        <div className="hidden lg:flex lg:flex-1 lg:flex-col lg:justify-center lg:px-8 xl:px-12">
-          <div className="mx-auto w-full max-w-sm">
+        <div className={cn(
+          "hidden lg:flex lg:w-2/5 lg:flex-col lg:justify-center lg:px-6 xl:px-8 transition-all duration-700 ease-out transform",
+          isLeftVisible ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'
+        )}>
+          <div className="mx-auto w-full max-w-md">
             {/* Logo & Title */}
-            <div className="mb-10">
+            <div className="mb-8">
               <div className="flex items-center space-x-4 mb-6">
                 <div className="flex items-center justify-center w-12 h-12 bg-primary rounded-xl">
                   <Shield className="w-7 h-7 text-white" />
@@ -57,7 +94,7 @@ export function AuthLayout({
               </div>
               
               <div className="text-gray-700 dark:text-gray-300">
-                <p className="text-lg mb-4">
+                <p className="text-base mb-3">
                   Ensuring tourist safety through intelligent monitoring and rapid response systems.
                 </p>
                 <p className="text-sm">
@@ -67,8 +104,11 @@ export function AuthLayout({
             </div>
 
             {/* Stats */}
-            {showStats && (
-              <div className="mb-10">
+            {enableStats && (
+              <div className={cn(
+                "mb-8 transition-all duration-500 ease-out transform",
+                areStatsVisible ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'
+              )}>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                   Platform Impact
                 </h3>
@@ -125,8 +165,11 @@ export function AuthLayout({
             )}
 
             {/* Key Features */}
-            {showFeatures && (
-              <div>
+            {enableFeatures && (
+              <div className={cn(
+                "transition-all duration-500 ease-out transform",
+                areFeaturesVisible ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'
+              )}>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                   Key Features
                 </h3>
@@ -193,8 +236,11 @@ export function AuthLayout({
         </div>
 
         {/* Right Side - Authentication Form */}
-        <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
-          <div className="mx-auto w-full max-w-sm lg:w-96">
+        <div className={cn(
+          "flex flex-1 lg:w-3/5 flex-col justify-center px-4 py-12 sm:px-6 lg:px-12 xl:px-16 transition-all duration-700 ease-out transform",
+          isRightVisible ? 'translate-x-0 opacity-100' : 'translate-x-4 opacity-0'
+        )}>
+          <div className="mx-auto w-full max-w-md lg:max-w-lg">
             {/* Mobile Logo */}
             <div className="lg:hidden mb-8">
               <div className="flex items-center justify-center space-x-3">

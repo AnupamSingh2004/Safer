@@ -16,9 +16,10 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   return (
     <NextThemesProvider 
       attribute="class"
-      defaultTheme="system"
+      defaultTheme="light"
       enableSystem
-      disableTransitionOnChange
+      disableTransitionOnChange={false}
+      storageKey="smart-tourist-safety-theme"
     >
       {children}
     </NextThemesProvider>

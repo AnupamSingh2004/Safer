@@ -21,7 +21,7 @@ type LocationView = 'tracking' | 'geofences' | 'services' | 'overview';
 // MAIN COMPONENT
 // ============================================================================
 
-export function LocationServicesPage() {
+function LocationServicesPage() {
   const { hasPermission } = useAuth();
   const [activeView, setActiveView] = useState<LocationView>('overview');
   const [userLocation, setUserLocation] = useState({

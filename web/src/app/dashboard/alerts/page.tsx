@@ -25,7 +25,7 @@ interface AlertsPageState {
 // MAIN COMPONENT
 // ============================================================================
 
-export function AlertsPage() {
+function AlertsPage() {
   const [pageState, setPageState] = useState<AlertsPageState>({
     view: 'list',
   });

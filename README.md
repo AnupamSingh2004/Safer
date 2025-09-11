@@ -7,7 +7,6 @@
   [![Next.js](https://img.shields.io/badge/Next.js-14.0-black.svg)](https://nextjs.org/)
   [![Blockchain](https://img.shields.io/badge/Blockchain-Ethereum-purple.svg)](https://ethereum.org/)
   [![License](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
-</div>
 
 **SafeTour** - An AI-powered, blockchain-secured tourist safety monitoring system that ensures real-time protection and incident response for travelers across India's diverse regions.
 

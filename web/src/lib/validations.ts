@@ -49,10 +49,7 @@ export const passportSchema = z
   .min(1, 'Passport number is required')
   .regex(VALIDATION_RULES.passport.pattern, VALIDATION_RULES.passport.message);
 
-export const coordinateSchema = z
-  .number()
-  .or(z.string().transform(Number))
-  .refine((val) => !isNaN(val), 'Must be a valid number');
+export const coordinateSchema = z.number();
 
 export const latitudeSchema = coordinateSchema
   .refine((val) => val >= -90 && val <= 90, 'Latitude must be between -90 and 90');

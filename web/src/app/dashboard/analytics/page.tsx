@@ -53,7 +53,7 @@ interface AnalyticsOverview {
 }
 
 interface AnalyticsPageProps {
-  className?: string;
+  // Page components in app directory don't accept custom props
 }
 
 // ============================================================================
@@ -231,7 +231,7 @@ const QUICK_STATS = [
 // MAIN COMPONENT
 // ============================================================================
 
-export function AnalyticsPage({ className }: AnalyticsPageProps) {
+function AnalyticsPage() {
   const { user, hasPermission } = useAuth();
   const [activeTab, setActiveTab] = useState<AnalyticsTab>('overview');
   const [refreshing, setRefreshing] = useState(false);
@@ -354,7 +354,7 @@ export function AnalyticsPage({ className }: AnalyticsPageProps) {
   );
 
   return (
-    <div className={cn('space-y-6', className)}>
+    <div className="space-y-6">
       {/* Page Header */}
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
         <div className="flex items-center justify-between">

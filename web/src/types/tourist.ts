@@ -454,7 +454,7 @@ export interface CreateTouristRequest {
   firstName: string;
   lastName: string;
   dateOfBirth: string;
-  gender: string;
+  gender: 'male' | 'female' | 'other' | 'prefer_not_to_say';
   nationality: string;
   preferredLanguage: string;
   contactInfo: ContactInfo;

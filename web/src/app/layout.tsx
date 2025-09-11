@@ -1,4 +1,6 @@
-import type { Metadata } from "next";
+// web/src/app/layout.tsx
+
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -11,6 +13,13 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Smart Tourist Safety System",
   description: "AI-powered tourist safety monitoring and incident response system",
+  keywords: ["tourist safety", "emergency response", "location tracking", "blockchain identity"],
+  authors: [{ name: "Tourism Department" }],
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -21,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} antialiased`}
+        className={`${inter.variable} font-sans antialiased`}
       >
         <ThemeProvider>
           {children}

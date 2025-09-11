@@ -1,0 +1,12 @@
+/* Direct CSS test - this should work if CSS loading is functional */
+.test-direct-css {
+  background-color: red !important;
+  color: white !important;
+  padding: 20px !important;
+  font-size: 24px !important;
+  border: 3px solid blue !important;
+}
+
+.test-tailwind-basic {
+  @apply bg-blue-500 text-white p-4 text-xl border-2 border-red-500;
+}

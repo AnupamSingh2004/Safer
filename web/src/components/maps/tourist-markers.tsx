@@ -107,10 +107,10 @@ const TouristMarker: React.FC<TouristMarkerProps> = ({ tourist, onClick }) => {
 
 // Tourist Popup Content
 interface TouristPopupContentProps {
-  tourist: Tourist;
-  onTrack?: (tourist: Tourist) => void;
-  onContact?: (tourist: Tourist) => void;
-  onCreateAlert?: (tourist: Tourist) => void;
+  tourist: SimpleTourist;
+  onTrack?: (tourist: SimpleTourist) => void;
+  onContact?: (tourist: SimpleTourist) => void;
+  onCreateAlert?: (tourist: SimpleTourist) => void;
 }
 
 const TouristPopupContent: React.FC<TouristPopupContentProps> = ({

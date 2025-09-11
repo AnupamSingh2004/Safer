@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>CSS Debug Test</title>
+  <style>
+    /* Test basic styling */
+    body {
+      font-family: system-ui;
+      margin: 0;
+      padding: 20px;
+      background: #f3f4f6;
+    }
+    .test-box {
+      background: white;
+      padding: 20px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+    .text-red {
+      color: #ef4444;
+    }
+    .text-blue {
+      color: #3b82f6;
+    }
+  </style>
+</head>
+<body>
+  <h1>CSS Debug Test</h1>
+  <div class="test-box">
+    <h2 class="text-blue">If you can see this styled properly, basic CSS works</h2>
+    <p class="text-red">This should be red text</p>
+  </div>
+  
+  <div class="test-box">
+    <h3>Tailwind Test</h3>
+    <p class="bg-primary text-primary-foreground p-4 rounded">
+      This should have primary background and styling if Tailwind works
+    </p>
+    <p class="text-muted-foreground">This should be muted text color</p>
+  </div>
+</body>
+</html>

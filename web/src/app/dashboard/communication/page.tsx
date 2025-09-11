@@ -45,7 +45,7 @@ interface CommunicationStats {
 }
 
 interface CommunicationPageProps {
-  className?: string;
+  // Page components in app directory don't accept custom props
 }
 
 // ============================================================================
@@ -221,7 +221,7 @@ const DELIVERY_STATS = [
 // MAIN COMPONENT
 // ============================================================================
 
-export function CommunicationPage({ className }: CommunicationPageProps) {
+function CommunicationPage() {
   const { user, hasPermission } = useAuth();
   const [activeTab, setActiveTab] = useState<CommunicationTab>('messaging');
 
@@ -384,7 +384,7 @@ export function CommunicationPage({ className }: CommunicationPageProps) {
   );
 
   return (
-    <div className={cn('space-y-6', className)}>
+    <div className="space-y-6">
       {/* Page Header */}
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
         <div className="flex items-center justify-between">

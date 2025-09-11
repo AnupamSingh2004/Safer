@@ -5,24 +5,19 @@
 
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
-  Shield, 
+  Shield,
   Users, 
   AlertTriangle, 
   Activity,
   MapPin,
   TrendingUp,
-  Eye,
   MessageSquare,
-  Calendar,
   Clock,
   ArrowRight,
-  Bell,
-  Settings,
-  BarChart3,
-  UserCheck
+  BarChart3
 } from 'lucide-react';
 import { useAuth } from '@/stores/auth-store';
 
@@ -74,7 +69,7 @@ const StatsCard = ({
 const QuickActionCard = ({ 
   title, 
   description, 
-  icon: Icon, 
+  icon: IconComponent, 
   href,
   color = 'primary' 
 }: {
@@ -94,7 +89,7 @@ const QuickActionCard = ({
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <div className={`p-3 bg-${color}/10 rounded-lg`}>
-            <Icon className={`w-6 h-6 text-${color}`} />
+            <IconComponent className={`w-6 h-6 text-${color}`} />
           </div>
           <div>
             <h3 className="font-semibold text-gray-900 dark:text-white">{title}</h3>
@@ -110,16 +105,6 @@ const QuickActionCard = ({
 export default function DashboardPage() {
   const { user, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
-  const [currentTime, setCurrentTime] = useState(new Date());
-
-  // Update time every minute
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 60000);
-
-    return () => clearInterval(timer);
-  }, []);
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -206,49 +191,16 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Header */}
-      <div className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <Shield className="w-8 h-8 text-primary" />
-                <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-                  Smart Tourist Safety
-                </h1>
-              </div>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                {currentTime.toLocaleString()}
-              </div>
-              <div className="flex items-center space-x-2">
-                <UserCheck className="w-5 h-5 text-primary" />
-                <span className="text-sm font-medium text-gray-900 dark:text-white">
-                  {(user as any).name || user.displayName || `${user.firstName} ${user.lastName}`.trim() || user.email}
-                </span>
-                <span className="text-xs bg-primary text-white px-2 py-1 rounded-full">
-                  {user.role.replace('_', ' ').toUpperCase()}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className="p-8">
+      {/* Welcome Section */}
+      <div className="mb-8">
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          Welcome back, {(user as any).name || user.displayName || `${user.firstName} ${user.lastName}`.trim() || user.email}!
+        </h2>
+        <p className="text-gray-600 dark:text-gray-400">
+          Here's what's happening with tourist safety today.
+        </p>
       </div>
-
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Welcome Section */}
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Welcome back, {(user as any).name || user.displayName || `${user.firstName} ${user.lastName}`.trim() || user.email}!
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400">
-            Here's what's happening with tourist safety today.
-          </p>
-        </div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -338,7 +290,6 @@ export default function DashboardPage() {
             ))}
           </div>
         </div>
-      </div>
     </div>
   );
 }

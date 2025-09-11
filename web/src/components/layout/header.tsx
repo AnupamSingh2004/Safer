@@ -9,6 +9,7 @@ import * as React from 'react';
 import { Bell, Menu, Search, Settings, User, LogOut, Shield, Moon, Sun } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth-store';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 // ============================================================================
 // HEADER COMPONENT
@@ -23,7 +24,6 @@ export function Header({ onMenuToggle, className }: HeaderProps) {
   const { user, logout } = useAuthStore();
   const [showUserMenu, setShowUserMenu] = React.useState(false);
   const [showNotifications, setShowNotifications] = React.useState(false);
-  const [theme, setTheme] = React.useState<'light' | 'dark'>('light');
   const [notifications] = React.useState([
     {
       id: '1',
@@ -52,13 +52,6 @@ export function Header({ onMenuToggle, className }: HeaderProps) {
   ]);
 
   const unreadCount = notifications.filter(n => !n.read).length;
-
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    // Apply theme to document
-    document.documentElement.classList.toggle('dark', newTheme === 'dark');
-  };
 
   const handleLogout = async () => {
     await logout();
@@ -124,17 +117,7 @@ export function Header({ onMenuToggle, className }: HeaderProps) {
         {/* Right Side Actions */}
         <div className="flex items-center space-x-2 ml-auto">
           {/* Theme Toggle */}
-          <button
-            onClick={toggleTheme}
-            className="p-2 hover:bg-gray-100 rounded-md transition-colors"
-            title="Toggle theme"
-          >
-            {theme === 'light' ? (
-              <Moon className="h-5 w-5 text-gray-600" />
-            ) : (
-              <Sun className="h-5 w-5 text-gray-600" />
-            )}
-          </button>
+          <ThemeToggle variant="icon" size="sm" className="!p-2" />
 
           {/* Notifications */}
           <div className="relative">

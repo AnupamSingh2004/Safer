@@ -7,9 +7,10 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Shield, MapPin, Users, AlertTriangle, TrendingUp, Globe } from 'lucide-react';
+import { Shield, MapPin, Users, AlertTriangle, TrendingUp, Globe, Moon, Sun } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { APP_CONFIG } from '@/lib/constants';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 // ============================================================================
 // COMPONENT PROPS
@@ -69,7 +70,14 @@ export function AuthLayout({
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 relative">
+      {/* Theme Toggle Button */}
+      <div className="absolute top-4 right-4 z-50">
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
+          <ThemeToggle variant="icon" size="sm" className="!p-3" />
+        </div>
+      </div>
+
       <div className="flex min-h-screen">
         {/* Left Side - Branding & Information */}
         <div className={cn(

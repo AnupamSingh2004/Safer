@@ -3,7 +3,7 @@ import { twMerge } from 'tailwind-merge';
 
 /**
  * Smart Tourist Safety System - Core Utility Functions
- * Essential utilities for data formatting, text manipulation, and common helpers
+ * Essential utilities for data formatting, coordinate calculations, encryption, and common helpers
  */
 
 // ============================================================================
@@ -19,8 +19,613 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // ============================================================================
-// DATE & TIME UTILITIES
+// GEOLOCATION & COORDINATE UTILITIES
 // ============================================================================
+
+/**
+ * Calculates distance between two coordinates using Haversine formula
+ * Returns distance in kilometers
+ */
+export function calculateDistance(
+  lat1: number,
+  lng1: number,
+  lat2: number,
+  lng2: number
+): number {
+  const R = 6371; // Earth's radius in kilometers
+  const dLat = toRadians(lat2 - lat1);
+  const dLng = toRadians(lng2 - lng1);
+  
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
+    Math.sin(dLng / 2) * Math.sin(dLng / 2);
+  
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+/**
+ * Converts degrees to radians
+ */
+function toRadians(degrees: number): number {
+  return degrees * (Math.PI / 180);
+}
+
+/**
+ * Checks if a point is within a circular geofence
+ */
+export function isWithinRadius(
+  centerLat: number,
+  centerLng: number,
+  pointLat: number,
+  pointLng: number,
+  radiusKm: number
+): boolean {
+  const distance = calculateDistance(centerLat, centerLng, pointLat, pointLng);
+  return distance <= radiusKm;
+}
+
+/**
+ * Checks if a point is within a polygon geofence
+ */
+export function isPointInPolygon(
+  point: [number, number],
+  polygon: [number, number][]
+): boolean {
+  const [x, y] = point;
+  let inside = false;
+  
+  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    const [xi, yi] = polygon[i];
+    const [xj, yj] = polygon[j];
+    
+    if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) {
+      inside = !inside;
+    }
+  }
+  
+  return inside;
+}
+
+/**
+ * Calculates bearing between two coordinates
+ */
+export function calculateBearing(
+  lat1: number,
+  lng1: number,
+  lat2: number,
+  lng2: number
+): number {
+  const dLng = toRadians(lng2 - lng1);
+  const lat1Rad = toRadians(lat1);
+  const lat2Rad = toRadians(lat2);
+  
+  const y = Math.sin(dLng) * Math.cos(lat2Rad);
+  const x = Math.cos(lat1Rad) * Math.sin(lat2Rad) -
+           Math.sin(lat1Rad) * Math.cos(lat2Rad) * Math.cos(dLng);
+  
+  const bearingRad = Math.atan2(y, x);
+  return (bearingRad * 180 / Math.PI + 360) % 360;
+}
+
+/**
+ * Gets the bounds of a set of coordinates
+ */
+export function getCoordinateBounds(coordinates: [number, number][]): {
+  north: number;
+  south: number;
+  east: number;
+  west: number;
+} {
+  if (coordinates.length === 0) {
+    throw new Error('Coordinates array cannot be empty');
+  }
+  
+  let north = coordinates[0][0];
+  let south = coordinates[0][0];
+  let east = coordinates[0][1];
+  let west = coordinates[0][1];
+  
+  coordinates.forEach(([lat, lng]) => {
+    north = Math.max(north, lat);
+    south = Math.min(south, lat);
+    east = Math.max(east, lng);
+    west = Math.min(west, lng);
+  });
+  
+  return { north, south, east, west };
+}
+
+/**
+ * Formats coordinates to DMS (Degrees, Minutes, Seconds)
+ */
+export function formatCoordinatesDMS(lat: number, lng: number): string {
+  function toDMS(coord: number, isLatitude: boolean): string {
+    const absolute = Math.abs(coord);
+    const degrees = Math.floor(absolute);
+    const minutes = Math.floor((absolute - degrees) * 60);
+    const seconds = Math.round(((absolute - degrees) * 60 - minutes) * 60 * 100) / 100;
+    
+    const direction = isLatitude 
+      ? (coord >= 0 ? 'N' : 'S')
+      : (coord >= 0 ? 'E' : 'W');
+    
+    return `${degrees}°${minutes}'${seconds}"${direction}`;
+  }
+  
+  return `${toDMS(lat, true)}, ${toDMS(lng, false)}`;
+}
+
+// ============================================================================
+// ENCRYPTION & SECURITY UTILITIES (Browser Compatible)
+// ============================================================================
+
+/**
+ * Generates a secure random string using Web Crypto API
+ */
+export function generateSecureToken(length: number = 32): string {
+  if (typeof window !== 'undefined' && window.crypto) {
+    const array = new Uint8Array(length);
+    window.crypto.getRandomValues(array);
+    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+  }
+  
+  // Fallback for server-side or older browsers
+  return Array.from({ length }, () => Math.floor(Math.random() * 16).toString(16)).join('');
+}
+
+/**
+ * Creates a hash from a string using Web Crypto API
+ */
+export async function createHash(data: string): Promise<string> {
+  if (typeof window !== 'undefined' && window.crypto?.subtle) {
+    const encoder = new TextEncoder();
+    const dataBuffer = encoder.encode(data);
+    const hashBuffer = await window.crypto.subtle.digest('SHA-256', dataBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+  }
+  
+  // Fallback simple hash (not cryptographically secure)
+  let hash = 0;
+  for (let i = 0; i < data.length; i++) {
+    const char = data.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32-bit integer
+  }
+  return Math.abs(hash).toString(16);
+}
+
+/**
+ * Creates a simple HMAC-like signature (browser compatible)
+ */
+export async function createHMAC(data: string, secret: string): Promise<string> {
+  const combinedData = secret + data + secret;
+  return await createHash(combinedData);
+}
+
+/**
+ * Simple encryption using XOR cipher (for non-sensitive data)
+ */
+export function simpleEncrypt(text: string, key: string): string {
+  let result = '';
+  for (let i = 0; i < text.length; i++) {
+    const textChar = text.charCodeAt(i);
+    const keyChar = key.charCodeAt(i % key.length);
+    result += String.fromCharCode(textChar ^ keyChar);
+  }
+  return btoa(result); // Base64 encode
+}
+
+/**
+ * Simple decryption using XOR cipher
+ */
+export function simpleDecrypt(encryptedText: string, key: string): string {
+  try {
+    const decodedText = atob(encryptedText); // Base64 decode
+    let result = '';
+    for (let i = 0; i < decodedText.length; i++) {
+      const textChar = decodedText.charCodeAt(i);
+      const keyChar = key.charCodeAt(i % key.length);
+      result += String.fromCharCode(textChar ^ keyChar);
+    }
+    return result;
+  } catch {
+    return '';
+  }
+}
+
+// ============================================================================
+// INDIAN-SPECIFIC VALIDATIONS
+// ============================================================================
+
+/**
+ * Validates Indian Aadhar number
+ */
+export function isValidAadhar(aadhar: string): boolean {
+  // Remove spaces and check if it's 12 digits
+  const cleanAadhar = aadhar.replace(/\s/g, '');
+  if (!/^\d{12}$/.test(cleanAadhar)) return false;
+  
+  // Aadhar uses Verhoeff checksum algorithm
+  const digits = cleanAadhar.split('').map(Number);
+  const d = [
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    [1, 2, 3, 4, 0, 6, 7, 8, 9, 5],
+    [2, 3, 4, 0, 1, 7, 8, 9, 5, 6],
+    [3, 4, 0, 1, 2, 8, 9, 5, 6, 7],
+    [4, 0, 1, 2, 3, 9, 5, 6, 7, 8],
+    [5, 9, 8, 7, 6, 0, 4, 3, 2, 1],
+    [6, 5, 9, 8, 7, 1, 0, 4, 3, 2],
+    [7, 6, 5, 9, 8, 2, 1, 0, 4, 3],
+    [8, 7, 6, 5, 9, 3, 2, 1, 0, 4],
+    [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+  ];
+  
+  const p = [
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    [1, 5, 7, 6, 2, 8, 3, 0, 9, 4],
+    [5, 8, 0, 3, 7, 9, 6, 1, 4, 2],
+    [8, 9, 1, 6, 0, 4, 3, 5, 2, 7],
+    [9, 4, 5, 3, 1, 2, 6, 8, 7, 0],
+    [4, 2, 8, 6, 5, 7, 3, 9, 0, 1],
+    [2, 7, 9, 3, 8, 0, 6, 4, 1, 5],
+    [7, 0, 4, 6, 9, 1, 3, 2, 5, 8]
+  ];
+  
+  let c = 0;
+  let len = digits.length;
+  
+  for (let i = 0; i < len; i++) {
+    c = d[c][p[((len - i) % 8)][digits[i]]];
+  }
+  
+  return c === 0;
+}
+
+/**
+ * Validates Indian passport number
+ */
+export function isValidIndianPassport(passport: string): boolean {
+  const passportRegex = /^[A-PR-WY][1-9]\d\s?\d{4}[1-9]$/;
+  return passportRegex.test(passport.replace(/\s/g, ''));
+}
+
+/**
+ * Validates Indian mobile number
+ */
+export function isValidIndianMobile(phone: string): boolean {
+  const cleanPhone = phone.replace(/[\s\-\(\)+]/g, '');
+  const indianMobileRegex = /^(?:\+91|91|0)?[6-9]\d{9}$/;
+  return indianMobileRegex.test(cleanPhone);
+}
+
+/**
+ * Validates Indian PIN code
+ */
+export function isValidPincode(pincode: string): boolean {
+  const pincodeRegex = /^[1-9][0-9]{5}$/;
+  return pincodeRegex.test(pincode);
+}
+
+/**
+ * Formats Indian mobile number
+ */
+export function formatIndianMobile(phone: string): string {
+  const cleanPhone = phone.replace(/[\s\-\(\)+]/g, '');
+  
+  // Remove country code if present
+  let number = cleanPhone;
+  if (number.startsWith('+91')) number = number.slice(3);
+  else if (number.startsWith('91')) number = number.slice(2);
+  else if (number.startsWith('0')) number = number.slice(1);
+  
+  // Format as +91 XXXXX XXXXX
+  if (number.length === 10) {
+    return `+91 ${number.slice(0, 5)} ${number.slice(5)}`;
+  }
+  
+  return phone; // Return original if format is invalid
+}
+
+/**
+ * Formats Aadhar number with spaces
+ */
+export function formatAadhar(aadhar: string): string {
+  const cleanAadhar = aadhar.replace(/\s/g, '');
+  if (cleanAadhar.length === 12) {
+    return `${cleanAadhar.slice(0, 4)} ${cleanAadhar.slice(4, 8)} ${cleanAadhar.slice(8)}`;
+  }
+  return aadhar;
+}
+
+// ============================================================================
+// SAFETY SCORE & RISK ASSESSMENT UTILITIES
+// ============================================================================
+
+/**
+ * Calculates comprehensive safety score based on multiple factors
+ */
+export function calculateSafetyScore(factors: {
+  locationRisk: number;      // 0-100 (100 = safest)
+  timeOfDay: number;         // 0-23 hours
+  weatherConditions: number; // 0-100 (100 = best weather)
+  recentIncidents: number;   // Number of incidents in last 30 days
+  groupSize: number;         // Number of people in group
+  communicationStatus: boolean; // Has active communication
+  healthStatus: number;      // 0-100 (100 = perfect health)
+  emergencyContactsAvailable: boolean;
+}): number {
+  let score = 100;
+  
+  // Location risk factor (40% weight)
+  score -= (100 - factors.locationRisk) * 0.4;
+  
+  // Time of day factor (15% weight)
+  const timeRisk = getTimeRisk(factors.timeOfDay);
+  score -= timeRisk * 0.15;
+  
+  // Weather conditions (10% weight)
+  score -= (100 - factors.weatherConditions) * 0.1;
+  
+  // Recent incidents (15% weight)
+  const incidentRisk = Math.min(factors.recentIncidents * 10, 100);
+  score -= incidentRisk * 0.15;
+  
+  // Group size factor (5% weight)
+  const groupRisk = getGroupSizeRisk(factors.groupSize);
+  score -= groupRisk * 0.05;
+  
+  // Communication status (5% weight)
+  if (!factors.communicationStatus) score -= 20;
+  
+  // Health status (5% weight)
+  score -= (100 - factors.healthStatus) * 0.05;
+  
+  // Emergency contacts (5% weight)
+  if (!factors.emergencyContactsAvailable) score -= 15;
+  
+  return Math.max(0, Math.min(100, Math.round(score)));
+}
+
+/**
+ * Gets time-based risk score
+ */
+function getTimeRisk(hour: number): number {
+  // Higher risk during late night/early morning hours
+  if (hour >= 22 || hour <= 5) return 40;  // High risk
+  if (hour >= 18 || hour <= 7) return 20;  // Medium risk
+  return 5; // Low risk during day hours
+}
+
+/**
+ * Gets group size risk score
+ */
+function getGroupSizeRisk(groupSize: number): number {
+  if (groupSize === 1) return 30;      // Solo travel is riskier
+  if (groupSize <= 3) return 10;       // Small group
+  if (groupSize <= 6) return 5;        // Optimal group size
+  return 15; // Large groups can be harder to manage
+}
+
+/**
+ * Determines zone risk level based on various factors
+ */
+export function calculateZoneRisk(zoneData: {
+  crimeRate: number;        // Crimes per 1000 people per year
+  infrastructureQuality: number; // 0-100 scale
+  emergencyResponse: number;     // Response time in minutes
+  touristDensity: number;       // Tourists per sq km
+  naturalDisasterRisk: number;  // 0-100 scale
+  medicalFacilities: number;    // Number of hospitals/clinics nearby
+}): {
+  riskLevel: number;
+  factors: Record<string, number>;
+  recommendations: string[];
+} {
+  let riskScore = 0;
+  const factors: Record<string, number> = {};
+  const recommendations: string[] = [];
+  
+  // Crime rate factor
+  const crimeRisk = Math.min(zoneData.crimeRate / 10, 100);
+  factors.crime = crimeRisk;
+  riskScore += crimeRisk * 0.3;
+  
+  // Infrastructure quality
+  const infraRisk = 100 - zoneData.infrastructureQuality;
+  factors.infrastructure = infraRisk;
+  riskScore += infraRisk * 0.2;
+  
+  // Emergency response time
+  const responseRisk = Math.min(zoneData.emergencyResponse / 2, 100);
+  factors.emergencyResponse = responseRisk;
+  riskScore += responseRisk * 0.2;
+  
+  // Natural disaster risk
+  factors.naturalDisaster = zoneData.naturalDisasterRisk;
+  riskScore += zoneData.naturalDisasterRisk * 0.15;
+  
+  // Medical facilities (inverse - more facilities = less risk)
+  const medicalRisk = Math.max(0, 100 - zoneData.medicalFacilities * 10);
+  factors.medical = medicalRisk;
+  riskScore += medicalRisk * 0.15;
+  
+  // Generate recommendations based on risk factors
+  if (crimeRisk > 50) recommendations.push('Avoid displaying valuable items');
+  if (responseRisk > 60) recommendations.push('Travel with emergency beacon');
+  if (infraRisk > 70) recommendations.push('Carry backup communication device');
+  if (zoneData.naturalDisasterRisk > 40) recommendations.push('Check weather alerts regularly');
+  if (medicalRisk > 60) recommendations.push('Carry first aid kit and emergency medications');
+  
+  return {
+    riskLevel: Math.min(100, Math.round(riskScore)),
+    factors,
+    recommendations,
+  };
+}
+
+// ============================================================================
+// EMERGENCY RESPONSE UTILITIES
+// ============================================================================
+
+/**
+ * Determines emergency response priority based on alert type and context
+ */
+export function getEmergencyPriority(
+  alertType: string,
+  safetyScore: number,
+  responseTime: number,
+  location: { lat: number; lng: number }
+): {
+  priority: 'critical' | 'high' | 'medium' | 'low';
+  estimatedResponseTime: number;
+  requiredResources: string[];
+} {
+  let priority: 'critical' | 'high' | 'medium' | 'low' = 'low';
+  let estimatedResponseTime = responseTime;
+  const requiredResources: string[] = [];
+  
+  // Determine priority based on alert type
+  const criticalAlerts = ['critical_emergency', 'medical_emergency', 'security_threat', 'natural_disaster'];
+  const highAlerts = ['missing_person', 'panic_button', 'accident', 'violence'];
+  const mediumAlerts = ['geofence_violation', 'anomaly_detected', 'suspicious_activity'];
+  
+  if (criticalAlerts.includes(alertType)) {
+    priority = 'critical';
+    estimatedResponseTime = Math.min(responseTime, 5);
+    requiredResources.push('emergency_services', 'medical_team', 'police');
+  } else if (highAlerts.includes(alertType)) {
+    priority = 'high';
+    estimatedResponseTime = Math.min(responseTime, 15);
+    requiredResources.push('emergency_services', 'field_agent');
+  } else if (mediumAlerts.includes(alertType)) {
+    priority = 'medium';
+    estimatedResponseTime = Math.min(responseTime, 30);
+    requiredResources.push('field_agent');
+  }
+  
+  // Adjust priority based on safety score
+  if (safetyScore < 30 && priority !== 'critical') {
+    priority = priority === 'low' ? 'medium' : 'high';
+    estimatedResponseTime = Math.round(estimatedResponseTime * 0.7);
+  }
+  
+  return {
+    priority,
+    estimatedResponseTime,
+    requiredResources,
+  };
+}
+
+/**
+ * Formats emergency contact number for calling
+ */
+export function formatEmergencyNumber(service: string, location?: string): string {
+  const emergencyNumbers: Record<string, string> = {
+    general: '112',
+    police: '100',
+    fire: '101',
+    medical: '108',
+    tourist_helpline: '1363',
+    disaster: '1078',
+    railway: '1512',
+    highway: '1033',
+  };
+  
+  return emergencyNumbers[service] || '112';
+}
+
+// ============================================================================
+// DATA FORMATTING UTILITIES
+// ============================================================================
+
+/**
+ * Formats alert severity for display
+ */
+export function formatAlertSeverity(severity: string): {
+  label: string;
+  color: string;
+  icon: string;
+} {
+  const severityMap: Record<string, { label: string; color: string; icon: string }> = {
+    critical: { label: 'Critical', color: '#dc2626', icon: '🚨' },
+    high: { label: 'High', color: '#ea580c', icon: '⚠️' },
+    medium: { label: 'Medium', color: '#ca8a04', icon: '⚡' },
+    low: { label: 'Low', color: '#16a34a', icon: 'ℹ️' },
+  };
+  
+  return severityMap[severity] || severityMap.low;
+}
+
+/**
+ * Formats tourist status for display
+ */
+export function formatTouristStatus(status: string): {
+  label: string;
+  color: string;
+  description: string;
+} {
+  const statusMap: Record<string, { label: string; color: string; description: string }> = {
+    safe: { label: 'Safe', color: '#16a34a', description: 'Tourist is in a safe location' },
+    at_risk: { label: 'At Risk', color: '#ea580c', description: 'Tourist may be in potential danger' },
+    emergency: { label: 'Emergency', color: '#dc2626', description: 'Tourist requires immediate assistance' },
+    offline: { label: 'Offline', color: '#6b7280', description: 'No recent communication from tourist' },
+    unknown: { label: 'Unknown', color: '#6b7280', description: 'Status cannot be determined' },
+  };
+  
+  return statusMap[status] || statusMap.unknown;
+}
+
+// ============================================================================
+// BLOCKCHAIN TRANSACTION UTILITIES
+// ============================================================================
+
+/**
+ * Generates deterministic transaction ID for blockchain operations
+ */
+export function generateTransactionId(
+  operation: string,
+  touristId: string,
+  timestamp?: number
+): string {
+  const ts = timestamp || Date.now();
+  const data = `${operation}-${touristId}-${ts}`;
+  // Use simple hash for transaction ID
+  let hash = 0;
+  for (let i = 0; i < data.length; i++) {
+    const char = data.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash).toString(16).slice(0, 16);
+}
+
+/**
+ * Formats blockchain transaction hash for display
+ */
+export function formatTransactionHash(hash: string): string {
+  if (!hash) return 'N/A';
+  return `${hash.slice(0, 6)}...${hash.slice(-6)}`;
+}
+
+/**
+ * Validates blockchain transaction data integrity (simplified)
+ */
+export async function validateTransactionIntegrity(
+  data: any,
+  signature: string,
+  publicKey: string
+): Promise<boolean> {
+  try {
+    const dataHash = await createHash(JSON.stringify(data));
+    const expectedSignature = await createHMAC(dataHash, publicKey);
+    return signature === expectedSignature;
+  } catch {
+    return false;
+  }
+}
 
 /**
  * Formats a date string or Date object to a readable format

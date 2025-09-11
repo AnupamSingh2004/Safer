@@ -11,7 +11,7 @@ import jwt from 'jsonwebtoken';
 interface LoginRequest {
   email: string;
   password: string;
-  userType?: 'admin' | 'operator' | 'viewer';
+  role?: string;
 }
 
 interface LoginResponse {
@@ -32,15 +32,15 @@ const mockUsers = [
   {
     id: '1',
     email: 'admin@touristsafety.gov.in',
-    password: '$2a$10$yPzNGKwTLKvOB9Lmy1QrBuJ5fKvx9zT8nVE2iOGhGQzVXpOzKdM9a', // 'admin123'
+    password: '$2a$10$4ai6Og8xQIjkbwS/V1nWu.hCyp06qr5t8jyxe8FmMYblt9PTtuRJ6', // 'admin123'
     name: 'System Administrator',
-    role: 'admin',
-    permissions: ['read', 'write', 'delete', 'manage_users', 'view_analytics']
+    role: 'super_admin',
+    permissions: ['read', 'write', 'delete', 'manage_users', 'view_analytics', 'system_config']
   },
   {
     id: '2',
     email: 'operator@touristsafety.gov.in',
-    password: '$2a$10$yPzNGKwTLKvOB9Lmy1QrBuJ5fKvx9zT8nVE2iOGhGQzVXpOzKdM9a', // 'operator123'
+    password: '$2a$10$4ai6Og8xQIjkbwS/V1nWu.hCyp06qr5t8jyxe8FmMYblt9PTtuRJ6', // 'admin123' (same for testing)
     name: 'Safety Operator',
     role: 'operator',
     permissions: ['read', 'write', 'manage_alerts', 'track_tourists']
@@ -48,7 +48,7 @@ const mockUsers = [
   {
     id: '3',
     email: 'viewer@touristsafety.gov.in',
-    password: '$2a$10$yPzNGKwTLKvOB9Lmy1QrBuJ5fKvx9zT8nVE2iOGhGQzVXpOzKdM9a', // 'viewer123'
+    password: '$2a$10$4ai6Og8xQIjkbwS/V1nWu.hCyp06qr5t8jyxe8FmMYblt9PTtuRJ6', // 'admin123' (same for testing)
     name: 'Safety Viewer',
     role: 'viewer',
     permissions: ['read', 'view_reports']
@@ -130,11 +130,19 @@ export async function POST(request: NextRequest): Promise<NextResponse<LoginResp
           success: false,
           message: 'Invalid email or password format'
         },
-        { status: 400 }
+        { 
+          status: 400,
+          headers: {
+            'Access-Control-Allow-Origin': 'http://localhost:8001',
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            'Access-Control-Allow-Credentials': 'true'
+          }
+        }
       );
     }
 
-    const { email, password } = body;
+    const { email, password, role } = body;
 
     // Check rate limiting
     if (!checkRateLimit(email)) {
@@ -143,7 +151,15 @@ export async function POST(request: NextRequest): Promise<NextResponse<LoginResp
           success: false,
           message: 'Too many login attempts. Please try again in 15 minutes.'
         },
-        { status: 429 }
+        { 
+          status: 429,
+          headers: {
+            'Access-Control-Allow-Origin': 'http://localhost:8001',
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            'Access-Control-Allow-Credentials': 'true'
+          }
+        }
       );
     }
 
@@ -155,7 +171,15 @@ export async function POST(request: NextRequest): Promise<NextResponse<LoginResp
           success: false,
           message: 'Invalid email or password'
         },
-        { status: 401 }
+        { 
+          status: 401,
+          headers: {
+            'Access-Control-Allow-Origin': 'http://localhost:8001',
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            'Access-Control-Allow-Credentials': 'true'
+          }
+        }
       );
     }
 
@@ -167,7 +191,34 @@ export async function POST(request: NextRequest): Promise<NextResponse<LoginResp
           success: false,
           message: 'Invalid email or password'
         },
-        { status: 401 }
+        { 
+          status: 401,
+          headers: {
+            'Access-Control-Allow-Origin': 'http://localhost:8001',
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            'Access-Control-Allow-Credentials': 'true'
+          }
+        }
+      );
+    }
+
+    // Validate role if provided
+    if (role && role !== user.role) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Invalid role selected for this account'
+        },
+        { 
+          status: 403,
+          headers: {
+            'Access-Control-Allow-Origin': 'http://localhost:8001',
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            'Access-Control-Allow-Credentials': 'true'
+          }
+        }
       );
     }
 
@@ -197,6 +248,10 @@ export async function POST(request: NextRequest): Promise<NextResponse<LoginResp
       { 
         status: 200,
         headers: {
+          'Access-Control-Allow-Origin': 'http://localhost:8001',
+          'Access-Control-Allow-Methods': 'POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+          'Access-Control-Allow-Credentials': 'true',
           'Set-Cookie': `auth_token=${token}; HttpOnly; Secure; SameSite=Strict; Max-Age=86400; Path=/`
         }
       }
@@ -210,7 +265,15 @@ export async function POST(request: NextRequest): Promise<NextResponse<LoginResp
         success: false,
         message: 'Internal server error'
       },
-      { status: 500 }
+      { 
+        status: 500,
+        headers: {
+          'Access-Control-Allow-Origin': 'http://localhost:8001',
+          'Access-Control-Allow-Methods': 'POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+          'Access-Control-Allow-Credentials': 'true'
+        }
+      }
     );
   }
 }
@@ -231,9 +294,10 @@ export async function OPTIONS(): Promise<NextResponse> {
   return new NextResponse(null, {
     status: 200,
     headers: {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': 'http://localhost:8001',
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Allow-Credentials': 'true'
     },
   });
 }

@@ -1065,28 +1065,8 @@ INSERT INTO system_settings (category, key, value, description, environment) VAL
 ('blockchain', 'network', '"testnet"', 'Default blockchain network', 'production')
 ON CONFLICT (category, key, environment) DO NOTHING;
 
--- Create default super admin (password should be changed on first login)
-INSERT INTO users (
-    id,
-    email, 
-    password_hash, 
-    first_name, 
-    last_name, 
-    role, 
-    is_active, 
-    is_verified,
-    department
-) VALUES (
-    uuid_generate_v4(),
-    'admin@safetour.gov.in',
-    '$2b$12$LQv3c1yqBwlVHpPn7ToFvOcb6TeFmBNlZNjuThClG8nAslk3AhY8O', -- password: Admin@123
-    'System',
-    'Administrator',
-    'super_admin',
-    true,
-    true,
-    'IT Administration'
-) ON CONFLICT (email) DO NOTHING;
+-- Note: Default admin user creation should be handled through secure deployment scripts
+-- with environment-specific credentials. See deployment documentation for admin setup.
 
 -- =============================================================================
 -- COMMENTS AND DOCUMENTATION

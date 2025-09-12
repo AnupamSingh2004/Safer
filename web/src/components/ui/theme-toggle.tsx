@@ -32,7 +32,7 @@ export function ThemeToggle({
   if (variant === 'dropdown') {
     return (
       <div className={`relative inline-block text-left ${className}`}>
-        <Button
+t        <Button
           variant="ghost"
           size={size === 'sm' ? 'sm' : 'default'}
           onClick={toggleTheme}

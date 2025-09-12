@@ -376,7 +376,7 @@ export function DashboardHeader({
                 <div className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
                   {user ? (
                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {user.firstName.charAt(0)}{user.lastName.charAt(0)}
+                      {user.firstName?.charAt(0) || ''}{user.lastName?.charAt(0) || ''}
                     </span>
                   ) : (
                     <User className="h-5 w-5 text-gray-400" />

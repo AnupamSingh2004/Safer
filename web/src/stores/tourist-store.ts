@@ -666,7 +666,7 @@ export const useTouristStore = create<TouristStore>()(
       },
 
       // Tourist management
-      verifyTourist: async (id: TouristId, method: string, details: Record<string, any>) => {
+      verifyTourist: async (id: TouristId, method: 'document' | 'biometric' | 'manual' | 'blockchain', details: Record<string, any>) => {
         set({ isLoading: true, error: null });
         try {
           await new Promise(resolve => setTimeout(resolve, 1000));
@@ -674,7 +674,7 @@ export const useTouristStore = create<TouristStore>()(
           const verificationRecord = {
             id: `ver-${Date.now()}`,
             touristId: id,
-            status: 'verified' as const,
+            status: VerificationStatus.VERIFIED,
             method,
             verificationDate: new Date().toISOString(),
             details
@@ -685,7 +685,7 @@ export const useTouristStore = create<TouristStore>()(
               t.id === id 
                 ? {
                     ...t,
-                    verificationStatus: 'verified' as const,
+                    verificationStatus: VerificationStatus.VERIFIED,
                     verificationRecords: [...t.verificationRecords, verificationRecord],
                     lastUpdateDate: new Date().toISOString()
                   }
@@ -950,7 +950,7 @@ export const useTouristStore = create<TouristStore>()(
               t.id === request.touristId 
                 ? {
                     ...t,
-                    status: 'emergency',
+                    status: TouristStatus.EMERGENCY,
                     alerts: [...t.alerts, emergencyAlert],
                     safetyStatus: {
                       ...t.safetyStatus,

@@ -187,37 +187,55 @@ export function LoginForm({
 
   const remainingLockoutMinutes = getRemainingLockoutTime();
 
-  // Role options with better descriptions
+  // Role options with better descriptions and emergency-focused context
   const roleOptions = [
     { 
       value: 'super_admin', 
       label: 'Super Administrator', 
-      description: 'Full system access and management',
-      icon: Shield
+      description: 'Complete system oversight and emergency coordination',
+      icon: Shield,
+      badge: 'All Access',
+      color: 'text-red-600'
     },
     { 
       value: 'tourism_admin', 
       label: 'Tourism Administrator', 
-      description: 'Tourism department management',
-      icon: User
+      description: 'Tourism department oversight and visitor management',
+      icon: User,
+      badge: 'Tourism Dept',
+      color: 'text-blue-600'
     },
     { 
       value: 'police_admin', 
       label: 'Police Administrator', 
-      description: 'Law enforcement management',
-      icon: Shield
+      description: 'Law enforcement coordination and emergency response',
+      icon: Shield,
+      badge: 'Police Dept',
+      color: 'text-red-600'
     },
     { 
       value: 'operator', 
       label: 'System Operator', 
-      description: 'Day-to-day operations management',
-      icon: User
+      description: 'Daily operations and emergency alert management',
+      icon: User,
+      badge: 'Operations',
+      color: 'text-green-600'
+    },
+    { 
+      value: 'field_agent', 
+      label: 'Field Agent', 
+      description: 'On-ground emergency response and assistance',
+      icon: User,
+      badge: 'Field Ops',
+      color: 'text-orange-600'
     },
     { 
       value: 'viewer', 
       label: 'Viewer', 
-      description: 'Read-only dashboard access',
-      icon: Eye
+      description: 'Read-only access to dashboards and reports',
+      icon: Eye,
+      badge: 'View Only',
+      color: 'text-gray-600'
     },
   ];
 

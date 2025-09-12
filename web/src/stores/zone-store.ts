@@ -258,7 +258,7 @@ const sortZones = (zones: Zone[], sortOptions: ZoneSortOptions): Zone[] => {
 
 export const useZoneStore = create<ZoneStore>()(
   devtools(
-    (set: (partial: ZoneStore | Partial<ZoneStore> | ((state: ZoneStore) => ZoneStore | Partial<ZoneStore>), replace?: boolean | undefined) => void, get: () => ZoneStore) => ({
+    (set, get) => ({
       ...initialState,
 
       // ========================================================================

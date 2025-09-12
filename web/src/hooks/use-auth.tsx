@@ -47,8 +47,11 @@ export function usePermissions() {
     if (!user || user.status !== 'active') return false;
     
     const roleHierarchy: Record<UserRole, number> = {
+      'tourist': 0,
       'viewer': 1,
+      'field_agent': 2,
       'operator': 2,
+      'medical_admin': 3,
       'police_admin': 3,
       'tourism_admin': 3,
       'super_admin': 4,

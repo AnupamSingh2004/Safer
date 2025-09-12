@@ -27,7 +27,6 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth-store';
-import { hasPermission, hasAnyPermission } from '@/types/auth';
 
 // ============================================================================
 // SIDEBAR INTERFACES
@@ -255,7 +254,7 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
   const isItemVisible = (item: MenuItem) => {
     // Check permissions
     if (item.permissions && item.permissions.length > 0) {
-      if (!hasAnyPermission(user, item.permissions as any[])) {
+      if (!user?.permissions || !item.permissions.some(p => user.permissions?.includes(p as any))) {
         return false;
       }
     }
@@ -396,7 +395,7 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                 />
               ) : (
                 <div className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
-                  {user.displayName.split(' ').map(n => n[0]).join('')}
+                  {(user.displayName || 'User').split(' ').map(n => n[0]).join('')}
                 </div>
               )}
               <div className="flex-1 min-w-0">

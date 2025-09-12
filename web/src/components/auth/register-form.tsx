@@ -216,49 +216,100 @@ export function RegisterForm({
     { 
       value: 'super_admin', 
       label: 'Super Administrator', 
-      description: 'Complete system access and management',
+      description: 'Complete system access and emergency coordination oversight',
       icon: Shield,
-      restricted: true
+      restricted: true,
+      badge: 'Restricted'
     },
     { 
       value: 'tourism_admin', 
       label: 'Tourism Administrator', 
-      description: 'Tourism department oversight and management',
+      description: 'Tourism department oversight and visitor safety management',
       icon: Building,
-      restricted: false
+      restricted: false,
+      badge: 'Tourism Dept'
     },
     { 
       value: 'police_admin', 
       label: 'Police Administrator', 
-      description: 'Law enforcement coordination and management',
+      description: 'Law enforcement coordination and emergency response management',
       icon: Shield,
-      restricted: false
+      restricted: false,
+      badge: 'Police Dept'
     },
     { 
       value: 'operator', 
       label: 'System Operator', 
-      description: 'Daily operations and tourist management',
+      description: 'Daily operations, tourist management, and emergency alert handling',
       icon: User,
-      restricted: false
+      restricted: false,
+      badge: 'Operations'
+    },
+    { 
+      value: 'field_agent', 
+      label: 'Field Agent', 
+      description: 'On-ground emergency response and real-time assistance coordination',
+      icon: User,
+      restricted: false,
+      badge: 'Field Ops'
     },
     { 
       value: 'viewer', 
       label: 'Viewer', 
-      description: 'Read-only access to dashboard and reports',
+      description: 'Read-only access to dashboard, reports, and monitoring systems',
       icon: Eye,
-      restricted: false
+      restricted: false,
+      badge: 'View Only'
     },
   ].filter(role => allowedRoles.includes(role.value as UserRole));
 
-  // Department options
+  // Department options with enhanced details
   const departmentOptions = [
-    { value: 'Tourism Department', icon: Building },
-    { value: 'Police Department', icon: Shield },
-    { value: 'Emergency Services', icon: AlertTriangle },
-    { value: 'Safety & Security', icon: Shield },
-    { value: 'Government Administration', icon: Building },
-    { value: 'Local Authority', icon: Building },
-    { value: 'Other', icon: User },
+    { 
+      value: 'Tourism Department', 
+      icon: Building,
+      description: 'Tourist promotion, safety, and visitor services'
+    },
+    { 
+      value: 'Police Department', 
+      icon: Shield,
+      description: 'Law enforcement and public safety'
+    },
+    { 
+      value: 'Emergency Services', 
+      icon: AlertTriangle,
+      description: 'Fire, medical, and disaster response services'
+    },
+    { 
+      value: 'Safety & Security', 
+      icon: Shield,
+      description: 'General safety oversight and security coordination'
+    },
+    { 
+      value: 'Government Administration', 
+      icon: Building,
+      description: 'Local and state government administration'
+    },
+    { 
+      value: 'Local Authority', 
+      icon: Building,
+      description: 'Municipal corporations and local governance'
+    },
+    { 
+      value: 'Medical Services', 
+      icon: AlertTriangle,
+      description: 'Healthcare and medical emergency response'
+    },
+    { 
+      value: 'Transport Authority', 
+      icon: User,
+      description: 'Transportation safety and coordination'
+    },
+    { 
+      value: 'Other', 
+      icon: User,
+      description: 'Other government agencies and departments'
+    },
   ];
 
   return (
@@ -531,6 +582,7 @@ export function RegisterForm({
                     {roleOptions.map(role => (
                       <option key={role.value} value={role.value}>
                         {role.label} - {role.description}
+                        {role.restricted ? ' (Restricted)' : ''}
                       </option>
                     ))}
                   </select>
@@ -561,7 +613,9 @@ export function RegisterForm({
                   >
                     <option value="">Select Department</option>
                     {departmentOptions.map(dept => (
-                      <option key={dept.value} value={dept.value}>{dept.value}</option>
+                      <option key={dept.value} value={dept.value}>
+                        {dept.value} - {dept.description}
+                      </option>
                     ))}
                   </select>
                   {errors.department && (

@@ -9,7 +9,7 @@ import * as React from 'react';
 import { Bell, Menu, Search, Settings, User, LogOut, Shield, Moon, Sun } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth-store';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { ThemeSwitcher } from './theme-switcher';
 
 // ============================================================================
 // HEADER COMPONENT
@@ -117,7 +117,7 @@ export function Header({ onMenuToggle, className }: HeaderProps) {
         {/* Right Side Actions */}
         <div className="flex items-center space-x-2 ml-auto">
           {/* Theme Toggle */}
-          <ThemeToggle variant="icon" size="sm" className="!p-2" />
+          <ThemeSwitcher variant="icon" size="sm" className="!p-2" />
 
           {/* Notifications */}
           <div className="relative">
@@ -197,7 +197,7 @@ export function Header({ onMenuToggle, className }: HeaderProps) {
                 />
               ) : (
                 <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
-                  {user ? getInitials(user.displayName) : 'U'}
+                  {user ? getInitials(user.displayName || 'User') : 'U'}
                 </div>
               )}
               <div className="hidden sm:block text-left">

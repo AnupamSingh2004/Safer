@@ -1,32 +1,71 @@
 /**
- * Smart Tourist Safety System - Authentication Types
- * Type definitions for authentication, user management, and JWT handling
+ * Smart Tourist Safety System - Authentication Types (Frontend)
+ * Comprehensive type definitions for user authentication, roles, and permissions
  */
 
 // ============================================================================
 // USER TYPES
 // ============================================================================
 
-export type UserRole = 'super_admin' | 'tourism_admin' | 'police_admin' | 'operator' | 'viewer';
+export type UserRole = 
+  | 'super_admin'
+  | 'tourism_admin' 
+  | 'police_admin'
+  | 'medical_admin'
+  | 'operator'
+  | 'field_agent'
+  | 'viewer'
+  | 'tourist';
 
 export type UserStatus = 'active' | 'inactive' | 'suspended' | 'pending_verification';
 
 export interface User {
   id: string;
   email: string;
-  firstName: string;
-  lastName: string;
-  displayName: string;
-  avatar?: string;
+  name: string;
   role: UserRole;
-  status: UserStatus;
-  department: string;
-  phone: string;
-  permissions: string[];
-  preferences: UserPreferences;
-  lastLoginAt?: string;
+  avatar?: string;
+  phone?: string;
+  department?: string;
+  location?: string;
+  permissions: Permission[];
+  isActive: boolean;
+  isVerified: boolean;
+  lastLogin?: string;
   createdAt: string;
   updatedAt: string;
+  
+  // Direct access properties for compatibility
+  firstName?: string;
+  lastName?: string;
+  displayName?: string;
+  status?: string;
+  
+  // Profile information
+  profile?: {
+    firstName: string;
+    lastName: string;
+    designation?: string;
+    employeeId?: string;
+    badgeNumber?: string;
+    emergencyContact?: string;
+    address?: string;
+    city?: string;
+    state?: string;
+    pincode?: string;
+  };
+  
+  // Security settings
+  security?: {
+    twoFactorEnabled: boolean;
+    lastPasswordChange?: string;
+    loginAttempts: number;
+    lockedUntil?: string;
+    sessionTimeout: number;
+  };
+  
+  // Preferences
+  preferences?: UserPreferences;
 }
 
 export interface UserPreferences {
@@ -133,6 +172,51 @@ export interface ChangePasswordData {
   confirmPassword: string;
 }
 
+export interface ForgotPasswordData {
+  email: string;
+}
+
+export interface UpdateProfileData {
+  name?: string;
+  phone?: string;
+  avatar?: string;
+  profile?: Partial<User['profile']>;
+  preferences?: Partial<UserPreferences>;
+}
+
+export interface AuthSession {
+  id: string;
+  userId: string;
+  deviceInfo: {
+    browser: string;
+    os: string;
+    device: string;
+    userAgent: string;
+  };
+  location: {
+    ip: string;
+    country?: string;
+    city?: string;
+  };
+  createdAt: string;
+  lastActivity: string;
+  isActive: boolean;
+  isCurrent: boolean;
+}
+
+export interface AuthResponse {
+  success: boolean;
+  message?: string;
+  user?: User;
+  access_token?: string;
+  refresh_token?: string;
+  expires_at?: string;
+  requires_two_factor?: boolean;
+  session_id?: string;
+  needs_password_change?: boolean;
+  needs_two_factor_setup?: boolean;
+}
+
 export interface ResetPasswordData {
   token: string;
   password: string;
@@ -179,51 +263,47 @@ export interface RefreshTokenPayload {
 // ============================================================================
 
 export type Permission = 
-  // Tourist management
-  | 'tourists.view'
-  | 'tourists.create'
-  | 'tourists.edit'
-  | 'tourists.delete'
-  | 'tourists.export'
+  // Dashboard permissions
+  | 'view_dashboard'
+  | 'manage_dashboard'
+  | 'view_analytics'
+  | 'export_data'
   
-  // Alert management
-  | 'alerts.view'
-  | 'alerts.create'
-  | 'alerts.edit'
-  | 'alerts.resolve'
-  | 'alerts.delete'
-  | 'alerts.assign'
+  // Tourist permissions
+  | 'view_tourists'
+  | 'create_tourist'
+  | 'update_tourist'
+  | 'delete_tourist'
+  | 'view_tourist_details'
+  | 'track_tourist'
   
-  // Zone management
-  | 'zones.view'
-  | 'zones.create'
-  | 'zones.edit'
-  | 'zones.delete'
-  | 'zones.configure'
+  // Alert permissions
+  | 'view_alerts'
+  | 'create_alert'
+  | 'update_alert'
+  | 'delete_alert'
+  | 'resolve_alert'
+  | 'escalate_alert'
+  | 'emergency_response'
   
-  // Blockchain operations
-  | 'blockchain.view'
-  | 'blockchain.generate_identity'
-  | 'blockchain.verify_identity'
-  | 'blockchain.manage_contracts'
+  // Zone permissions
+  | 'view_zones'
+  | 'create_zone'
+  | 'update_zone'
+  | 'delete_zone'
+  | 'manage_geofencing'
   
-  // Analytics & Reports
-  | 'analytics.view'
-  | 'analytics.export'
-  | 'reports.generate'
-  | 'reports.schedule'
+  // Blockchain permissions
+  | 'view_blockchain'
+  | 'manage_blockchain'
+  | 'generate_digital_id'
+  | 'verify_digital_id'
   
-  // System administration
-  | 'system.manage_users'
-  | 'system.manage_roles'
-  | 'system.view_logs'
-  | 'system.configure'
-  | 'system.backup'
-  
-  // Emergency response
-  | 'emergency.respond'
-  | 'emergency.escalate'
-  | 'emergency.coordinate';
+  // System permissions
+  | 'manage_users'
+  | 'manage_settings'
+  | 'view_logs'
+  | 'system_admin';
 
 export interface RolePermissions {
   admin: Permission[];
@@ -426,7 +506,7 @@ export interface AuditLog {
 // ============================================================================
 
 export const isValidRole = (role: string): role is UserRole => {
-  return ['admin', 'operator', 'viewer'].includes(role);
+  return ['super_admin', 'tourism_admin', 'police_admin', 'medical_admin', 'operator', 'field_agent', 'viewer', 'tourist'].includes(role);
 };
 
 export const isValidStatus = (status: string): status is UserStatus => {
@@ -434,22 +514,22 @@ export const isValidStatus = (status: string): status is UserStatus => {
 };
 
 export const hasPermission = (user: User | null, permission: Permission): boolean => {
-  if (!user || user.status !== 'active') return false;
+  if (!user || !user.isActive) return false;
   return user.permissions.includes(permission);
 };
 
 export const hasAnyPermission = (user: User | null, permissions: Permission[]): boolean => {
-  if (!user || user.status !== 'active') return false;
+  if (!user || !user.isActive) return false;
   return permissions.some(permission => user.permissions.includes(permission));
 };
 
 export const hasRole = (user: User | null, role: UserRole): boolean => {
-  if (!user || user.status !== 'active') return false;
+  if (!user || !user.isActive) return false;
   return user.role === role;
 };
 
 export const hasAnyRole = (user: User | null, roles: UserRole[]): boolean => {
-  if (!user || user.status !== 'active') return false;
+  if (!user || !user.isActive) return false;
   return roles.includes(user.role);
 };
 
@@ -496,9 +576,9 @@ export const defaultAuthState: AuthState = {
 
 export type AuthStore = AuthState & AuthActions;
 
-export type UserWithoutSensitiveData = Omit<User, 'permissions'>;
+export type UserWithoutSensitiveData = Omit<User, 'permissions' | 'security'>;
 
-export type PublicUser = Pick<User, 'id' | 'displayName' | 'avatar' | 'role' | 'department'>;
+export type PublicUser = Pick<User, 'id' | 'name' | 'avatar' | 'role' | 'department'>;
 
 // ============================================================================
 // EXPORT ALL TYPES

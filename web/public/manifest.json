@@ -1,0 +1,28 @@
+{
+  "name": "Smart Tourist Safety System",
+  "short_name": "Tourist Safety",
+  "description": "AI-powered tourist safety monitoring and incident response system",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-512x512.png", 
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "categories": ["safety", "emergency", "travel", "government"],
+  "lang": "en",
+  "dir": "ltr"
+}

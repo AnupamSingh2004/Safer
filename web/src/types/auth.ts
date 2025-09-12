@@ -9,13 +9,8 @@
 
 export type UserRole = 
   | 'super_admin'
-  | 'tourism_admin' 
-  | 'police_admin'
-  | 'medical_admin'
   | 'operator'
-  | 'field_agent'
-  | 'viewer'
-  | 'tourist';
+  | 'viewer';
 
 export type UserStatus = 'active' | 'inactive' | 'suspended' | 'pending_verification';
 
@@ -506,7 +501,7 @@ export interface AuditLog {
 // ============================================================================
 
 export const isValidRole = (role: string): role is UserRole => {
-  return ['super_admin', 'tourism_admin', 'police_admin', 'medical_admin', 'operator', 'field_agent', 'viewer', 'tourist'].includes(role);
+  return ['super_admin', 'operator', 'viewer'].includes(role);
 };
 
 export const isValidStatus = (status: string): status is UserStatus => {

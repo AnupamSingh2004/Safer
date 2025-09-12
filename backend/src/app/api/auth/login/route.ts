@@ -32,7 +32,7 @@ const mockUsers = [
   {
     id: '1',
     email: 'admin@touristsafety.gov.in',
-    password: '$2a$10$4ai6Og8xQIjkbwS/V1nWu.hCyp06qr5t8jyxe8FmMYblt9PTtuRJ6', // 'admin123'
+    password: '$2a$10$Mxn7jZOBm3ZBYIfQel6/O.I1INZIQVDWz6YLPWCu5wK/kX875QbuC', // 'admin123'
     name: 'System Administrator',
     role: 'super_admin',
     permissions: ['read', 'write', 'delete', 'manage_users', 'view_analytics', 'system_config']
@@ -40,7 +40,7 @@ const mockUsers = [
   {
     id: '2',
     email: 'operator@touristsafety.gov.in',
-    password: '$2a$10$4ai6Og8xQIjkbwS/V1nWu.hCyp06qr5t8jyxe8FmMYblt9PTtuRJ6', // 'admin123' (same for testing)
+    password: '$2a$10$JnypgARsABQ6B4xtFGZ/9.K9MFHFbsCaCEqlT0UAZu4ODeZzqnbya', // 'operator123'
     name: 'Safety Operator',
     role: 'operator',
     permissions: ['read', 'write', 'manage_alerts', 'track_tourists']
@@ -48,7 +48,7 @@ const mockUsers = [
   {
     id: '3',
     email: 'viewer@touristsafety.gov.in',
-    password: '$2a$10$4ai6Og8xQIjkbwS/V1nWu.hCyp06qr5t8jyxe8FmMYblt9PTtuRJ6', // 'admin123' (same for testing)
+    password: '$2a$10$OQsHSFQYfOzD5VQDzRWH4u1BtWCcdy6TEusWNvoyKxjfG7B.2/IDm', // 'viewer123'
     name: 'Safety Viewer',
     role: 'viewer',
     permissions: ['read', 'view_reports']

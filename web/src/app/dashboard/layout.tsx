@@ -34,37 +34,49 @@ const navigationItems = [
     name: 'Overview',
     href: '/dashboard',
     icon: Activity,
-    description: 'Main dashboard overview'
+    description: 'Main dashboard overview',
+    roles: ['super_admin', 'operator', 'viewer'], // All roles can see overview
+    permissions: []
   },
   {
     name: 'Alerts',
     href: '/dashboard/alerts',
     icon: AlertTriangle,
-    description: 'Safety alerts and incidents'
+    description: 'Safety alerts and incidents',
+    roles: ['super_admin', 'operator'], // Only admin and operator can manage alerts
+    permissions: ['read', 'write']
   },
   {
     name: 'Analytics',
     href: '/dashboard/analytics',
     icon: BarChart3,
-    description: 'Tourist statistics and trends'
+    description: 'Tourist statistics and trends',
+    roles: ['super_admin', 'operator', 'viewer'], // All roles can view analytics
+    permissions: ['read']
   },
   {
     name: 'Location',
     href: '/dashboard/location',
     icon: MapPin,
-    description: 'Real-time location tracking'
+    description: 'Real-time location tracking',
+    roles: ['super_admin', 'operator'], // Only admin and operator can track locations
+    permissions: ['read', 'write']
   },
   {
     name: 'Communication',
     href: '/dashboard/communication',
     icon: MessageSquare,
-    description: 'Send alerts and notifications'
+    description: 'Send alerts and notifications',
+    roles: ['super_admin', 'operator'], // Only admin and operator can send communications
+    permissions: ['write']
   },
   {
     name: 'Advanced UI',
     href: '/dashboard/advanced-ui',
     icon: Settings,
-    description: 'Advanced dashboard features'
+    description: 'Advanced dashboard features',
+    roles: ['super_admin'], // Only admin can access advanced features
+    permissions: ['system_config']
   }
 ];
 
@@ -143,7 +155,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
           {/* Navigation */}
           <nav className="flex-1 px-4 py-6 space-y-2">
-            {navigationItems.map((item) => {
+            {navigationItems
+              .filter(item => {
+                // Filter navigation items based on user role
+                if (!user?.role) return false;
+                return item.roles.includes(user.role);
+              })
+              .map((item) => {
               const isActive = pathname === item.href;
               return (
                 <button

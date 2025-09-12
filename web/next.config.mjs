@@ -25,6 +25,17 @@ const nextConfig = {
   async headers() {
     return [
       {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: process.env.NODE_ENV === 'production' 
+              ? "default-src 'self'; connect-src 'self' https: wss: ws:;"
+              : "default-src 'self'; connect-src 'self' http://localhost:3001 https: wss: ws: data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:;"
+          }
+        ],
+      },
+      {
         source: '/api/(.*)',
         headers: [
           {

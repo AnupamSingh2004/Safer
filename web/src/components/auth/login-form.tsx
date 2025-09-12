@@ -1,6 +1,6 @@
 /**
- * Smart Tourist Safety System - Login Form Component
- * Enhanced professional login form with validation, animations, and security features
+ * Smart Tourist Safety System - Enhanced Login Form
+ * Professional login form with backend integration and security features
  */
 
 'use client';
@@ -9,19 +9,17 @@ import React, { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signIn, getSession } from 'next-auth/react';
 import { 
   Eye, 
   EyeOff, 
   Loader2, 
   Shield, 
   AlertTriangle, 
-  CheckCircle, 
-  Clock,
   Lock,
   Mail,
   User,
-  ChevronDown
+  CheckCircle,
+  XCircle
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/stores/auth-store';
@@ -55,21 +53,18 @@ export function LoginForm({
 }: LoginFormProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { login, isLoading, error, clearError, isLocked, lockoutUntil } = useAuth();
+  const { login, isLoading, error, clearError } = useAuth();
 
-  // Form state
   const [showPassword, setShowPassword] = useState(false);
-  const [loginAttempts, setLoginAttempts] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [loginSuccess, setLoginSuccess] = useState(false);
 
-  // Form setup
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, touchedFields },
-    watch,
     setValue,
+    watch,
+    formState: { errors, isValid },
   } = useForm<LoginCredentials>({
     resolver: zodResolver(loginSchema),
     mode: 'onBlur',
@@ -77,42 +72,44 @@ export function LoginForm({
       email: '',
       password: '',
       rememberMe: false,
-      role: 'operator',
+      role: 'super_admin', // Default to super_admin to match backend
     },
   });
 
-  // Get form values for real-time validation feedback
-  const emailValue = watch('email');
-  const passwordValue = watch('password');
-  const roleValue = watch('role');
-
-  // Get redirect URL from search params
   const redirect = searchParams?.get('redirect') || redirectTo || '/dashboard';
-  const message = searchParams?.get('message');
+  const watchedEmail = watch('email');
+  const watchedPassword = watch('password');
 
-  // Clear errors when component mounts
   useEffect(() => {
     clearError();
   }, [clearError]);
 
-  // Handle account lockout
-  useEffect(() => {
-    if (isLocked && lockoutUntil) {
-      const lockoutTime = new Date(lockoutUntil);
-      const now = new Date();
-      const remainingTime = lockoutTime.getTime() - now.getTime();
+  // Demo account selection helper - Updated to match backend
+  const selectDemoAccount = (accountType: 'admin' | 'operator' | 'viewer') => {
+    const demoAccounts = {
+      admin: {
+        email: 'admin@touristsafety.gov.in',
+        password: 'admin123',
+        role: 'super_admin' as const,
+      },
+      operator: {
+        email: 'operator@touristsafety.gov.in',
+        password: 'operator123',
+        role: 'operator' as const,
+      },
+      viewer: {
+        email: 'viewer@touristsafety.gov.in',
+        password: 'viewer123',
+        role: 'viewer' as const,
+      },
+    };
 
-      if (remainingTime > 0) {
-        const timer = setTimeout(() => {
-          window.location.reload();
-        }, remainingTime);
+    const account = demoAccounts[accountType];
+    setValue('email', account.email);
+    setValue('password', account.password);
+    setValue('role', account.role);
+  };
 
-        return () => clearTimeout(timer);
-      }
-    }
-  }, [isLocked, lockoutUntil]);
-
-  // Form submission handler
   const onSubmit = async (data: LoginCredentials) => {
     try {
       setIsSubmitting(true);
@@ -121,308 +118,170 @@ export function LoginForm({
       const response = await login(data);
 
       if (response.success) {
-        setLoginAttempts(0);
+        setLoginSuccess(true);
         onSuccess?.();
         
-        // Show success state briefly before redirect
-        await new Promise(resolve => setTimeout(resolve, 500));
-        router.push(redirect);
+        // Small delay to show success state
+        setTimeout(() => {
+          router.push(redirect);
+        }, 1000);
       } else {
-        setLoginAttempts(prev => prev + 1);
         onError?.(response.message || 'Login failed');
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred';
-      setLoginAttempts(prev => prev + 1);
+      const errorMessage = err instanceof Error ? err.message : 'Login failed';
       onError?.(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Google Sign-In handler
-  const handleGoogleSignIn = async () => {
-    try {
-      setIsGoogleLoading(true);
-      clearError();
-
-      const result = await signIn('google', {
-        callbackUrl: redirect,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        onError?.(result.error);
-        setLoginAttempts(prev => prev + 1);
-      } else if (result?.ok) {
-        // Check if we got a session
-        const session = await getSession();
-        if (session?.user) {
-          onSuccess?.();
-          router.push(redirect);
-        }
-      }
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Google sign-in failed';
-      onError?.(errorMessage);
-      setLoginAttempts(prev => prev + 1);
-    } finally {
-      setIsGoogleLoading(false);
-    }
-  };
-
-  // Calculate remaining lockout time
-  const getRemainingLockoutTime = () => {
-    if (!isLocked || !lockoutUntil) return null;
-    
-    const lockoutTime = new Date(lockoutUntil);
-    const now = new Date();
-    const remainingMs = lockoutTime.getTime() - now.getTime();
-    
-    if (remainingMs <= 0) return null;
-    
-    const minutes = Math.ceil(remainingMs / (1000 * 60));
-    return minutes;
-  };
-
-  const remainingLockoutMinutes = getRemainingLockoutTime();
-
-  // Role options with better descriptions and emergency-focused context
+  // Updated role options to match backend exactly
   const roleOptions = [
-    { 
-      value: 'super_admin', 
-      label: 'Super Administrator', 
-      description: 'Complete system oversight and emergency coordination',
-      icon: Shield,
-      badge: 'All Access',
-      color: 'text-red-600'
-    },
-    { 
-      value: 'tourism_admin', 
-      label: 'Tourism Administrator', 
-      description: 'Tourism department oversight and visitor management',
-      icon: User,
-      badge: 'Tourism Dept',
-      color: 'text-blue-600'
-    },
-    { 
-      value: 'police_admin', 
-      label: 'Police Administrator', 
-      description: 'Law enforcement coordination and emergency response',
-      icon: Shield,
-      badge: 'Police Dept',
-      color: 'text-red-600'
-    },
-    { 
-      value: 'operator', 
-      label: 'System Operator', 
-      description: 'Daily operations and emergency alert management',
-      icon: User,
-      badge: 'Operations',
-      color: 'text-green-600'
-    },
-    { 
-      value: 'field_agent', 
-      label: 'Field Agent', 
-      description: 'On-ground emergency response and assistance',
-      icon: User,
-      badge: 'Field Ops',
-      color: 'text-orange-600'
-    },
-    { 
-      value: 'viewer', 
-      label: 'Viewer', 
-      description: 'Read-only access to dashboards and reports',
-      icon: Eye,
-      badge: 'View Only',
-      color: 'text-gray-600'
-    },
+    { value: 'super_admin', label: 'Super Administrator', description: 'Full system access with all permissions' },
+    { value: 'operator', label: 'System Operator', description: 'Safety operations and alert management' },
+    { value: 'viewer', label: 'Safety Viewer', description: 'Read-only access to reports and dashboards' },
   ];
 
   return (
-    <div className={cn(
-      'w-full max-w-lg space-y-6',
-      className
-    )}>
-      {/* Header */}
-      <div className="text-center space-y-2">
-        <div className="flex items-center justify-center w-16 h-16 mx-auto bg-gradient-to-br from-primary to-primary-600 rounded-2xl shadow-lg">
-          <Shield className="w-8 h-8 text-white" />
-        </div>
-        <div className="space-y-1">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Welcome Back
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Sign in to Smart Tourist Safety Dashboard
-          </p>
+    <div className={cn('w-full space-y-6', className)}>
+      {/* Demo Account Quick Selection */}
+      <div className="bg-white/90 backdrop-blur-sm border border-white/20 rounded-lg p-4 shadow-lg">
+        <p className="text-sm font-medium text-gray-900 mb-3">Quick Demo Access:</p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <button
+            type="button"
+            onClick={() => selectDemoAccount('admin')}
+            className="px-3 py-2 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors shadow-sm"
+          >
+            Admin Login
+          </button>
+          <button
+            type="button"
+            onClick={() => selectDemoAccount('operator')}
+            className="px-3 py-2 text-xs bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors shadow-sm"
+          >
+            Operator Login
+          </button>
+          <button
+            type="button"
+            onClick={() => selectDemoAccount('viewer')}
+            className="px-3 py-2 text-xs bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors shadow-sm"
+          >
+            Viewer Login
+          </button>
         </div>
       </div>
 
       {/* Success Message */}
-      {message === 'registration-success' && (
-        <div className="flex items-center gap-3 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl animate-in slide-in-from-top-2 duration-500">
-          <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0" />
-          <div className="text-sm">
-            <p className="font-medium text-green-800 dark:text-green-200">
-              Registration Successful
-            </p>
-            <p className="text-green-600 dark:text-green-400">
-              Please sign in with your new credentials.
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Account Lockout Warning */}
-      {isLocked && remainingLockoutMinutes && (
-        <div className="flex items-center gap-3 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl animate-in slide-in-from-top-2 duration-500">
-          <div className="flex items-center justify-center w-8 h-8 bg-red-100 dark:bg-red-900/40 rounded-full">
-            <Clock className="w-4 h-4 text-red-600 dark:text-red-400" />
-          </div>
-          <div className="text-sm flex-1">
-            <p className="font-medium text-red-800 dark:text-red-200">
-              Account Temporarily Locked
-            </p>
-            <p className="text-red-600 dark:text-red-400">
-              Too many failed attempts. Try again in {remainingLockoutMinutes} minute{remainingLockoutMinutes !== 1 ? 's' : ''}.
-            </p>
-          </div>
+      {loginSuccess && (
+        <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg shadow-sm">
+          <CheckCircle className="w-4 h-4 text-green-600" />
+          <span className="text-sm text-green-700 font-medium">Login successful! Redirecting...</span>
         </div>
       )}
 
       {/* Error Message */}
-      {error && !isLocked && (
-        <div className="flex items-center gap-3 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl animate-in slide-in-from-top-2 duration-500">
-          <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0" />
-          <div className="text-sm text-red-600 dark:text-red-400 flex-1">
-            {error}
-            {loginAttempts >= 3 && (
-              <p className="mt-1 text-xs font-medium">
-                ⚠️ {5 - loginAttempts} attempts remaining before account lockout.
-              </p>
-            )}
-          </div>
+      {error && !loginSuccess && (
+        <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm">
+          <XCircle className="w-4 h-4 text-red-600" />
+          <span className="text-sm text-red-600 font-medium">{error}</span>
         </div>
       )}
 
-      {/* Login Form */}
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      {/* Form */}
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Role Selection */}
         {showRoleSelection && (
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              <User className="w-4 h-4 inline mr-2" />
+          <div>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">
               Login As
             </label>
             <div className="relative">
               <select
                 {...register('role')}
-                className={cn(
-                  'w-full px-4 py-3 pl-10 pr-10 border rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white',
-                  'focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200',
-                  'appearance-none cursor-pointer',
-                  errors.role 
-                    ? 'border-red-300 dark:border-red-600' 
-                    : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
-                )}
-                disabled={isSubmitting || isLocked}
+                className="w-full px-3 py-3 pl-10 border-2 border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none text-gray-900 font-medium shadow-sm transition-all"
+                disabled={isSubmitting}
               >
                 {roleOptions.map(role => (
-                  <option key={role.value} value={role.value}>
-                    {role.label} - {role.description}
+                  <option key={role.value} value={role.value} className="text-gray-900">
+                    {role.label}
                   </option>
                 ))}
               </select>
-              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
-              <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-600" />
+              <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
             </div>
-            {errors.role && (
-              <p className="text-sm text-red-600 dark:text-red-400 animate-in slide-in-from-top-1 duration-200">
-                {errors.role.message}
-              </p>
-            )}
+            {/* Role description */}
+            <p className="text-xs text-gray-700 mt-1 font-medium">
+              {roleOptions.find(r => r.value === watch('role'))?.description}
+            </p>
           </div>
         )}
 
-        {/* Email Field */}
-        <div className="space-y-2">
-          <label 
-            htmlFor="email" 
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-          >
-            <Mail className="w-4 h-4 inline mr-2" />
+        {/* Email */}
+        <div>
+          <label className="block text-sm font-semibold text-gray-900 mb-2">
             Email Address
           </label>
           <div className="relative">
             <input
               {...register('email')}
               type="email"
-              id="email"
-              placeholder="Enter your email address"
+              placeholder="Enter your email"
               className={cn(
-                'w-full px-4 py-3 pl-10 border rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white',
-                'placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200',
-                errors.email 
-                  ? 'border-red-300 dark:border-red-600' 
-                  : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
+                'w-full px-3 py-3 pl-10 border-2 rounded-lg bg-white transition-all shadow-sm text-gray-900 placeholder-gray-500',
+                'focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+                errors.email ? 'border-red-300 bg-red-50' : 'border-gray-300'
               )}
-              disabled={isSubmitting || isLocked}
+              disabled={isSubmitting}
               autoComplete="email"
             />
-            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
-            {emailValue && !errors.email && touchedFields.email && (
-              <CheckCircle className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-green-500 animate-in zoom-in-50 duration-200" />
-            )}
+            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-600" />
           </div>
           {errors.email && (
-            <p className="text-sm text-red-600 dark:text-red-400 animate-in slide-in-from-top-1 duration-200">
+            <p className="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium">
+              <AlertTriangle className="w-3 h-3" />
               {errors.email.message}
             </p>
           )}
         </div>
 
-        {/* Password Field */}
-        <div className="space-y-2">
-          <label 
-            htmlFor="password" 
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-          >
-            <Lock className="w-4 h-4 inline mr-2" />
+        {/* Password */}
+        <div>
+          <label className="block text-sm font-semibold text-gray-900 mb-2">
             Password
           </label>
           <div className="relative">
             <input
               {...register('password')}
               type={showPassword ? 'text' : 'password'}
-              id="password"
               placeholder="Enter your password"
               className={cn(
-                'w-full px-4 py-3 pl-10 pr-12 border rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white',
-                'placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200',
-                errors.password 
-                  ? 'border-red-300 dark:border-red-600' 
-                  : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
+                'w-full px-3 py-3 pl-10 pr-10 border-2 rounded-lg bg-white transition-all shadow-sm text-gray-900 placeholder-gray-500',
+                'focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+                errors.password ? 'border-red-300 bg-red-50' : 'border-gray-300'
               )}
-              disabled={isSubmitting || isLocked}
+              disabled={isSubmitting}
               autoComplete="current-password"
             />
-            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
+            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-600" />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors duration-200"
-              disabled={isSubmitting || isLocked}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-blue-600 transition-colors"
+              disabled={isSubmitting}
             >
-              {showPassword ? (
-                <EyeOff className="w-4 h-4" />
-              ) : (
-                <Eye className="w-4 h-4" />
-              )}
+              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           </div>
           {errors.password && (
-            <p className="text-sm text-red-600 dark:text-red-400 animate-in slide-in-from-top-1 duration-200">
+            <p className="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium">
+              <AlertTriangle className="w-3 h-3" />
               {errors.password.message}
             </p>
           )}
@@ -431,20 +290,18 @@ export function LoginForm({
         {/* Remember Me & Forgot Password */}
         {showRememberMe && (
           <div className="flex items-center justify-between">
-            <label className="flex items-center space-x-3 cursor-pointer">
+            <label className="flex items-center gap-2">
               <input
                 {...register('rememberMe')}
                 type="checkbox"
-                className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary focus:ring-2 transition-all duration-200"
-                disabled={isSubmitting || isLocked}
+                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                disabled={isSubmitting}
               />
-              <span className="text-sm text-gray-600 dark:text-gray-400 select-none">
-                Remember me for 30 days
-              </span>
+              <span className="text-sm text-gray-800 font-medium">Remember me for 30 days</span>
             </label>
-            <a
-              href="/auth/forgot-password"
-              className="text-sm text-primary hover:text-primary-600 font-medium transition-colors duration-200 hover:underline"
+            <a 
+              href="/auth/forgot-password" 
+              className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors font-medium"
             >
               Forgot password?
             </a>
@@ -454,17 +311,24 @@ export function LoginForm({
         {/* Submit Button */}
         <button
           type="submit"
-          disabled={!isValid || isSubmitting || isLocked}
+          disabled={!isValid || isSubmitting || loginSuccess}
           className={cn(
-            'w-full flex items-center justify-center px-6 py-3 text-sm font-medium text-white',
-            'bg-gradient-to-r from-primary to-primary-600 border border-transparent rounded-xl',
-            'hover:from-primary-600 hover:to-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary',
-            'transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]',
-            'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:from-primary disabled:hover:to-primary-600',
-            'shadow-lg hover:shadow-xl'
+            'w-full flex items-center justify-center px-4 py-3 text-white font-medium rounded-lg transition-all',
+            'focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
+            loginSuccess 
+              ? 'bg-green-600 cursor-default'
+              : isSubmitting
+              ? 'bg-blue-400 cursor-not-allowed'
+              : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700',
+            'disabled:opacity-50 disabled:cursor-not-allowed'
           )}
         >
-          {isSubmitting ? (
+          {loginSuccess ? (
+            <>
+              <CheckCircle className="w-4 h-4 mr-2" />
+              Login Successful
+            </>
+          ) : isSubmitting ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
               Signing In...
@@ -476,84 +340,13 @@ export function LoginForm({
             </>
           )}
         </button>
-
-        {/* Divider */}
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t border-gray-200 dark:border-gray-700" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-white dark:bg-gray-900 px-2 text-gray-500 dark:text-gray-400">
-              Or continue with
-            </span>
-          </div>
-        </div>
-
-        {/* Google Sign-In Button */}
-        <button
-          type="button"
-          onClick={handleGoogleSignIn}
-          disabled={isGoogleLoading || isSubmitting || isLocked}
-          className={cn(
-            'w-full flex items-center justify-center px-6 py-3 text-sm font-medium text-gray-700 dark:text-gray-200',
-            'bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl',
-            'hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary',
-            'transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]',
-            'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:bg-white dark:disabled:hover:bg-gray-800',
-            'shadow-sm hover:shadow-md'
-          )}
-        >
-          {isGoogleLoading ? (
-            <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Signing in with Google...
-            </>
-          ) : (
-            <>
-              <svg
-                className="w-4 h-4 mr-2"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill="#4285F4"
-                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                />
-                <path
-                  fill="#EA4335"
-                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                />
-              </svg>
-              Continue with Google
-            </>
-          )}
-        </button>
       </form>
 
-      {/* Footer */}
-      <div className="text-center space-y-4">
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          Need an account?{' '}
-          <a
-            href="/auth/register"
-            className="text-primary hover:text-primary-600 font-medium transition-colors duration-200 hover:underline"
-          >
-            Contact Administrator
-          </a>
-        </p>
-
-        {/* Security Notice */}
-        <div className="flex items-center justify-center gap-2 text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50 px-4 py-2 rounded-lg">
-          <Shield className="w-3 h-3" />
-          <span>Secure government system • Unauthorized access prohibited</span>
+      {/* Security Notice */}
+      <div className="text-center">
+        <div className="text-xs text-gray-700 flex items-center justify-center gap-1 bg-gray-100 px-3 py-2 rounded-full shadow-sm border border-gray-200">
+          <Shield className="h-3 w-3" />
+          <span className="font-medium">Secured by 256-bit SSL encryption</span>
         </div>
       </div>
     </div>
@@ -566,51 +359,35 @@ export function LoginForm({
 
 export function LoginFormSkeleton() {
   return (
-    <div className="w-full max-w-md space-y-8 animate-pulse">
-      {/* Header Skeleton */}
-      <div className="text-center space-y-3">
-        <div className="w-20 h-20 mx-auto bg-gray-200 dark:bg-gray-700 rounded-3xl" />
-        <div className="space-y-2">
-          <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-48 mx-auto" />
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-64 mx-auto" />
+    <div className="w-full space-y-4 animate-pulse">
+      {/* Demo buttons skeleton */}
+      <div className="bg-gray-100 border border-gray-200 rounded-lg p-4">
+        <div className="h-4 bg-gray-200 rounded w-32 mb-3" />
+        <div className="grid grid-cols-3 gap-2">
+          <div className="h-8 bg-gray-200 rounded" />
+          <div className="h-8 bg-gray-200 rounded" />
+          <div className="h-8 bg-gray-200 rounded" />
         </div>
       </div>
-
-      {/* Form Skeleton */}
-      <div className="space-y-6">
-        {/* Role Selection Skeleton */}
-        <div className="space-y-2">
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-20" />
-          <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded-xl" />
-        </div>
-        
-        {/* Email Skeleton */}
-        <div className="space-y-2">
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24" />
-          <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded-xl" />
-        </div>
-        
-        {/* Password Skeleton */}
-        <div className="space-y-2">
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-20" />
-          <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded-xl" />
-        </div>
-        
-        {/* Remember Me Skeleton */}
-        <div className="flex items-center justify-between">
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-32" />
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-28" />
-        </div>
-        
-        {/* Submit Button Skeleton */}
-        <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded-xl" />
+      
+      {/* Form fields skeleton */}
+      <div className="space-y-1">
+        <div className="h-4 bg-gray-200 rounded w-16" />
+        <div className="h-12 bg-gray-200 rounded-lg" />
       </div>
-
-      {/* Footer Skeleton */}
-      <div className="space-y-4">
-        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-48 mx-auto" />
-        <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded-lg" />
+      <div className="space-y-1">
+        <div className="h-4 bg-gray-200 rounded w-24" />
+        <div className="h-12 bg-gray-200 rounded-lg" />
       </div>
+      <div className="space-y-1">
+        <div className="h-4 bg-gray-200 rounded w-16" />
+        <div className="h-12 bg-gray-200 rounded-lg" />
+      </div>
+      <div className="flex items-center justify-between">
+        <div className="h-4 bg-gray-200 rounded w-24" />
+        <div className="h-4 bg-gray-200 rounded w-20" />
+      </div>
+      <div className="h-12 bg-gray-200 rounded-lg" />
     </div>
   );
 }

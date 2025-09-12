@@ -162,15 +162,15 @@ export const useAuthStore = create<AuthStore>()(
 
             const response = await AuthAPI.login(credentials);
 
-            if (!response.success || !response.access_token || !response.user) {
+            if (!response.success || !response.token || !response.user) {
               throw new Error(response.message || 'Login failed');
             }
 
-            const tokenPayload = jwtDecode<TokenPayload>(response.access_token);
+            const tokenPayload = jwtDecode<TokenPayload>(response.token);
             
             set({
               user: response.user,
-              token: response.access_token,
+              token: response.token,
               refreshToken: response.refresh_token || null,
               isAuthenticated: true,
               expiresAt: new Date(tokenPayload.exp * 1000).toISOString(),
@@ -247,11 +247,11 @@ export const useAuthStore = create<AuthStore>()(
 
             const response = await AuthAPI.refreshToken(refreshToken);
 
-            if (response.success && response.access_token) {
-              const tokenPayload = jwtDecode<TokenPayload>(response.access_token);
+            if (response.success && response.token) {
+              const tokenPayload = jwtDecode<TokenPayload>(response.token);
               
               set({
-                token: response.access_token,
+                token: response.token,
                 refreshToken: response.refresh_token || refreshToken,
                 expiresAt: new Date(tokenPayload.exp * 1000).toISOString(),
                 lastActivity: new Date().toISOString(),

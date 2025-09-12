@@ -20,8 +20,8 @@ export const APP_CONFIG = {
 
 // API Configuration
 export const API_CONFIG = {
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api',
-  backendURL: process.env.BACKEND_API_URL || 'http://localhost:3001/api',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001',
+  backendURL: process.env.BACKEND_API_URL || 'http://localhost:3001',
   version: 'v1',
   timeout: 30000, // 30 seconds
   retryAttempts: 3,
@@ -155,27 +155,17 @@ export const API_ENDPOINTS = {
   },
 } as const;
 
-// User Roles & Permissions - Enhanced role-based access control
+// User Roles & Permissions - Aligned with backend
 export const USER_ROLES = {
   SUPER_ADMIN: 'super_admin',
-  TOURISM_ADMIN: 'tourism_admin',
-  POLICE_ADMIN: 'police_admin',
-  MEDICAL_ADMIN: 'medical_admin',
-  OPERATOR: 'operator',
-  FIELD_AGENT: 'field_agent',
+  OPERATOR: 'operator', 
   VIEWER: 'viewer',
-  TOURIST: 'tourist',
 } as const;
 
 export const ROLE_HIERARCHY = {
-  [USER_ROLES.SUPER_ADMIN]: 7,
-  [USER_ROLES.TOURISM_ADMIN]: 6,
-  [USER_ROLES.POLICE_ADMIN]: 5,
-  [USER_ROLES.MEDICAL_ADMIN]: 5,
-  [USER_ROLES.OPERATOR]: 4,
-  [USER_ROLES.FIELD_AGENT]: 3,
-  [USER_ROLES.VIEWER]: 2,
-  [USER_ROLES.TOURIST]: 1,
+  [USER_ROLES.SUPER_ADMIN]: 3,
+  [USER_ROLES.OPERATOR]: 2,
+  [USER_ROLES.VIEWER]: 1,
 } as const;
 
 export const PERMISSIONS = {
@@ -600,7 +590,7 @@ export const ENV = {
   isProduction: process.env.NODE_ENV === 'production',
   isTest: process.env.NODE_ENV === 'test',
   appUrl: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:8001',
-  apiUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api',
+  apiUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001',
 } as const;
 
 // Indian States and Tourist Destinations

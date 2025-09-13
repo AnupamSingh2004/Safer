@@ -16,6 +16,7 @@ import { APP_CONFIG } from '@/lib/constants';
 // ============================================================================
 
 export const metadata: Metadata = {
+  metadataBase: new URL('http://localhost:8001'),
   title: 'Login - Smart Tourist Safety Dashboard',
   description: 'Secure access to emergency response and tourist safety management system for authorized personnel',
   keywords: ['login', 'authentication', 'emergency response', 'tourist safety', 'security', 'dashboard'],

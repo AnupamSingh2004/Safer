@@ -262,13 +262,13 @@ export function Navbar() {
             ) : (
               <div className="flex items-center space-x-3">
                 <Link
-                  href="/auth/login"
+                  href="/login"
                   className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
                   Sign In
                 </Link>
                 <Link
-                  href="/auth/register"
+                  href="/register"
                   className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-primary to-primary-600 rounded-lg hover:from-primary-600 hover:to-primary-700 transition-all duration-200 shadow-lg hover:shadow-xl"
                 >
                   Get Started
@@ -316,13 +316,13 @@ export function Navbar() {
             {!isLoggedIn && (
               <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
                 <Link
-                  href="/auth/login"
+                  href="/login"
                   className="flex items-center justify-center px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 >
                   Sign In
                 </Link>
                 <Link
-                  href="/auth/register"
+                  href="/register"
                   className="flex items-center justify-center px-4 py-3 text-sm font-medium text-white bg-gradient-to-r from-primary to-primary-600 rounded-lg hover:from-primary-600 hover:to-primary-700 transition-all duration-200"
                 >
                   Get Started

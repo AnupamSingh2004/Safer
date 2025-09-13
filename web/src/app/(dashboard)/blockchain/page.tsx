@@ -16,10 +16,70 @@ import {
   TrendingUp,
   Users,
   FileText,
-  ExternalLink
+  ExternalLink,
+  Zap,
+  Lock,
+  Globe
 } from 'lucide-react';
 import { blockchainService } from '@/services/blockchain';
-import type { NetworkStatus, BlockchainAnalytics } from '@/types/blockchain';
+import { useBlockchain } from '@/hooks/use-blockchain';
+import type { NetworkStatus } from '@/types/blockchain';
+
+// ============================================================================
+// INTERFACES FOR MOCK DATA
+// ============================================================================
+
+interface MockAnalytics {
+  identityStats: {
+    totalIdentities: number;
+    verifiedIdentities: number;
+    pendingVerifications: number;
+    expiredIdentities: number;
+    blockchainAnchored: number;
+    immutableRecords: number;
+    verificationStatus: string;
+  };
+  transactionStats: {
+    totalTransactions: number;
+    successfulTransactions: number;
+    failedTransactions: number;
+    averageGasUsed: number;
+    blockchainIntegrity: string;
+    decentralizedProcessing: string;
+  };
+  networkPerformance: {
+    averageBlockTime: number;
+    networkCongestion: 'low' | 'medium' | 'high';
+    gasPrice: {
+      current: string;
+      average24h: string;
+      recommended: string;
+    };
+    blockchainHealth: string;
+    decentralizationScore: number;
+  };
+  securityMetrics: {
+    immutableRecords: string;
+    cryptographicSecurity: string;
+    tamperEvidence: string;
+    blockchainVerification: string;
+    decentralizedSecurity: string;
+    zeroKnowledgeProofs: string;
+  };
+  dailyTransactions: Array<{
+    date: string;
+    count: number;
+    gasUsed: number;
+    verificationRate: number;
+    blockchainIntegrity: boolean;
+  }>;
+  errors: Array<{
+    type: string;
+    count: number;
+    lastOccurrence: string;
+    blockchainLogged: boolean;
+  }>;
+}
 
 // Simple Card component for prototype
 const Card = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
@@ -79,6 +139,7 @@ interface StatCardProps {
     isPositive: boolean;
   };
   color?: 'blue' | 'green' | 'yellow' | 'red';
+  subtitle?: string;
 }
 
 interface NetworkStatusCardProps {
@@ -113,7 +174,7 @@ interface RecentTransactionsProps {
 
 export default function BlockchainPage() {
   const [networkStatus, setNetworkStatus] = useState<NetworkStatus | null>(null);
-  const [analytics, setAnalytics] = useState<BlockchainAnalytics | null>(null);
+  const [analytics, setAnalytics] = useState<MockAnalytics | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -181,29 +242,50 @@ export default function BlockchainPage() {
 
         // Mock analytics data for prototype
         setAnalytics({
-          totalIdentities: 1247,
-          verifiedIdentities: 1189,
-          pendingVerifications: 58,
-          expiredIdentities: 23,
-          totalTransactions: 3456,
-          successfulTransactions: 3398,
-          failedTransactions: 58,
-          averageGasUsed: 125000,
-          averageBlockTime: 2.1,
-          networkCongestion: 'low',
-          gasPrice: {
-            current: '25.5',
-            average24h: '27.8',
-            recommended: '30.0'
+          identityStats: {
+            totalIdentities: 1247,
+            verifiedIdentities: 1189,
+            pendingVerifications: 58,
+            expiredIdentities: 23,
+            blockchainAnchored: 1247,
+            immutableRecords: 1247,
+            verificationStatus: '✅ BLOCKCHAIN VERIFIED'
+          },
+          transactionStats: {
+            totalTransactions: 3456,
+            successfulTransactions: 3398,
+            failedTransactions: 58,
+            averageGasUsed: 125000,
+            blockchainIntegrity: '🔒 100% IMMUTABLE',
+            decentralizedProcessing: '🌐 FULLY DECENTRALIZED'
+          },
+          networkPerformance: {
+            averageBlockTime: 2.1,
+            networkCongestion: 'low',
+            gasPrice: {
+              current: '25.5',
+              average24h: '27.8',
+              recommended: '30.0'
+            },
+            blockchainHealth: '✅ HEALTHY & VERIFIED',
+            decentralizationScore: 95
+          },
+          securityMetrics: {
+            immutableRecords: '🔒 100% IMMUTABLE',
+            cryptographicSecurity: '🔐 MILITARY-GRADE ENCRYPTION',
+            tamperEvidence: '🛡️ TAMPER-EVIDENT',
+            blockchainVerification: '✅ BLOCKCHAIN VERIFIED',
+            decentralizedSecurity: '🌐 DECENTRALIZED SECURITY',
+            zeroKnowledgeProofs: '🔍 PRIVACY PRESERVED'
           },
           dailyTransactions: [
-            { date: '2024-01-10', count: 45, gasUsed: 5625000 },
-            { date: '2024-01-11', count: 52, gasUsed: 6500000 },
-            { date: '2024-01-12', count: 38, gasUsed: 4750000 },
+            { date: '2024-01-10', count: 45, gasUsed: 5625000, verificationRate: 95.5, blockchainIntegrity: true },
+            { date: '2024-01-11', count: 52, gasUsed: 6500000, verificationRate: 97.2, blockchainIntegrity: true },
+            { date: '2024-01-12', count: 38, gasUsed: 4750000, verificationRate: 96.8, blockchainIntegrity: true },
           ],
           errors: [
-            { type: 'Gas Limit Exceeded', count: 12, lastOccurrence: '2024-01-12T10:30:00Z' },
-            { type: 'Invalid Signature', count: 8, lastOccurrence: '2024-01-12T14:15:00Z' }
+            { type: 'Gas Limit Exceeded', count: 12, lastOccurrence: '2024-01-12T10:30:00Z', blockchainLogged: true },
+            { type: 'Invalid Signature', count: 8, lastOccurrence: '2024-01-12T14:15:00Z', blockchainLogged: true }
           ]
         });
 
@@ -293,36 +375,40 @@ export default function BlockchainPage() {
         </div>
       </div>
 
-      {/* Statistics Cards */}
+      {/* Statistics Cards - Enhanced for Demo */}
       {analytics && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatCard
-            title="Total Identities"
-            value={analytics.totalIdentities.toLocaleString()}
+            title="🔗 Total Identities"
+            value={analytics.identityStats.totalIdentities.toLocaleString()}
             icon={Users}
             trend={{ value: 12.5, isPositive: true }}
             color="blue"
+            subtitle="✅ BLOCKCHAIN VERIFIED"
           />
           <StatCard
-            title="Verified Identities"
-            value={analytics.verifiedIdentities.toLocaleString()}
+            title="🔒 Verified Identities"
+            value={analytics.identityStats.verifiedIdentities.toLocaleString()}
             icon={CheckCircle}
             trend={{ value: 8.2, isPositive: true }}
             color="green"
+            subtitle="🛡️ TAMPER-PROOF"
           />
           <StatCard
-            title="Pending Verifications"
-            value={analytics.pendingVerifications}
+            title="⏳ Pending Verifications"
+            value={analytics.identityStats.pendingVerifications}
             icon={Clock}
             trend={{ value: 5.1, isPositive: false }}
             color="yellow"
+            subtitle="🌐 DECENTRALIZED QUEUE"
           />
           <StatCard
-            title="Total Transactions"
-            value={analytics.totalTransactions.toLocaleString()}
+            title="📊 Total Transactions"
+            value={analytics.transactionStats.totalTransactions.toLocaleString()}
             icon={FileText}
             trend={{ value: 15.3, isPositive: true }}
             color="blue"
+            subtitle="🔒 IMMUTABLE RECORDS"
           />
         </div>
       )}
@@ -343,7 +429,7 @@ export default function BlockchainPage() {
 // STAT CARD COMPONENT
 // ============================================================================
 
-function StatCard({ title, value, icon: Icon, trend, color = 'blue' }: StatCardProps) {
+function StatCard({ title, value, icon: Icon, trend, color = 'blue', subtitle }: StatCardProps) {
   const colorClasses = {
     blue: 'bg-blue-500',
     green: 'bg-green-500',
@@ -357,6 +443,9 @@ function StatCard({ title, value, icon: Icon, trend, color = 'blue' }: StatCardP
         <div>
           <p className="text-sm font-medium text-gray-600">{title}</p>
           <p className="text-2xl font-bold text-gray-900 mt-2">{value}</p>
+          {subtitle && (
+            <p className="text-xs font-medium text-green-600 mt-1">{subtitle}</p>
+          )}
           {trend && (
             <div className={`flex items-center mt-2 text-sm ${
               trend.isPositive ? 'text-green-600' : 'text-red-600'
@@ -413,7 +502,7 @@ function NetworkStatusCard({ networkStatus, loading }: NetworkStatusCardProps) {
         <div className="space-y-4">
           <div className="flex justify-between">
             <span className="text-gray-600">Network:</span>
-            <span className="font-medium">{networkStatus.network}</span>
+            <span className="font-medium">{networkStatus.networkName}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-600">Block Number:</span>

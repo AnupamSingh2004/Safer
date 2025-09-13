@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
-import "./interfaces/ITouristIdentity.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/Pausable.sol";
+// import "./interfaces/ITouristIdentity.sol"; // TODO: Implement interface
 
 /**
  * @title IdentityRegistry
@@ -13,7 +12,6 @@ import "./interfaces/ITouristIdentity.sol";
  * @notice Provides centralized access control and verification management
  */
 contract IdentityRegistry is AccessControl, ReentrancyGuard, Pausable {
-    using Counters for Counters.Counter;
     
     // Roles
     bytes32 public constant REGISTRY_ADMIN_ROLE = keccak256("REGISTRY_ADMIN_ROLE");
@@ -23,8 +21,8 @@ contract IdentityRegistry is AccessControl, ReentrancyGuard, Pausable {
     bytes32 public constant POLICE_ROLE = keccak256("POLICE_ROLE");
     
     // Counters
-    Counters.Counter private _registrationCounter;
-    Counters.Counter private _verifierCounter;
+    uint256 private _registrationCounter;
+    uint256 private _verifierCounter;
     
     // Structs
     struct RegistryRecord {
@@ -190,8 +188,8 @@ contract IdentityRegistry is AccessControl, ReentrancyGuard, Pausable {
         require(walletToRegistry[_touristWallet] == 0, "IdentityRegistry: Wallet already registered");
         require(touristIdToRegistry[_touristIdHash] == 0, "IdentityRegistry: Tourist ID already registered");
         
-        _registrationCounter.increment();
-        uint256 newRegistryId = _registrationCounter.current();
+        _registrationCounter++;
+        uint256 newRegistryId = _registrationCounter;
         
         RegistryRecord storage newRecord = registryRecords[newRegistryId];
         newRecord.registryId = newRegistryId;
@@ -339,8 +337,8 @@ contract IdentityRegistry is AccessControl, ReentrancyGuard, Pausable {
         require(bytes(_organization).length > 0, "IdentityRegistry: Organization required");
         require(verifierAddressToId[_verifierAddress] == 0, "IdentityRegistry: Verifier already registered");
         
-        _verifierCounter.increment();
-        uint256 newVerifierId = _verifierCounter.current();
+        _verifierCounter++;
+        uint256 newVerifierId = _verifierCounter;
         
         VerifierInfo storage newVerifier = verifiers[newVerifierId];
         newVerifier.verifierId = newVerifierId;
@@ -428,12 +426,12 @@ contract IdentityRegistry is AccessControl, ReentrancyGuard, Pausable {
         }
         
         return RegistryStats({
-            totalRegistrations: _registrationCounter.current(),
+            totalRegistrations: _registrationCounter,
             activeIdentities: activeCount,
             verifiedIdentities: verifiedCount,
             pendingVerifications: pendingCount,
             revokedIdentities: revokedCount,
-            totalVerifiers: _verifierCounter.current(),
+            totalVerifiers: _verifierCounter,
             activeVerifiers: activeVerifiers
         });
     }

@@ -300,7 +300,7 @@ export function LoginForm({
               <span className="text-sm text-gray-800 font-medium">Remember me for 30 days</span>
             </label>
             <a 
-              href="/auth/forgot-password" 
+              href="/forgot-password" 
               className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors font-medium"
             >
               Forgot password?

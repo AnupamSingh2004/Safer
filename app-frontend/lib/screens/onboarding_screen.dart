@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'main_navigation_simple.dart';
+import 'login_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -199,7 +199,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                             Navigator.of(context).pushReplacement(
                               PageRouteBuilder(
                                 pageBuilder: (context, animation, secondaryAnimation) =>
-                                    const MainNavigation(),
+                                    const LoginScreen(),
                                 transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                   return FadeTransition(opacity: animation, child: child);
                                 },

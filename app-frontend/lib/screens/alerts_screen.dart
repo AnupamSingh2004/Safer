@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'chatbot_screen.dart';
 import '../services/alerts_service.dart';
 
 class AlertsScreen extends StatefulWidget {
@@ -574,57 +573,30 @@ class _AlertsScreenState extends State<AlertsScreen> {
   }
 
   void _navigateToAssistant(String type, String title, String description) {
-    // Create context and initial message based on alert type
-    String alertContext = '$type: $title';
-    String initialMessage = _createInitialMessage(type, title, description);
-    
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ChatbotScreen(
-          userType: widget.userType,
-          context: alertContext,
-          initialMessage: initialMessage,
+    // For now, just show a simple dialog since we need to implement chatbot navigation properly
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Alert: $title'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Type: $type', style: const TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Text(description),
+            const SizedBox(height: 16),
+            const Text('This alert requires your attention. Please follow recommended safety guidelines.'),
+          ],
         ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
       ),
     );
-  }
-
-  String _createInitialMessage(String type, String title, String description) {
-    String baseMessage = 'I received an alert about: $title. ';
-    
-    switch (type) {
-      case 'EMERGENCY':
-        if (title.contains('Dengue')) {
-          return baseMessage + 'What immediate actions should I take to prevent dengue? What are the key steps to eliminate breeding sites?';
-        } else if (title.contains('Malaria')) {
-          return baseMessage + 'What are the urgent malaria prevention measures I should implement right now?';
-        } else {
-          return baseMessage + 'What emergency preventive measures should I take immediately?';
-        }
-      
-      case 'ACTIVE':
-        if (title.contains('Malaria')) {
-          return baseMessage + 'What are the comprehensive malaria prevention strategies I should follow?';
-        } else if (title.contains('Vaccination')) {
-          return baseMessage + 'What should I know about this vaccination campaign? How should I prepare?';
-        } else {
-          return baseMessage + 'What preventive actions should I take based on this alert?';
-        }
-      
-      case 'PREVENTION':
-        if (title.contains('Seasonal')) {
-          return baseMessage + 'What seasonal health precautions should I take? What are the key prevention strategies?';
-        } else {
-          return baseMessage + 'What preventive measures should I implement?';
-        }
-      
-      case 'HISTORY':
-        return baseMessage + 'Based on this historical information, what preventive measures should I continue or implement?';
-      
-      default:
-        return baseMessage + 'Can you provide specific guidance and preventive measures for this situation?';
-    }
   }
 
   void _showFilterDialog() {

@@ -1,7 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { 
   Shield, 
   MapPin, 
@@ -18,11 +19,53 @@ import {
   Zap,
   Lock,
   Eye,
-  Heart
+  Heart,
+  LogIn,
+  UserPlus
 } from 'lucide-react';
 import { Navbar } from '@/components/layout/navbar';
+import { useAuthStore } from '@/stores/auth-store';
+import { LoadingSpinner } from '@/components/animations/loading-spinner';
 
 const HomePage: React.FC = () => {
+  const router = useRouter();
+  const { isAuthenticated, isLoading, isInitialized, user } = useAuthStore();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Redirect authenticated users to dashboard
+  useEffect(() => {
+    if (mounted && isInitialized && isAuthenticated && user) {
+      router.push('/dashboard');
+    }
+  }, [isAuthenticated, isInitialized, mounted, user, router]);
+
+  // Show loading spinner during authentication check
+  if (!mounted || isLoading || !isInitialized) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
+        <div className="text-center">
+          <LoadingSpinner size="lg" />
+          <p className="mt-4 text-white/80">Initializing Smart Tourist Safety System...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // If user is authenticated, show redirecting message
+  if (isAuthenticated && user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
+        <div className="text-center">
+          <LoadingSpinner size="lg" />
+          <p className="mt-4 text-white/80">Redirecting to dashboard...</p>
+        </div>
+      </div>
+    );
+  }
   const features = [
     {
       icon: Shield,

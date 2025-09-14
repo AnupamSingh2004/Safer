@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import '../screens/dashboard_screen.dart';
+import '../screens/enhanced_dashboard_screen.dart';
 import '../screens/alerts_screen.dart';
-import '../screens/chatbot_screen.dart';
-import '../screens/reports_analytics_screen.dart';
+import '../screens/enhanced_chatbot_screen.dart';
 import '../screens/profile_screen_new_dynamic.dart';
 import '../screens/settings_screen.dart';
-import '../screens/about_help_screen.dart';
 import '../services/api_service.dart';
 import '../widgets/auth_wrapper.dart';
 
@@ -27,24 +25,20 @@ class _MainNavigationState extends State<MainNavigation> {
   void initState() {
     super.initState();
     _pages = [
-      DashboardScreen(
-        userType: widget.userType,
-        onNavigateToRiskMap: () => _onItemTapped(1),
-        onNavigateToAlerts: () => _onItemTapped(2),
-      ),
-      // Legal analytics placeholder screen
+      const EnhancedDashboardScreen(),
+      // Safety features placeholder screen
       Container(
         padding: const EdgeInsets.all(16),
         child: const Center(
           child: Text(
-            'Legal Analytics Coming Soon',
+            'Safety Analytics Coming Soon',
             style: TextStyle(fontSize: 18),
           ),
         ),
       ),
       AlertsScreen(userType: widget.userType),
-      ChatbotScreen(userType: widget.userType),
-      ReportsAnalyticsScreen(userType: widget.userType),
+      const EnhancedChatbotScreen(userType: 'tourist'),
+      SettingsScreen(userType: widget.userType),
     ];
   }
 
@@ -193,9 +187,20 @@ class _MainNavigationState extends State<MainNavigation> {
           ));
         }),
         _buildMenuItem(Icons.help, 'Help & Support', () {
-          Navigator.push(context, MaterialPageRoute(
-            builder: (context) => const AboutHelpScreen(),
-          ));
+          // Navigate to a help dialog for now
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Help & Support'),
+              content: const Text('Safe Travel - Your Tourist Safety Companion\n\nFor help and support, please contact:\nsupport@safetravel.com'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
         }),
         _buildMenuItem(Icons.logout, 'Logout', () {
           _showLogoutDialog();

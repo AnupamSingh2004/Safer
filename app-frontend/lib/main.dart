@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'theme/app_theme.dart';
-import 'screens/authentication_screen.dart';
+import 'screens/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,20 +14,20 @@ void main() async {
     print('Continuing with default configuration...');
   }
   
-  runApp(const JurisLeadApp());
+  runApp(const SafeTravelApp());
 }
 
-class JurisLeadApp extends StatelessWidget {
-  const JurisLeadApp({super.key});
+class SafeTravelApp extends StatelessWidget {
+  const SafeTravelApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'SafeTour - Tourist Safety',
+      title: 'Safe Travel - Tourist Safety',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      home: const AuthenticationScreen(),
+      home: const LoginScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

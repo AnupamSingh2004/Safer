@@ -1,13 +1,13 @@
-import type { Config } from 'tailwindcss'
+import { Config } from 'tailwindcss'
 import { designTokens } from './src/lib/theme/design-tokens'
 
 const config: Config = {
   darkMode: ['class'],
   content: [
-    './pages//*.{ts,tsx}',
-    './components//*.{ts,tsx}',
-    './app//*.{ts,tsx}',
-    './src//*.{ts,tsx}',
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
   ],
   theme: {
     container: {

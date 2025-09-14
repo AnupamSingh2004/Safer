@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../screens/authentication_screen.dart';
+import 'login_screen.dart';
 import '../services/user_statistics_service.dart';
 
 class ProfileScreenDynamic extends StatefulWidget {
@@ -1124,7 +1124,7 @@ class _ProfileScreenDynamicState extends State<ProfileScreenDynamic>
               await prefs.clear();
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => const AuthenticationScreen()),
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
                 (route) => false,
               );
             },

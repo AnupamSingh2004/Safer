@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import '../widgets/theme_aware_text.dart';
+import '../widgets/responsive_utils.dart';
 
 class SettingsScreen extends StatefulWidget {
   final String userType;
   
-  const SettingsScreen({Key? key, required this.userType}) : super(key: key);
+  const SettingsScreen({Key? key, this.userType = 'tourist'}) : super(key: key);
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -20,13 +22,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
-        backgroundColor: const Color(0xFF2E7D8A),
-        foregroundColor: Colors.white,
+        title: const ThemeAwareText.heading('⚙️ Settings'),
+        centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
+      body: ResponsiveColumn(
+        children: [
+          Padding(
+            padding: ResponsiveUtils.getResponsiveMargin(context),
+            child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Language Settings
@@ -127,8 +130,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             
             const SizedBox(height: 40),
-          ],
-        ),
+            ],
+            ),
+          ),
+        ],
       ),
     );
   }

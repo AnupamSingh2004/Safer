@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/emergency_theme.dart';
+import '../widgets/theme_aware_text.dart';
+import '../widgets/responsive_utils.dart';
 
 class EnhancedChatbotScreen extends StatefulWidget {
   final String userType;
@@ -97,9 +99,8 @@ class _EnhancedChatbotScreenState extends State<EnhancedChatbotScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('🤖 AI Safety Assistant'),
-        backgroundColor: EmergencyColorPalette.primary[500],
-        foregroundColor: Colors.white,
+        title: const ThemeAwareText.heading('🤖 AI Safety Assistant'),
+        centerTitle: true,
         actions: [
           DropdownButton<String>(
             value: _selectedLanguage,

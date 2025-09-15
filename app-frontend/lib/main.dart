@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'theme/app_theme.dart';
+import 'theme/emergency_theme.dart';
 import 'screens/login_screen.dart';
+import 'services/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +15,9 @@ void main() async {
     print('Continuing with default configuration...');
   }
   
+  // Initialize notification service
+  await NotificationService.init();
+  
   runApp(const SafeTravelApp());
 }
 
@@ -23,12 +27,12 @@ class SafeTravelApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Safe Travel - Tourist Safety',
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
-      home: const LoginScreen(),
+      title: 'Safer',
+      theme: EmergencyTheme.lightTheme,
+      darkTheme: EmergencyTheme.darkTheme,
+      themeMode: ThemeMode.system, // Follows system theme
       debugShowCheckedModeBanner: false,
+      home: const LoginScreen(),
     );
   }
 }

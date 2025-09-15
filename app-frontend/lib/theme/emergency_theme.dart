@@ -189,22 +189,129 @@ class EmergencyTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: EmergencyColorPalette.neutral[100],
+        fillColor: Colors.white,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(color: EmergencyColorPalette.neutral[300]!),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(color: EmergencyColorPalette.neutral[300]!),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(color: EmergencyColorPalette.primary[500]!, width: 2),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(color: EmergencyColorPalette.danger[500]!),
+        ),
+        labelStyle: TextStyle(
+          color: EmergencyColorPalette.neutral[700],
+          fontWeight: FontWeight.w600,
+        ),
+        hintStyle: TextStyle(
+          color: EmergencyColorPalette.neutral[500],
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      // Enhanced text theme for better visibility
+      textTheme: TextTheme(
+        headlineLarge: TextStyle(
+          color: Colors.black,
+          fontSize: 32,
+          fontWeight: FontWeight.w900,
+          letterSpacing: -0.5,
+          shadows: [
+            Shadow(
+              color: Colors.black.withOpacity(0.1),
+              offset: const Offset(0, 1),
+              blurRadius: 2,
+            ),
+          ],
+        ),
+        headlineMedium: TextStyle(
+          color: Colors.black,
+          fontSize: 28,
+          fontWeight: FontWeight.w900,
+          letterSpacing: -0.3,
+          shadows: [
+            Shadow(
+              color: Colors.black.withOpacity(0.1),
+              offset: const Offset(0, 1),
+              blurRadius: 2,
+            ),
+          ],
+        ),
+        headlineSmall: TextStyle(
+          color: Colors.black,
+          fontSize: 24,
+          fontWeight: FontWeight.w900,
+          letterSpacing: -0.2,
+          shadows: [
+            Shadow(
+              color: Colors.black.withOpacity(0.1),
+              offset: const Offset(0, 1),
+              blurRadius: 2,
+            ),
+          ],
+        ),
+        titleLarge: TextStyle(
+          color: Colors.black,
+          fontSize: 22,
+          fontWeight: FontWeight.w800,
+          letterSpacing: 0.1,
+        ),
+        titleMedium: TextStyle(
+          color: Colors.black,
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0.1,
+        ),
+        titleSmall: TextStyle(
+          color: Colors.black,
+          fontSize: 14,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0.2,
+        ),
+        bodyLarge: TextStyle(
+          color: Colors.black,
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0.1,
+          height: 1.5,
+        ),
+        bodyMedium: TextStyle(
+          color: Colors.black,
+          fontSize: 14,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0.1,
+          height: 1.5,
+        ),
+        bodySmall: TextStyle(
+          color: Colors.black,
+          fontSize: 12,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0.2,
+          height: 1.4,
+        ),
+        labelLarge: TextStyle(
+          color: Colors.black,
+          fontSize: 14,
+          fontWeight: FontWeight.w800,
+          letterSpacing: 0.3,
+        ),
+        labelMedium: TextStyle(
+          color: Colors.black,
+          fontSize: 12,
+          fontWeight: FontWeight.w800,
+          letterSpacing: 0.3,
+        ),
+        labelSmall: TextStyle(
+          color: Colors.black,
+          fontSize: 11,
+          fontWeight: FontWeight.w800,
+          letterSpacing: 0.4,
         ),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -215,53 +322,356 @@ class EmergencyTheme {
     );
   }
 
-  static ThemeData get darkTheme {
-    return ThemeData(
+  static ThemeData get darkTheme => ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
       colorScheme: ColorScheme.dark(
         primary: EmergencyColorPalette.primary[400]!,
-        onPrimary: EmergencyColorPalette.neutral[900]!,
+        onPrimary: Colors.white,
         secondary: EmergencyColorPalette.secondary[400]!,
-        onSecondary: EmergencyColorPalette.neutral[900]!,
-        surface: EmergencyColorPalette.neutral[800]!,
-        onSurface: EmergencyColorPalette.neutral[50]!,
-        background: EmergencyColorPalette.neutral[900]!,
-        onBackground: EmergencyColorPalette.neutral[50]!,
+        onSecondary: Colors.white,
+        surface: const Color(0xFF1E1E1E),
+        onSurface: Colors.white,
+        background: const Color(0xFF121212),
+        onBackground: Colors.white,
         error: EmergencyColorPalette.danger[400]!,
-        onError: EmergencyColorPalette.neutral[900]!,
+        onError: Colors.white,
         tertiary: EmergencyColorPalette.warning[400]!,
-        onTertiary: EmergencyColorPalette.neutral[900]!,
+        onTertiary: Colors.white,
       ),
-      scaffoldBackgroundColor: EmergencyColorPalette.neutral[900],
+      scaffoldBackgroundColor: const Color(0xFF121212),
       appBarTheme: AppBarTheme(
-        backgroundColor: EmergencyColorPalette.neutral[800],
-        foregroundColor: EmergencyColorPalette.neutral[50],
+        backgroundColor: const Color(0xFF1E1E1E),
+        foregroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        titleTextStyle: TextStyle(
-          color: EmergencyColorPalette.neutral[50],
+        titleTextStyle: const TextStyle(
+          color: Colors.white,
           fontSize: 20,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.bold,
         ),
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: EmergencyColorPalette.neutral[800],
+        backgroundColor: const Color(0xFF1E1E1E),
         selectedItemColor: EmergencyColorPalette.primary[400],
-        unselectedItemColor: EmergencyColorPalette.neutral[500],
+        unselectedItemColor: Colors.white54,
         type: BottomNavigationBarType.fixed,
         elevation: 8,
       ),
       cardTheme: CardThemeData(
-        color: EmergencyColorPalette.neutral[800],
+        color: const Color(0xFF2D2D2D),
         elevation: 4,
-        shadowColor: Colors.black26,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
       ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: EmergencyColorPalette.primary[500],
+          foregroundColor: Colors.white,
+          elevation: 3,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          textStyle: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+            letterSpacing: 0.5,
+          ),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: EmergencyColorPalette.primary[400],
+          side: BorderSide(color: EmergencyColorPalette.primary[400]!, width: 2),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          textStyle: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+            letterSpacing: 0.5,
+          ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: EmergencyColorPalette.primary[400],
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          textStyle: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+          ),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: const Color(0xFF2D2D2D),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFF404040)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFF404040)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: EmergencyColorPalette.primary[400]!, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: EmergencyColorPalette.danger[400]!),
+        ),
+        labelStyle: const TextStyle(
+          color: Colors.white70,
+          fontWeight: FontWeight.w600,
+        ),
+        hintStyle: const TextStyle(
+          color: Colors.white54,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      textTheme: const TextTheme(
+        headlineLarge: TextStyle(
+          color: Colors.white,
+          fontSize: 32,
+          fontWeight: FontWeight.bold,
+          letterSpacing: -0.5,
+        ),
+        headlineMedium: TextStyle(
+          color: Colors.white,
+          fontSize: 28,
+          fontWeight: FontWeight.bold,
+          letterSpacing: -0.3,
+        ),
+        headlineSmall: TextStyle(
+          color: Colors.white,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          letterSpacing: -0.2,
+        ),
+        titleLarge: TextStyle(
+          color: Colors.white,
+          fontSize: 22,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 0.1,
+        ),
+        titleMedium: TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0.1,
+        ),
+        titleSmall: TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0.2,
+        ),
+        bodyLarge: TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0.1,
+          height: 1.5,
+        ),
+        bodyMedium: TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0.1,
+          height: 1.5,
+        ),
+        bodySmall: TextStyle(
+          color: Colors.white,
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0.2,
+          height: 1.4,
+        ),
+        labelLarge: TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 0.3,
+        ),
+        labelMedium: TextStyle(
+          color: Colors.white,
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 0.3,
+        ),
+        labelSmall: TextStyle(
+          color: Colors.white,
+          fontSize: 11,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 0.4,
+        ),
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: EmergencyColorPalette.danger[500],
+        foregroundColor: Colors.white,
+        elevation: 6,
+      ),
     );
-  }
+
+  // Button Styles
+  static ButtonStyle get primaryButtonStyle => ElevatedButton.styleFrom(
+        backgroundColor: EmergencyColorPalette.primary[500],
+        foregroundColor: Colors.white,
+        elevation: 3,
+        shadowColor: EmergencyColorPalette.primary[900]?.withOpacity(0.3),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+          letterSpacing: 0.5,
+        ),
+      );
+
+  static ButtonStyle get secondaryButtonStyle => ElevatedButton.styleFrom(
+        backgroundColor: EmergencyColorPalette.secondary[500],
+        foregroundColor: Colors.white,
+        elevation: 3,
+        shadowColor: EmergencyColorPalette.secondary[900]?.withOpacity(0.3),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+          letterSpacing: 0.5,
+        ),
+      );
+
+  static ButtonStyle get outlineButtonStyle => OutlinedButton.styleFrom(
+        side: BorderSide(color: EmergencyColorPalette.primary[500]!, width: 2),
+        foregroundColor: EmergencyColorPalette.primary[500],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+          letterSpacing: 0.5,
+        ),
+      );
+
+  static ButtonStyle get dangerButtonStyle => ElevatedButton.styleFrom(
+        backgroundColor: EmergencyColorPalette.danger[500],
+        foregroundColor: Colors.white,
+        elevation: 3,
+        shadowColor: EmergencyColorPalette.danger[900]?.withOpacity(0.3),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+          letterSpacing: 0.5,
+        ),
+      );
+
+  // Box Decorations
+  static BoxDecoration get cardDecoration => BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: EmergencyColorPalette.neutral[900]!.withOpacity(0.08),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+            spreadRadius: 2,
+          ),
+        ],
+      );
+
+  static BoxDecoration get emergencyCardDecoration => BoxDecoration(
+        color: EmergencyColorPalette.danger[50],
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: EmergencyColorPalette.danger[200]!,
+          width: 2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: EmergencyColorPalette.danger[500]!.withOpacity(0.15),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+            spreadRadius: 2,
+          ),
+        ],
+      );
+
+  static BoxDecoration get primaryCardDecoration => BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            EmergencyColorPalette.primary[500]!,
+            EmergencyColorPalette.primary[600]!,
+          ],
+        ),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: EmergencyColorPalette.primary[500]!.withOpacity(0.3),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+            spreadRadius: 2,
+          ),
+        ],
+      );
+
+  // Text Styles for better visibility
+  static TextStyle get headingStyle => const TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+        color: Colors.black87,
+        letterSpacing: -0.2,
+        height: 1.2,
+      );
+
+  static TextStyle get subheadingStyle => const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+        color: Colors.black87,
+        letterSpacing: 0.1,
+        height: 1.3,
+      );
+
+  static TextStyle get bodyStyle => const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+        color: Colors.black87,
+        letterSpacing: 0.1,
+        height: 1.5,
+      );
+
+  static TextStyle get captionStyle => TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        color: EmergencyColorPalette.neutral[600],
+        letterSpacing: 0.2,
+        height: 1.4,
+      );
+
+  static TextStyle get buttonTextStyle => const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        letterSpacing: 0.5,
+      );
+
+
 }
 
 /// Emergency Button Styles

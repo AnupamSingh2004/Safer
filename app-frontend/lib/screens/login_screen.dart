@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../theme/emergency_theme.dart';
+import '../widgets/responsive_utils.dart';
 import 'enhanced_dashboard_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -105,13 +106,15 @@ class _LoginScreenState extends State<LoginScreen>
             opacity: _fadeAnimation,
             child: SlideTransition(
               position: _slideAnimation,
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+              child: ConstrainedContainer(
+                maxWidth: ResponsiveUtils.isSmallScreen(context) ? double.infinity : 400,
+                child: Padding(
+                  padding: ResponsiveUtils.getResponsiveMargin(context),
+                  child: Form(
+                    key: _formKey,
+                    child: ResponsiveColumn(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                       // Logo Section
                       Container(
                         width: 120,
@@ -383,7 +386,8 @@ class _LoginScreenState extends State<LoginScreen>
                         ),
                         textAlign: TextAlign.center,
                       ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

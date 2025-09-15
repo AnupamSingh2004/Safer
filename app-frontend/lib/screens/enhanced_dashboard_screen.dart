@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import '../theme/emergency_theme.dart';
+import '../widgets/theme_aware_text.dart';
+import '../widgets/responsive_utils.dart';
 import 'ai_emergency_detection_screen.dart';
 import 'advanced_emergency_response_screen.dart';
 import 'enhanced_chatbot_screen.dart';
+import 'incident_report_screen.dart';
+import 'incident_reports_list_screen.dart';
+import 'notification_demo_screen.dart';
+import 'notifications_screen.dart';
+import 'settings_screen.dart';
 
 class EnhancedDashboardScreen extends StatefulWidget {
   const EnhancedDashboardScreen({Key? key}) : super(key: key);
@@ -58,22 +65,34 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
       'route': '/emergency-response',
     },
     {
+      'title': 'Report\nIncident',
+      'icon': Icons.report_problem,
+      'color': EmergencyColorPalette.warning[500],
+      'route': '/incident-report',
+    },
+    {
+      'title': 'Nearby\nIncidents',
+      'icon': Icons.location_on,
+      'color': EmergencyColorPalette.primary[500],
+      'route': '/incident-list',
+    },
+    {
       'title': 'AI Safety\nDetection',
       'icon': Icons.psychology,
-      'color': EmergencyColorPalette.primary[500],
+      'color': EmergencyColorPalette.info[500],
       'route': '/ai-detection',
     },
     {
       'title': 'Smart\nChatbot',
       'icon': Icons.chat_bubble,
-      'color': EmergencyColorPalette.info[500],
+      'color': EmergencyColorPalette.secondary[500],
       'route': '/chatbot',
     },
     {
-      'title': 'Safe\nNavigation',
-      'icon': Icons.navigation,
-      'color': EmergencyColorPalette.secondary[500],
-      'route': '/navigation',
+      'title': 'Notifications',
+      'icon': Icons.notifications_active,
+      'color': EmergencyColorPalette.primary[600],
+      'route': '/notifications',
     },
   ];
 
@@ -103,10 +122,7 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('🛡️ Tourist Safety Dashboard'),
-        backgroundColor: EmergencyColorPalette.primary[500],
-        foregroundColor: Colors.white,
-        elevation: 0,
+        title: const ThemeAwareText.heading('🛡️ Safer Dashboard'),
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications),
@@ -120,25 +136,29 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
       ),
       body: RefreshIndicator(
         onRefresh: _refreshDashboard,
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildSafetyScoreHeader(),
-              const SizedBox(height: 20),
-              _buildLocationStatus(),
-              const SizedBox(height: 20),
-              _buildQuickActions(),
-              const SizedBox(height: 20),
-              _buildLiveStats(),
-              const SizedBox(height: 20),
-              _buildRecentActivities(),
-              const SizedBox(height: 20),
-              _buildEmergencyFeatures(),
-            ],
-          ),
+        child: ResponsiveColumn(
+          children: [
+            Padding(
+              padding: ResponsiveUtils.getResponsiveMargin(context),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildSafetyScoreHeader(),
+                  const SizedBox(height: 20),
+                  _buildLocationStatus(),
+                  const SizedBox(height: 20),
+                  _buildQuickActions(),
+                  const SizedBox(height: 20),
+                  _buildLiveStats(),
+                  const SizedBox(height: 20),
+                  _buildRecentActivities(),
+                  const SizedBox(height: 20),
+                  _buildEmergencyFeatures(),
+                  const SizedBox(height: 80), // Extra space for FAB
+                ],
+              ),
+            ),
+          ],
         ),
       ),
       floatingActionButton: AnimatedBuilder(
@@ -189,16 +209,11 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const ThemeAwareText.subheading(
                     'AI Safety Score',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: EmergencyColorPalette.neutral[800],
-                    ),
                   ),
                   const SizedBox(height: 4),
-                  Text(
+                  ThemeAwareText(
                     _riskLevel,
                     style: TextStyle(
                       fontSize: 16,
@@ -207,12 +222,8 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Text(
+                  const ThemeAwareText.caption(
                     'Last updated: Just now',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: EmergencyColorPalette.neutral[600],
-                    ),
                   ),
                 ],
               ),
@@ -242,17 +253,31 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
                             children: [
                               Text(
                                 '${(_safetyScore * _safetyScoreController.value).toStringAsFixed(1)}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
-                                  color: scoreColor,
+                                  color: Colors.white,
+                                  shadows: [
+                                    Shadow(
+                                      color: Colors.black54,
+                                      offset: Offset(0, 1),
+                                      blurRadius: 2,
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Text(
+                              const Text(
                                 '/100',
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: EmergencyColorPalette.neutral[600],
+                                  color: Colors.white70,
+                                  shadows: [
+                                    Shadow(
+                                      color: Colors.black54,
+                                      offset: Offset(0, 1),
+                                      blurRadius: 2,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
@@ -304,8 +329,8 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
             label,
             style: TextStyle(
               fontSize: 12,
-              fontWeight: FontWeight.w500,
-              color: EmergencyColorPalette.neutral[700],
+              fontWeight: FontWeight.w600,
+              color: EmergencyColorPalette.neutral[800],
             ),
           ),
           const SizedBox(height: 4),
@@ -341,7 +366,8 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
                   'Current Location Status',
                   style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
                   ),
                 ),
               ],
@@ -410,20 +436,14 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Quick Actions',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        const ThemeAwareText.subheading('Quick Actions'),
         const SizedBox(height: 12),
         GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 1.2,
+            childAspectRatio: 1.8, // Made buttons smaller/shorter
             crossAxisSpacing: 12,
             mainAxisSpacing: 12,
           ),
@@ -455,11 +475,11 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: action['color'].withOpacity(0.3)),
         ),
-        child: Column(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: action['color'].withOpacity(0.2),
                 shape: BoxShape.circle,
@@ -467,17 +487,19 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
               child: Icon(
                 action['icon'],
                 color: action['color'],
-                size: 32,
+                size: 24, // Smaller icon
               ),
             ),
-            const SizedBox(height: 12),
-            Text(
-              action['title'],
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: EmergencyColorPalette.neutral[800],
+            const SizedBox(width: 12),
+            Expanded(
+              child: FlexibleText(
+                action['title'],
+                textAlign: TextAlign.left,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+                maxLines: 2,
               ),
             ),
           ],
@@ -501,12 +523,8 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
                   size: 24,
                 ),
                 const SizedBox(width: 8),
-                const Text(
+                const ThemeAwareText.subheading(
                   'Live Statistics',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
                 ),
               ],
             ),
@@ -808,6 +826,22 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
           ),
         );
         break;
+      case '/incident-report':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const IncidentReportScreen(),
+          ),
+        );
+        break;
+      case '/incident-list':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const IncidentReportsListScreen(),
+          ),
+        );
+        break;
       case '/ai-detection':
         Navigator.push(
           context,
@@ -824,9 +858,20 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
           ),
         );
         break;
+      case '/notifications':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const NotificationDemoScreen(),
+          ),
+        );
+        break;
       default:
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('$route feature coming soon!')),
+          SnackBar(
+            content: Text('$route feature coming soon!'),
+            backgroundColor: EmergencyColorPalette.primary[500],
+          ),
         );
     }
   }
@@ -841,10 +886,16 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
   }
 
   void _showNotifications() {
-    // Show notifications
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const NotificationsScreen()),
+    );
   }
 
   void _showSettings() {
-    // Show settings
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+    );
   }
 }

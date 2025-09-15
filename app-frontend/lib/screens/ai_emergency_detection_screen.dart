@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/emergency_theme.dart';
+import '../widgets/theme_aware_text.dart';
+import '../widgets/responsive_utils.dart';
 
 class AIEmergencyDetectionScreen extends StatefulWidget {
   const AIEmergencyDetectionScreen({Key? key}) : super(key: key);
@@ -28,9 +30,8 @@ class _AIEmergencyDetectionScreenState extends State<AIEmergencyDetectionScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('🧠 AI Emergency Detection'),
-        backgroundColor: EmergencyColorPalette.primary[500],
-        foregroundColor: Colors.white,
+        title: const ThemeAwareText.heading('🧠 AI Emergency Detection'),
+        centerTitle: true,
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -38,11 +39,13 @@ class _AIEmergencyDetectionScreenState extends State<AIEmergencyDetectionScreen>
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      body: ResponsiveColumn(
+        children: [
+          Padding(
+            padding: ResponsiveUtils.getResponsiveMargin(context),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
             _buildSafetyScoreCard(),
             const SizedBox(height: 20),
             _buildAIDetectionStatus(),
@@ -52,8 +55,10 @@ class _AIEmergencyDetectionScreenState extends State<AIEmergencyDetectionScreen>
             _buildRecentAnomalies(),
             const SizedBox(height: 20),
             _buildBehavioralInsights(),
-          ],
-        ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

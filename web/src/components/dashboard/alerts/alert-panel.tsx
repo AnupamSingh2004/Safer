@@ -6,6 +6,10 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useMediaQuery } from '@/hooks/use-media-query';
+import { SwipeableCard } from '@/components/animations/gesture-components';
+import { StaggerContainer } from '@/components/animations/advanced-animations';
 import { 
   AlertTriangle,
   CheckCircle,
@@ -23,7 +27,12 @@ import {
   Calendar,
   User,
   Bell,
-  XCircle
+  XCircle,
+  Grid,
+  List,
+  X,
+  Check,
+  Archive
 } from 'lucide-react';
 
 import type { Alert, AlertType, AlertSeverity, AlertStatus } from '@/types/alert';
@@ -139,6 +148,23 @@ const AlertPanel: React.FC<AlertPanelProps> = ({
   const [expandedAlert, setExpandedAlert] = useState<string | null>(null);
 
   // ========================================================================
+  // MOBILE RESPONSIVENESS
+  // ========================================================================
+
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const isTablet = useMediaQuery('(max-width: 1024px)');
+  const [viewMode, setViewMode] = useState<'list' | 'cards'>('list');
+
+  // Auto switch to card view on mobile
+  React.useEffect(() => {
+    if (isMobile) {
+      setViewMode('cards');
+    } else {
+      setViewMode('list');
+    }
+  }, [isMobile]);
+
+  // ========================================================================
   // FILTERING & SORTING
   // ========================================================================
 
@@ -252,6 +278,207 @@ const AlertPanel: React.FC<AlertPanelProps> = ({
   // ========================================================================
   // RENDER FUNCTIONS
   // ========================================================================
+
+  const AlertCard: React.FC<{ alert: Alert; index: number }> = ({ alert, index }) => {
+    const IconComponent = getAlertIcon(alert.type);
+    const isExpanded = expandedAlert === alert.id;
+    const isSelected = selectedAlerts.has(alert.id);
+
+    return (
+      <SwipeableCard
+        key={alert.id}
+        onSwipeLeft={() => onQuickAction('dismiss', alert.id)}
+        onSwipeRight={() => onQuickAction('acknowledge', alert.id)}
+        className="mb-4"
+      >
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: index * 0.05 }}
+          className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-all duration-200"
+        >
+          {/* Card Header */}
+          <div className="p-4">
+            <div className="flex items-start justify-between mb-3">
+              <div className="flex items-start gap-3 flex-1">
+                <input
+                  type="checkbox"
+                  checked={isSelected}
+                  onChange={() => handleSelectAlert(alert.id)}
+                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 mt-1"
+                />
+                
+                <div className={`p-2 rounded-lg ${SEVERITY_COLORS[alert.severity]} border`}>
+                  <IconComponent className="w-5 h-5" />
+                </div>
+                
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+                      {alert.title}
+                    </h3>
+                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${STATUS_COLORS[alert.status]} border`}>
+                      {alert.status}
+                    </span>
+                  </div>
+                  
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                    {alert.type.charAt(0).toUpperCase() + alert.type.slice(1)} • {formatRelativeTime(alert.createdAt)}
+                  </p>
+                  
+                  <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">
+                    {alert.message}
+                  </p>
+                </div>
+              </div>
+
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => handleExpandToggle(alert.id)}
+                className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              >
+                {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              </motion.button>
+            </div>
+
+            {/* Alert Metadata */}
+            <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+              {alert.location?.address && (
+                <div className="flex items-center gap-1">
+                  <MapPin className="w-3 h-3" />
+                  <span className="truncate max-w-24">{alert.location.address}</span>
+                </div>
+              )}
+              
+              {alert.target.estimatedReach && (
+                <div className="flex items-center gap-1">
+                  <Users className="w-3 h-3" />
+                  <span>{alert.target.estimatedReach} affected</span>
+                </div>
+              )}
+              
+              <div className="flex items-center gap-1">
+                <Clock className="w-3 h-3" />
+                <span>{formatRelativeTime(alert.createdAt)}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Expanded Content */}
+          <AnimatePresence>
+            {isExpanded && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="border-t border-gray-200 dark:border-gray-700"
+              >
+                <div className="p-4 space-y-3">
+                  {/* Full Description */}
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-1">
+                      Description
+                    </h4>
+                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                      {alert.message}
+                    </p>
+                  </div>
+
+                  {/* Actions */}
+                  {alert.actions && alert.actions.length > 0 && (
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
+                        Recommended Actions
+                      </h4>
+                      <div className="space-y-1">
+                        {alert.actions.map((action, actionIndex) => (
+                          <p key={actionIndex} className="text-sm text-gray-600 dark:text-gray-400">
+                            • {action.label}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Tags */}
+                  {alert.affectedZones && alert.affectedZones.length > 0 && (
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
+                        Affected Zones
+                      </h4>
+                      <div className="flex flex-wrap gap-1">
+                        {alert.affectedZones.map((zone, zoneIndex) => (
+                          <span 
+                            key={zoneIndex}
+                            className="inline-flex px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded"
+                          >
+                            {zone}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Card Actions */}
+          <div className="flex items-center justify-between p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+            <div className="flex items-center gap-2">
+              {alert.status === 'active' && (
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => onQuickAction('acknowledge', alert.id)}
+                  className="flex items-center gap-1 px-3 py-1.5 text-xs bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-md transition-colors"
+                >
+                  <Check className="w-3 h-3" />
+                  Acknowledge
+                </motion.button>
+              )}
+              
+              {alert.status !== 'resolved' && (
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => onQuickAction('resolve', alert.id)}
+                  className="flex items-center gap-1 px-3 py-1.5 text-xs bg-green-100 hover:bg-green-200 dark:bg-green-900/20 dark:hover:bg-green-900/30 text-green-700 dark:text-green-400 rounded-md transition-colors"
+                >
+                  <CheckCircle className="w-3 h-3" />
+                  Resolve
+                </motion.button>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => onAlertSelect(alert.id)}
+                className="p-1.5 text-gray-400 hover:text-blue-600 transition-colors"
+                title="View Details"
+              >
+                <Eye className="w-4 h-4" />
+              </motion.button>
+              
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => onQuickAction('dismiss', alert.id)}
+                className="p-1.5 text-gray-400 hover:text-red-600 transition-colors"
+                title="Dismiss"
+              >
+                <X className="w-4 h-4" />
+              </motion.button>
+            </div>
+          </div>
+        </motion.div>
+      </SwipeableCard>
+    );
+  };
 
   const renderTableHeader = () => (
     <thead className="bg-gray-50 dark:bg-gray-700">
@@ -597,47 +824,180 @@ const AlertPanel: React.FC<AlertPanelProps> = ({
   }
 
   return (
-    <div className="space-y-4">
-      {/* Summary Stats */}
-      <div className="flex items-center justify-between">
-        <div className="text-sm text-gray-600 dark:text-gray-400">
-          Showing {filteredAndSortedAlerts.length} of {alerts.length} alerts
+    <div className="w-full space-y-4">
+      {/* Mobile-Responsive Header & Controls */}
+      <div className="space-y-4">
+        {/* Search and Filter Bar */}
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+          {/* Search */}
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <input
+              type="text"
+              placeholder="Search alerts..."
+              value={filters.search}
+              onChange={(e) => onFiltersChange({ ...filters, search: e.target.value })}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+
+          {/* Filters and View Toggle */}
+          <div className="flex items-center gap-3">
+            {/* Status Filter */}
+            <div className="relative">
+              <select
+                value={filters.statuses[0] || 'all'}
+                onChange={(e) => {
+                  const status = e.target.value;
+                  onFiltersChange({
+                    ...filters,
+                    statuses: status === 'all' ? [] : [status as AlertStatus]
+                  });
+                }}
+                className="appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 pr-8 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="acknowledged">Acknowledged</option>
+                <option value="resolved">Resolved</option>
+                <option value="expired">Expired</option>
+              </select>
+              <Filter className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 pointer-events-none" />
+            </div>
+
+            {/* View Toggle (Desktop only) */}
+            {!isMobile && (
+              <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setViewMode('list')}
+                  className={`p-2 rounded-md transition-colors ${
+                    viewMode === 'list'
+                      ? 'bg-white dark:bg-gray-700 text-blue-600 shadow-sm'
+                      : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                  }`}
+                  title="List View"
+                >
+                  <List className="w-4 h-4" />
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setViewMode('cards')}
+                  className={`p-2 rounded-md transition-colors ${
+                    viewMode === 'cards'
+                      ? 'bg-white dark:bg-gray-700 text-blue-600 shadow-sm'
+                      : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                  }`}
+                  title="Card View"
+                >
+                  <Grid className="w-4 h-4" />
+                </motion.button>
+              </div>
+            )}
+
+            {/* Refresh Button */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95, rotate: 180 }}
+              className="p-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+              title="Refresh"
+            >
+              <RefreshCw className="w-4 h-4" />
+            </motion.button>
+          </div>
         </div>
-        
-        <div className="flex items-center gap-4 text-sm">
-          <div className="flex items-center gap-1">
-            <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-            <span className="text-gray-600 dark:text-gray-400">
-              {alerts.filter(a => a.severity === 'critical').length} Critical
-            </span>
+
+        {/* Summary Stats */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="text-sm text-gray-600 dark:text-gray-400">
+            Showing {filteredAndSortedAlerts.length} of {alerts.length} alerts
+            {selectedAlerts.size > 0 && (
+              <span className="ml-2">• {selectedAlerts.size} selected</span>
+            )}
           </div>
-          <div className="flex items-center gap-1">
-            <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-            <span className="text-gray-600 dark:text-gray-400">
-              {alerts.filter(a => a.severity === 'high').length} High
-            </span>
-          </div>
-          <div className="flex items-center gap-1">
-            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-            <span className="text-gray-600 dark:text-gray-400">
-              {alerts.filter(a => a.status === 'active').length} Active
-            </span>
+          
+          <div className="flex flex-wrap items-center gap-4 text-sm">
+            <div className="flex items-center gap-1">
+              <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+              <span className="text-gray-600 dark:text-gray-400">
+                {alerts.filter(a => a.severity === 'critical').length} Critical
+              </span>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+              <span className="text-gray-600 dark:text-gray-400">
+                {alerts.filter(a => a.severity === 'high').length} High
+              </span>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <span className="text-gray-600 dark:text-gray-400">
+                {alerts.filter(a => a.status === 'active').length} Active
+              </span>
+            </div>
           </div>
         </div>
+
+        {/* Bulk Actions for Mobile */}
+        {selectedAlerts.size > 0 && (
+          <div className="flex flex-wrap items-center gap-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+            <span className="text-sm text-blue-800 dark:text-blue-400 font-medium">
+              {selectedAlerts.size} alert{selectedAlerts.size !== 1 ? 's' : ''} selected
+            </span>
+            <div className="flex items-center gap-2 ml-auto">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handleBulkAction('acknowledge')}
+                className="px-3 py-1.5 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+              >
+                Acknowledge
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handleBulkAction('resolve')}
+                className="px-3 py-1.5 text-xs bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors"
+              >
+                Resolve
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setSelectedAlerts(new Set())}
+                className="px-3 py-1.5 text-xs bg-gray-600 hover:bg-gray-700 text-white rounded-md transition-colors"
+              >
+                Clear
+              </motion.button>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Alert Table */}
-      <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-        <div className="overflow-x-auto">
-          {renderBulkActions()}
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            {renderTableHeader()}
-            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-              {filteredAndSortedAlerts.map(renderAlertRow)}
-            </tbody>
-          </table>
+      {/* Conditional Rendering: Cards vs Table */}
+      {viewMode === 'cards' || isMobile ? (
+        // Mobile Card View
+        <StaggerContainer className="space-y-4">
+          {filteredAndSortedAlerts.map((alert, index) => (
+            <AlertCard key={alert.id} alert={alert} index={index} />
+          ))}
+        </StaggerContainer>
+      ) : (
+        // Desktop Table View
+        <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+          <div className="overflow-x-auto">
+            {renderBulkActions()}
+            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+              {renderTableHeader()}
+              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                {filteredAndSortedAlerts.map(renderAlertRow)}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Loading Overlay */}
       {isLoading && (

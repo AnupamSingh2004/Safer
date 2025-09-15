@@ -1,28 +1,71 @@
 /**
  * Smart Tourist Safety System - Card Component
- * Foundational card component with header, content, and footer sections
+ * Enhanced card component with smooth animations and hover effects
  */
 
 import * as React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 // ============================================================================
-// CARD COMPONENT
+// CARD COMPONENT WITH MOTION
 // ============================================================================
 
 const Card = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      "rounded-lg border bg-card text-card-foreground shadow-sm",
-      className
-    )}
-    {...props}
-  />
-));
+  React.HTMLAttributes<HTMLDivElement> & {
+    hoverable?: boolean;
+    loading?: boolean;
+  }
+>(({ className, hoverable = false, loading = false, ...props }, ref) => {
+  const shouldReduceMotion = useReducedMotion();
+  
+  const MotionDiv = motion.div;
+  
+  return (
+    <MotionDiv
+      ref={ref}
+      className={cn(
+        "rounded-lg border bg-card text-card-foreground shadow-sm transition-all duration-200",
+        hoverable && "hover:shadow-md hover:shadow-blue-100/50 cursor-pointer",
+        loading && "opacity-70",
+        className
+      )}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ 
+        opacity: 1, 
+        y: 0,
+        transition: { duration: shouldReduceMotion ? 0 : 0.3 }
+      }}
+      whileHover={shouldReduceMotion || !hoverable ? {} : {
+        scale: 1.02,
+        y: -2,
+        transition: { duration: 0.2 }
+      }}
+      whileTap={shouldReduceMotion || !hoverable ? {} : {
+        scale: 0.98,
+        transition: { duration: 0.1 }
+      }}
+      {...props}
+    >
+      {/* Loading shimmer effect */}
+      {loading && (
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent rounded-lg"
+          animate={{
+            x: ['-100%', '100%'],
+          }}
+          transition={{
+            duration: shouldReduceMotion ? 0 : 1.5,
+            repeat: Infinity,
+            ease: 'linear',
+          }}
+        />
+      )}
+      {props.children}
+    </MotionDiv>
+  );
+});
 Card.displayName = "Card";
 
 // ============================================================================

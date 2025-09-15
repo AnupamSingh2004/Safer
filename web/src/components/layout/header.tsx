@@ -9,7 +9,7 @@ import * as React from 'react';
 import { Bell, Menu, Search, Settings, User, LogOut, Shield, Moon, Sun } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth-store';
-import { ThemeSwitcher } from './theme-switcher';
+import { SimpleThemeSwitcher } from './simple-theme-switcher';
 
 // ============================================================================
 // HEADER COMPONENT
@@ -117,7 +117,7 @@ export function Header({ onMenuToggle, className }: HeaderProps) {
         {/* Right Side Actions */}
         <div className="flex items-center space-x-2 ml-auto">
           {/* Theme Toggle */}
-          <ThemeSwitcher variant="icon" size="sm" className="!p-2" />
+          <SimpleThemeSwitcher variant="compact" size="sm" className="!p-2" />
 
           {/* Notifications */}
           <div className="relative">

@@ -525,6 +525,20 @@ export class SecurityAuditor {
 }
 
 // ============================================================================
+// CONVENIENCE FUNCTIONS
+// ============================================================================
+
+const defaultEncryption = new AdvancedEncryption();
+
+export function encryptSensitiveData(data: string, password?: string) {
+  return defaultEncryption.encrypt(data, password);
+}
+
+export function decryptSensitiveData(encryptedData: any, password?: string) {
+  return defaultEncryption.decrypt(encryptedData, password);
+}
+
+// ============================================================================
 // EXPORTS
 // ============================================================================
 

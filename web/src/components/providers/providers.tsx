@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { SessionProvider } from "next-auth/react";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider as EnhancedThemeProvider } from "@/lib/theme/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { ENV } from "@/lib/constants";
 
@@ -146,22 +146,15 @@ class ErrorBoundary extends React.Component<
 
 function AppThemeProvider({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider
-      attribute="class"
+    <EnhancedThemeProvider
       defaultTheme="system"
+      storageKey="smart-tourist-theme"
       enableSystem
       disableTransitionOnChange={false}
-      themes={[
-        'light', 
-        'dark', 
-        'system',
-        'emergency-high-contrast',
-        'emergency-red-alert'
-      ]}
-      storageKey="smart-tourist-theme"
+      attribute="class"
     >
       {children}
-    </ThemeProvider>
+    </EnhancedThemeProvider>
   );
 }
 

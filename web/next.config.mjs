@@ -15,9 +15,47 @@ const nextConfig = {
       transform: 'lucide-react/dist/esm/icons/{{member}}',
     },
   },
+
+  // ============================================================================
+  // THEME OPTIMIZATION
+  // ============================================================================
+  experimental: {
+    optimizeCss: true,
+    optimizeServerReact: true,
+  },
+  
+  // CSS optimization for themes
+  sassOptions: {
+    includePaths: ['./src/styles'],
+    prependData: `
+      @import './src/styles/theme-variables.scss';
+    `,
+  },
   
   // Bundle analysis
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    // Initialize optimization and splitChunks if they don't exist
+    if (!config.optimization) {
+      config.optimization = {};
+    }
+    if (!config.optimization.splitChunks) {
+      config.optimization.splitChunks = {};
+    }
+    if (!config.optimization.splitChunks.cacheGroups) {
+      config.optimization.splitChunks.cacheGroups = {};
+    }
+
+    // Theme-specific optimizations
+    if (!dev) {
+      // Extract CSS variables for better caching
+      config.optimization.splitChunks.cacheGroups.styles = {
+        name: 'styles',
+        test: /\.(css|scss|sass)$/,
+        chunks: 'all',
+        enforce: true,
+      };
+    }
+
     // Optimize bundle size
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
@@ -27,6 +65,12 @@ const nextConfig = {
             test: /[\\/]node_modules[\\/]/,
             name: 'vendors',
             chunks: 'all',
+          },
+          theme: {
+            name: 'theme',
+            test: /[\\/]src[\\/](styles|theme)[\\/]/,
+            chunks: 'all',
+            priority: 10,
           },
         },
       };

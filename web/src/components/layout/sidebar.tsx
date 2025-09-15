@@ -24,6 +24,7 @@ import {
   ChevronDown,
   ChevronRight,
   Activity,
+  UserPlus,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth-store';
@@ -194,6 +195,48 @@ const menuItems: MenuItem[] = [
     ],
   },
   {
+    id: 'administration',
+    label: 'Administration',
+    href: '/dashboard/administration',
+    icon: Shield,
+    roles: ['admin', 'super_admin'],
+    permissions: ['system.manage_users', 'system.configure'],
+    children: [
+      {
+        id: 'admin-users',
+        label: 'User Management',
+        href: '/dashboard/administration/users',
+        icon: Users,
+        roles: ['admin', 'super_admin'],
+        permissions: ['system.manage_users'],
+      },
+      {
+        id: 'admin-create-user',
+        label: 'Create New User',
+        href: '/dashboard/administration/users/create',
+        icon: UserPlus,
+        roles: ['admin', 'super_admin'],
+        permissions: ['system.manage_users'],
+      },
+      {
+        id: 'admin-roles',
+        label: 'Role Management',
+        href: '/dashboard/administration/roles',
+        icon: Shield,
+        roles: ['super_admin'],
+        permissions: ['system.manage_roles'],
+      },
+      {
+        id: 'admin-system',
+        label: 'System Settings',
+        href: '/dashboard/administration/system',
+        icon: Settings,
+        roles: ['admin', 'super_admin'],
+        permissions: ['system.configure'],
+      },
+    ],
+  },
+  {
     id: 'settings',
     label: 'Settings',
     href: '/dashboard/settings',
@@ -201,18 +244,18 @@ const menuItems: MenuItem[] = [
     permissions: ['system.configure'],
     children: [
       {
-        id: 'settings-users',
-        label: 'User Management',
-        href: '/dashboard/settings/users',
+        id: 'settings-profile',
+        label: 'My Profile',
+        href: '/dashboard/settings/profile',
         icon: Users,
-        permissions: ['system.manage_users'],
+        permissions: [],
       },
       {
-        id: 'settings-system',
-        label: 'System Config',
-        href: '/dashboard/settings/system',
+        id: 'settings-preferences',
+        label: 'Preferences',
+        href: '/dashboard/settings/preferences',
         icon: Settings,
-        permissions: ['system.configure'],
+        permissions: [],
       },
     ],
   },

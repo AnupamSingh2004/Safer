@@ -1,10 +1,11 @@
 /**
  * Smart Tourist Safety System - Input Component
- * Essential form input component with variants, validation states and icons
+ * Enhanced input component with smooth animations and micro-interactions
  */
 
 import * as React from 'react';
 import { Eye, EyeOff, Search, AlertCircle, CheckCircle } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 // ============================================================================
@@ -25,16 +26,16 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 }
 
 // ============================================================================
-// INPUT COMPONENT STYLES
+// INPUT COMPONENT STYLES WITH ENHANCED ANIMATIONS
 // ============================================================================
 
 const inputBaseClasses = 
-  'flex w-full border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200';
+  'flex w-full border border-input bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-300 ease-out';
 
 const inputVariants = {
-  default: 'border-gray-300 focus:border-blue-500 focus:ring-blue-500',
-  outline: 'border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 bg-transparent',
-  filled: 'border-gray-200 bg-gray-50 focus:bg-white focus:border-blue-500 focus:ring-blue-500',
+  default: 'border-gray-300 focus:border-blue-500 focus:ring-blue-500 hover:border-gray-400 focus:shadow-sm',
+  outline: 'border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 bg-transparent hover:border-gray-300 focus:shadow-md',
+  filled: 'border-gray-200 bg-gray-50 focus:bg-white focus:border-blue-500 focus:ring-blue-500 hover:bg-gray-100 focus:shadow-sm',
 };
 
 const inputSizes = {
@@ -45,9 +46,9 @@ const inputSizes = {
 
 const inputStates = {
   default: '',
-  error: 'border-red-500 focus:border-red-500 focus:ring-red-500 bg-red-50',
-  success: 'border-green-500 focus:border-green-500 focus:ring-green-500 bg-green-50',
-  warning: 'border-orange-500 focus:border-orange-500 focus:ring-orange-500 bg-orange-50',
+  error: 'border-red-500 focus:border-red-500 focus:ring-red-500 bg-red-50 focus:shadow-red-100',
+  success: 'border-green-500 focus:border-green-500 focus:ring-green-500 bg-green-50 focus:shadow-green-100',
+  warning: 'border-orange-500 focus:border-orange-500 focus:ring-orange-500 bg-orange-50 focus:shadow-orange-100',
 };
 
 // ============================================================================

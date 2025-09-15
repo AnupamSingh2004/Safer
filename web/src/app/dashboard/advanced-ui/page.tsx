@@ -253,16 +253,17 @@ export default function AdvancedUIPage() {
   const [selectedTourists, setSelectedTourists] = useState<any[]>([]);
 
   const handleSearchResult = (result: any) => {
-    console.log('Selected search result:', result);
+    // Handle search result selection
+    setSelectedResults(prev => [...prev, result]);
   };
 
   const handleTouristSelection = (tourists: any[]) => {
     setSelectedTourists(tourists);
-    console.log('Selected tourists:', tourists);
+    // Handle tourist selection for operations
   };
 
   const handleExport = (format: 'csv' | 'excel' | 'pdf') => {
-    console.log(`Exporting data as ${format}`);
+    // Export data functionality
     // Implement export functionality
   };
 

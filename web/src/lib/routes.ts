@@ -1,7 +1,18 @@
 /**
  * Smart Tourist Safety System - Centralized Routes Configuration
- * Type-safe route definitions for the entire application
+ * Type-safe route definitions with role-based access control
  */
+
+// ============================================================================
+// USER ROLES
+// ============================================================================
+
+export enum UserRole {
+  SUPER_ADMIN = 'super_admin',
+  ADMIN = 'admin',
+  OPERATOR = 'operator',
+  VIEWER = 'viewer'
+}
 
 // ============================================================================
 // ROUTE DEFINITIONS
@@ -10,122 +21,96 @@
 export const ROUTES = {
   // Public Routes
   HOME: '/',
+  ABOUT: '/about',
+  CONTACT: '/contact',
+  HELP: '/help',
   
   // Authentication Routes
   AUTH: {
-    LOGIN: '/login',
-    REGISTER: '/register',
+    LOGIN: '/(auth)/login',
+    REGISTER: '/(auth)/register',
+    LOGOUT: '/auth/logout',
     FORGOT_PASSWORD: '/auth/forgot-password',
     RESET_PASSWORD: '/auth/reset-password',
     VERIFY_EMAIL: '/auth/verify-email',
+    ERROR: '/auth/error',
   },
 
-  // Dashboard Routes
+  // Dashboard Routes - Role-Based Access
   DASHBOARD: {
-    ROOT: '/dashboard',
+    ROOT: '/(dashboard)/overview',
     
-    // Tourist Management
+    // Overview (All Roles)
+    OVERVIEW: '/(dashboard)/overview',
+    
+    // Tourist Management (Admin, Operator, Viewer)
     TOURISTS: {
-      ROOT: '/dashboard/tourists',
-      ALL: '/dashboard/tourists',
-      REGISTER: '/dashboard/tourists/register',
-      CHECKINS: '/dashboard/tourists/checkins',
-      PROFILE: (id: string) => `/dashboard/tourists/${id}`,
-      EDIT: (id: string) => `/dashboard/tourists/${id}/edit`,
-      HISTORY: '/dashboard/tourists/history',
-      REPORTS: '/dashboard/tourists/reports',
-      SEARCH: '/dashboard/tourists/search',
+      ROOT: '/(dashboard)/tourists',
+      ALL: '/(dashboard)/tourists',
+      DETAILS: (id: string) => `/(dashboard)/tourists/${id}`,
+      LOCATION: (id: string) => `/(dashboard)/tourists/${id}/location`,
+      DIGITAL_ID: (id: string) => `/(dashboard)/tourists/${id}/digital-id`,
+      CREATE: '/(dashboard)/tourists/create', // Admin, Operator only
+      EDIT: (id: string) => `/(dashboard)/tourists/${id}/edit`, // Admin, Operator only
     },
 
-    // Safety Alerts
+    // Alert Management (All Roles - different permissions)
     ALERTS: {
-      ROOT: '/dashboard/alerts',
-      ALL: '/dashboard/alerts',
-      EMERGENCY: '/dashboard/alerts/emergency',
-      HISTORY: '/dashboard/alerts/history',
-      DETAILS: (id: string) => `/dashboard/alerts/${id}`,
-      CREATE: '/dashboard/alerts/create',
-      EDIT: (id: string) => `/dashboard/alerts/${id}/edit`,
+      ROOT: '/(dashboard)/alerts',
+      ALL: '/(dashboard)/alerts',
+      ACTIVE: '/(dashboard)/alerts/active',
+      HISTORY: '/(dashboard)/alerts/history',
+      DETAILS: (id: string) => `/(dashboard)/alerts/${id}`,
+      CREATE: '/(dashboard)/alerts/create', // Admin, Operator only
+      EMERGENCY: '/(dashboard)/alerts/emergency', // All roles
     },
 
-    // Zone Management
+    // Zone Management (Admin, Operator, Viewer)
     ZONES: {
-      ROOT: '/dashboard/zones',
-      ALL: '/dashboard/zones',
-      RISK: '/dashboard/zones/risk',
-      GEOFENCES: '/dashboard/zones/geofences',
-      HOTSPOTS: '/dashboard/zones/hotspots',
-      CREATE: '/dashboard/zones/create',
-      DETAILS: (id: string) => `/dashboard/zones/${id}`,
-      EDIT: (id: string) => `/dashboard/zones/${id}/edit`,
+      ROOT: '/(dashboard)/zones',
+      ALL: '/(dashboard)/zones',
+      DETAILS: (id: string) => `/(dashboard)/zones/${id}`,
+      EDIT: (id: string) => `/(dashboard)/zones/${id}/edit`, // Admin, Operator only
+      CREATE: '/(dashboard)/zones/create', // Admin, Operator only
     },
 
-    // Digital Identity & Blockchain
-    BLOCKCHAIN: {
-      ROOT: '/dashboard/blockchain',
-      IDENTITIES: '/dashboard/blockchain/identities',
-      GENERATE: '/dashboard/blockchain/generate',
-      VERIFY: '/dashboard/blockchain/verify',
-      TRANSACTIONS: '/dashboard/blockchain/transactions',
-      RECORDS: '/dashboard/blockchain/records',
-    },
-
-    // Analytics & Reports
+    // Analytics (All Roles)
     ANALYTICS: {
-      ROOT: '/dashboard/analytics',
-      OVERVIEW: '/dashboard/analytics/overview',
-      TOURISTS: '/dashboard/analytics/tourists',
-      ALERTS: '/dashboard/analytics/alerts',
-      ZONES: '/dashboard/analytics/zones',
-      REPORTS: '/dashboard/analytics/reports',
-      REAL_TIME: '/dashboard/analytics/real-time',
+      ROOT: '/(dashboard)/analytics',
+      OVERVIEW: '/(dashboard)/analytics',
+      HEATMAP: '/(dashboard)/analytics/heatmap',
+      REPORTS: '/(dashboard)/analytics/reports',
     },
 
-    // Communication
-    COMMUNICATION: {
-      ROOT: '/dashboard/communication',
-      MESSAGING: '/dashboard/communication/messaging',
-      NOTIFICATIONS: '/dashboard/communication/notifications',
-      BROADCASTS: '/dashboard/communication/broadcasts',
-      TEMPLATES: '/dashboard/communication/templates',
+    // Blockchain & Digital Identity (All Roles - different permissions)
+    BLOCKCHAIN: {
+      ROOT: '/(dashboard)/blockchain',
+      OVERVIEW: '/(dashboard)/blockchain',
+      DIGITAL_IDS: '/(dashboard)/blockchain/digital-ids',
+      GENERATE: '/(dashboard)/blockchain/digital-ids/generate', // Admin, Operator only
+      VERIFY: '/(dashboard)/blockchain/digital-ids/verify',
+      RECORDS: '/(dashboard)/blockchain/records',
     },
 
-    // Mobile Integration
-    MOBILE: {
-      ROOT: '/dashboard/mobile',
-      ANALYTICS: '/dashboard/mobile/analytics',
-      NOTIFICATIONS: '/dashboard/mobile/notifications',
-      QR_CODES: '/dashboard/mobile/qr-codes',
-      API_KEYS: '/dashboard/mobile/api-keys',
-    },
-
-    // System Administration
-    ADMIN: {
-      ROOT: '/dashboard/admin',
-      USERS: '/dashboard/admin/users',
-      SETTINGS: '/dashboard/admin/settings',
-      LOGS: '/dashboard/admin/logs',
-      PERMISSIONS: '/dashboard/admin/permissions',
-      BACKUP: '/dashboard/admin/backup',
-    },
-
-    // Reports
-    REPORTS: {
-      ROOT: '/dashboard/reports',
-      GENERATE: '/dashboard/reports/generate',
-      SCHEDULED: '/dashboard/reports/scheduled',
-      TEMPLATES: '/dashboard/reports/templates',
-      HISTORY: '/dashboard/reports/history',
-    },
-
-    // Settings
+    // Settings (Role-Based)
     SETTINGS: {
-      ROOT: '/dashboard/settings',
-      PROFILE: '/dashboard/settings/profile',
-      PREFERENCES: '/dashboard/settings/preferences',
-      SECURITY: '/dashboard/settings/security',
-      NOTIFICATIONS: '/dashboard/settings/notifications',
-      API: '/dashboard/settings/api',
+      ROOT: '/(dashboard)/settings',
+      PROFILE: '/(dashboard)/settings/profile', // All roles
+      PREFERENCES: '/(dashboard)/settings/preferences', // All roles
+      SYSTEM: '/(dashboard)/settings/system', // Admin only
+      USERS: '/(dashboard)/settings/users', // Admin only
+      NOTIFICATIONS: '/(dashboard)/settings/notifications', // All roles
+    },
+
+    // Admin Only Routes
+    ADMIN: {
+      ROOT: '/admin',
+      USERS: '/admin/users',
+      CREATE_USER: '/admin/users/create',
+      EDIT_USER: (id: string) => `/admin/users/${id}/edit`,
+      SYSTEM_LOGS: '/admin/logs',
+      BACKUP: '/admin/backup',
+      PERMISSIONS: '/admin/permissions',
     },
   },
 
@@ -220,6 +205,90 @@ export const ROUTES = {
 } as const;
 
 // ============================================================================
+// ROLE-BASED ACCESS CONTROL
+// ============================================================================
+
+export const ROLE_PERMISSIONS = {
+  [UserRole.SUPER_ADMIN]: {
+    canAccess: [
+      ROUTES.DASHBOARD.OVERVIEW,
+      ROUTES.DASHBOARD.TOURISTS.ROOT,
+      ROUTES.DASHBOARD.ALERTS.ROOT,
+      ROUTES.DASHBOARD.ZONES.ROOT,
+      ROUTES.DASHBOARD.ANALYTICS.ROOT,
+      ROUTES.DASHBOARD.BLOCKCHAIN.ROOT,
+      ROUTES.DASHBOARD.SETTINGS.ROOT,
+      '/admin',
+    ],
+    canCreate: true,
+    canEdit: true,
+    canDelete: true,
+    canManageUsers: true,
+    canAccessAdmin: true,
+    canViewLogs: true,
+    canManageSystem: true,
+  },
+  [UserRole.ADMIN]: {
+    canAccess: [
+      ROUTES.DASHBOARD.OVERVIEW,
+      ROUTES.DASHBOARD.TOURISTS.ROOT,
+      ROUTES.DASHBOARD.ALERTS.ROOT,
+      ROUTES.DASHBOARD.ZONES.ROOT,
+      ROUTES.DASHBOARD.ANALYTICS.ROOT,
+      ROUTES.DASHBOARD.BLOCKCHAIN.ROOT,
+      ROUTES.DASHBOARD.SETTINGS.ROOT,
+    ],
+    canCreate: true,
+    canEdit: true,
+    canDelete: true,
+    canManageUsers: true,
+    canAccessAdmin: false,
+    canViewLogs: true,
+    canManageSystem: false,
+  },
+  [UserRole.OPERATOR]: {
+    canAccess: [
+      ROUTES.DASHBOARD.OVERVIEW,
+      ROUTES.DASHBOARD.TOURISTS.ROOT,
+      ROUTES.DASHBOARD.ALERTS.ROOT,
+      ROUTES.DASHBOARD.ZONES.ROOT,
+      ROUTES.DASHBOARD.ANALYTICS.ROOT,
+      ROUTES.DASHBOARD.BLOCKCHAIN.ROOT,
+      ROUTES.DASHBOARD.SETTINGS.PROFILE,
+      ROUTES.DASHBOARD.SETTINGS.PREFERENCES,
+      ROUTES.DASHBOARD.SETTINGS.NOTIFICATIONS,
+    ],
+    canCreate: true,
+    canEdit: true,
+    canDelete: false,
+    canManageUsers: false,
+    canAccessAdmin: false,
+    canViewLogs: false,
+    canManageSystem: false,
+  },
+  [UserRole.VIEWER]: {
+    canAccess: [
+      ROUTES.DASHBOARD.OVERVIEW,
+      ROUTES.DASHBOARD.TOURISTS.ROOT,
+      ROUTES.DASHBOARD.ALERTS.ROOT,
+      ROUTES.DASHBOARD.ZONES.ROOT,
+      ROUTES.DASHBOARD.ANALYTICS.ROOT,
+      ROUTES.DASHBOARD.BLOCKCHAIN.ROOT,
+      ROUTES.DASHBOARD.SETTINGS.PROFILE,
+      ROUTES.DASHBOARD.SETTINGS.PREFERENCES,
+      ROUTES.DASHBOARD.SETTINGS.NOTIFICATIONS,
+    ],
+    canCreate: false,
+    canEdit: false,
+    canDelete: false,
+    canManageUsers: false,
+    canAccessAdmin: false,
+    canViewLogs: false,
+    canManageSystem: false,
+  },
+} as const;
+
+// ============================================================================
 // ROUTE HELPERS
 // ============================================================================
 
@@ -235,10 +304,24 @@ export class AppRouter {
   }
 
   /**
-   * Navigate to tourist profile
+   * Navigate to tourist details
    */
-  static touristProfile(id: string): string {
-    return ROUTES.DASHBOARD.TOURISTS.PROFILE(id);
+  static touristDetails(id: string): string {
+    return ROUTES.DASHBOARD.TOURISTS.DETAILS(id);
+  }
+
+  /**
+   * Navigate to tourist location
+   */
+  static touristLocation(id: string): string {
+    return ROUTES.DASHBOARD.TOURISTS.LOCATION(id);
+  }
+
+  /**
+   * Navigate to tourist digital ID
+   */
+  static touristDigitalId(id: string): string {
+    return ROUTES.DASHBOARD.TOURISTS.DIGITAL_ID(id);
   }
 
   /**
@@ -275,6 +358,132 @@ export class AppRouter {
   static apiZone(id: string): string {
     return ROUTES.API.ZONES.BY_ID(id);
   }
+}
+
+// ============================================================================
+// ROLE-BASED ACCESS FUNCTIONS
+// ============================================================================
+
+/**
+ * Check if user role can access a specific route
+ */
+export function canAccessRoute(userRole: UserRole, pathname: string): boolean {
+  const permissions = ROLE_PERMISSIONS[userRole];
+  
+  // Check exact matches first
+  for (const allowedRoute of permissions.canAccess) {
+    if (allowedRoute === pathname) {
+      return true;
+    }
+    
+    // Check if pathname starts with allowed route (for nested routes)
+    if (pathname.startsWith(allowedRoute)) {
+      return true;
+    }
+  }
+  
+  return false;
+}
+
+/**
+ * Check if user role can perform create operations
+ */
+export function canCreate(userRole: UserRole): boolean {
+  return ROLE_PERMISSIONS[userRole].canCreate;
+}
+
+/**
+ * Check if user role can perform edit operations
+ */
+export function canEdit(userRole: UserRole): boolean {
+  return ROLE_PERMISSIONS[userRole].canEdit;
+}
+
+/**
+ * Check if user role can perform delete operations
+ */
+export function canDelete(userRole: UserRole): boolean {
+  return ROLE_PERMISSIONS[userRole].canDelete;
+}
+
+/**
+ * Check if user role can manage other users
+ */
+export function canManageUsers(userRole: UserRole): boolean {
+  return ROLE_PERMISSIONS[userRole].canManageUsers;
+}
+
+/**
+ * Check if user role can access admin features
+ */
+export function canAccessAdmin(userRole: UserRole): boolean {
+  return ROLE_PERMISSIONS[userRole].canAccessAdmin;
+}
+
+/**
+ * Get navigation items based on user role
+ */
+export function getNavigationForRole(userRole: UserRole) {
+  const permissions = ROLE_PERMISSIONS[userRole];
+  
+  const baseNavigation = [
+    {
+      name: 'Overview',
+      href: ROUTES.DASHBOARD.OVERVIEW,
+      icon: 'LayoutDashboard',
+      description: 'System overview and statistics'
+    },
+    {
+      name: 'Tourists',
+      href: ROUTES.DASHBOARD.TOURISTS.ROOT,
+      icon: 'Users',
+      description: 'Manage tourist information and tracking'
+    },
+    {
+      name: 'Alerts',
+      href: ROUTES.DASHBOARD.ALERTS.ROOT,
+      icon: 'AlertTriangle',
+      description: 'Monitor and manage safety alerts'
+    },
+    {
+      name: 'Zones',
+      href: ROUTES.DASHBOARD.ZONES.ROOT,
+      icon: 'MapPin',
+      description: 'Manage geofence zones and risk areas'
+    },
+    {
+      name: 'Analytics',
+      href: ROUTES.DASHBOARD.ANALYTICS.ROOT,
+      icon: 'BarChart3',
+      description: 'View analytics and reports'
+    },
+    {
+      name: 'Blockchain',
+      href: ROUTES.DASHBOARD.BLOCKCHAIN.ROOT,
+      icon: 'Shield',
+      description: 'Digital identity and blockchain verification'
+    },
+  ];
+
+  // Add admin navigation if user has permission
+  if (permissions.canAccessAdmin) {
+    baseNavigation.push({
+      name: 'Administration',
+      href: '/admin' as any, // Admin routes are separate
+      icon: 'Settings',
+      description: 'System administration and user management'
+    });
+  }
+
+  // Add settings for all users
+  baseNavigation.push({
+    name: 'Settings',
+    href: ROUTES.DASHBOARD.SETTINGS.ROOT,
+    icon: 'User',
+    description: 'Personal settings and preferences'
+  });
+
+  return baseNavigation;
 }
 
 // ============================================================================

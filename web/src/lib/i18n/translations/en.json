@@ -1,0 +1,676 @@
+{
+  "meta": {
+    "language": "English",
+    "code": "en",
+    "direction": "ltr",
+    "version": "1.0.0",
+    "lastUpdated": "2025-09-14",
+    "completeness": "100%",
+    "maintainer": "Smart Tourist Safety Team"
+  },
+  
+  "common": {
+    "appName": "Smart Tourist Safety",
+    "tagline": "Ensuring Safe Journeys with Smart Technology",
+    "version": "v1.0.0",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Information",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "close": "Close",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "refresh": "Refresh",
+    "export": "Export",
+    "import": "Import",
+    "print": "Print",
+    "share": "Share",
+    "copy": "Copy",
+    "download": "Download",
+    "upload": "Upload",
+    "submit": "Submit",
+    "reset": "Reset",
+    "clear": "Clear",
+    "select": "Select",
+    "selectAll": "Select All",
+    "none": "None",
+    "all": "All",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "done": "Done",
+    "finish": "Finish",
+    "start": "Start",
+    "stop": "Stop",
+    "pause": "Pause",
+    "resume": "Resume",
+    "enable": "Enable",
+    "disable": "Disable",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "online": "Online",
+    "offline": "Offline",
+    "active": "Active",
+    "inactive": "Inactive",
+    "available": "Available",
+    "unavailable": "Unavailable",
+    "required": "Required",
+    "optional": "Optional",
+    "public": "Public",
+    "private": "Private",
+    "draft": "Draft",
+    "published": "Published"
+  },
+  
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "overview": "Overview",
+    "tourists": "Tourists",
+    "alerts": "Alerts",
+    "zones": "Zones",
+    "analytics": "Analytics",
+    "blockchain": "Blockchain",
+    "settings": "Settings",
+    "profile": "Profile",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register",
+    "help": "Help",
+    "support": "Support",
+    "documentation": "Documentation",
+    "reports": "Reports",
+    "notifications": "Notifications",
+    "emergency": "Emergency",
+    "contacts": "Contacts",
+    "communication": "Communication",
+    "tracking": "Tracking",
+    "monitoring": "Monitoring",
+    "management": "Management",
+    "administration": "Administration",
+    "configuration": "Configuration",
+    "maintenance": "Maintenance",
+    "breadcrumb": {
+      "home": "Home",
+      "dashboard": "Dashboard",
+      "tourists": "Tourist Management",
+      "alerts": "Alert Management",
+      "zones": "Zone Management",
+      "analytics": "Analytics & Reports",
+      "blockchain": "Digital Identity",
+      "settings": "System Settings"
+    }
+  },
+  
+  "auth": {
+    "login": {
+      "title": "Login to Smart Tourist Safety",
+      "subtitle": "Access the emergency response dashboard",
+      "email": "Email Address",
+      "password": "Password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot your password?",
+      "loginButton": "Sign In",
+      "noAccount": "Don't have an account?",
+      "signUpLink": "Create Account",
+      "googleLogin": "Continue with Google",
+      "emergencyAccess": "Emergency Access",
+      "guestLogin": "Guest Login",
+      "errors": {
+        "invalidCredentials": "Invalid email or password",
+        "accountLocked": "Account temporarily locked",
+        "serverError": "Server error. Please try again.",
+        "networkError": "Network error. Check your connection.",
+        "sessionExpired": "Session expired. Please login again."
+      }
+    },
+    "register": {
+      "title": "Create Emergency Response Account",
+      "subtitle": "Join the smart tourist safety network",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "department": "Department",
+      "role": "Role",
+      "phoneNumber": "Phone Number",
+      "emergencyContact": "Emergency Contact",
+      "terms": "I agree to the Terms of Service and Privacy Policy",
+      "registerButton": "Create Account",
+      "hasAccount": "Already have an account?",
+      "signInLink": "Sign In",
+      "verification": {
+        "title": "Verify Your Account",
+        "subtitle": "We've sent a verification code to your email",
+        "code": "Verification Code",
+        "verify": "Verify Account",
+        "resend": "Resend Code"
+      }
+    },
+    "roles": {
+      "admin": "System Administrator",
+      "operator": "Emergency Operator",
+      "police": "Police Officer",
+      "medical": "Medical Officer",
+      "tourism": "Tourism Officer",
+      "security": "Security Personnel",
+      "supervisor": "Supervisor",
+      "analyst": "Data Analyst"
+    },
+    "departments": {
+      "police": "Police Department",
+      "medical": "Medical Services",
+      "fire": "Fire Department",
+      "tourism": "Tourism Board",
+      "security": "Security Services",
+      "administration": "Administration",
+      "analytics": "Analytics Division"
+    }
+  },
+  
+  "dashboard": {
+    "welcome": "Welcome to Smart Tourist Safety Dashboard",
+    "lastUpdated": "Last updated",
+    "quickStats": {
+      "totalTourists": "Total Tourists",
+      "activeTourists": "Active Tourists",
+      "emergencyAlerts": "Emergency Alerts",
+      "resolvedIncidents": "Resolved Incidents",
+      "responseTime": "Avg Response Time",
+      "safetyScore": "Safety Score",
+      "riskZones": "Risk Zones",
+      "onlineOperators": "Online Operators"
+    },
+    "recentActivity": {
+      "title": "Recent Activity",
+      "newTourist": "New tourist registered",
+      "alertResolved": "Emergency alert resolved",
+      "zoneUpdated": "Safety zone updated",
+      "incidentReported": "Incident reported",
+      "systemUpdate": "System update completed"
+    },
+    "emergencyStatus": {
+      "title": "Emergency Status",
+      "allClear": "All Clear",
+      "minorIncidents": "Minor Incidents",
+      "majorIncidents": "Major Incidents",
+      "criticalAlerts": "Critical Alerts"
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "createAlert": "Create Alert",
+      "registerTourist": "Register Tourist",
+      "addZone": "Add Safety Zone",
+      "generateReport": "Generate Report",
+      "broadcastMessage": "Broadcast Message",
+      "emergencyProtocol": "Emergency Protocol"
+    }
+  },
+  
+  "tourists": {
+    "title": "Tourist Management",
+    "subtitle": "Monitor and manage tourist registrations and activities",
+    "registration": {
+      "title": "Tourist Registration",
+      "personalInfo": "Personal Information",
+      "travelInfo": "Travel Information",
+      "emergencyContact": "Emergency Contact",
+      "fields": {
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "nationality": "Nationality",
+        "passportNumber": "Passport Number",
+        "aadhaarNumber": "Aadhaar Number",
+        "dateOfBirth": "Date of Birth",
+        "gender": "Gender",
+        "phoneNumber": "Phone Number",
+        "email": "Email Address",
+        "arrivalDate": "Arrival Date",
+        "departureDate": "Departure Date",
+        "purposeOfVisit": "Purpose of Visit",
+        "accommodation": "Accommodation",
+        "itinerary": "Travel Itinerary",
+        "emergencyContactName": "Emergency Contact Name",
+        "emergencyContactPhone": "Emergency Contact Phone",
+        "emergencyContactRelation": "Relationship"
+      }
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "emergency": "Emergency",
+      "missing": "Missing",
+      "safe": "Safe",
+      "atrisk": "At Risk",
+      "checked_in": "Checked In",
+      "checked_out": "Checked Out"
+    },
+    "actions": {
+      "viewProfile": "View Profile",
+      "trackLocation": "Track Location",
+      "sendMessage": "Send Message",
+      "createAlert": "Create Alert",
+      "generateId": "Generate Digital ID",
+      "downloadInfo": "Download Info",
+      "updateStatus": "Update Status"
+    },
+    "filters": {
+      "all": "All Tourists",
+      "active": "Active",
+      "emergency": "Emergency",
+      "nationality": "By Nationality",
+      "arrivalDate": "By Arrival Date",
+      "riskLevel": "By Risk Level"
+    },
+    "details": {
+      "basicInfo": "Basic Information",
+      "travelHistory": "Travel History",
+      "locationHistory": "Location History",
+      "alertHistory": "Alert History",
+      "digitalId": "Digital Identity",
+      "safetyScore": "Safety Score",
+      "riskAssessment": "Risk Assessment"
+    }
+  },
+  
+  "alerts": {
+    "title": "Alert Management",
+    "subtitle": "Monitor and respond to tourist safety alerts",
+    "types": {
+      "emergency": "Emergency",
+      "medical": "Medical",
+      "security": "Security",
+      "weather": "Weather",
+      "traffic": "Traffic",
+      "natural_disaster": "Natural Disaster",
+      "crime": "Crime",
+      "missing_person": "Missing Person",
+      "accident": "Accident",
+      "general": "General"
+    },
+    "priority": {
+      "critical": "Critical",
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "status": {
+      "active": "Active",
+      "resolved": "Resolved",
+      "in_progress": "In Progress",
+      "pending": "Pending",
+      "dismissed": "Dismissed",
+      "escalated": "Escalated"
+    },
+    "actions": {
+      "respond": "Respond",
+      "escalate": "Escalate",
+      "resolve": "Resolve",
+      "dismiss": "Dismiss",
+      "assign": "Assign",
+      "broadcast": "Broadcast",
+      "investigate": "Investigate",
+      "followUp": "Follow Up"
+    },
+    "creation": {
+      "title": "Create New Alert",
+      "alertType": "Alert Type",
+      "priority": "Priority Level",
+      "location": "Location",
+      "description": "Description",
+      "affectedTourists": "Affected Tourists",
+      "estimatedImpact": "Estimated Impact",
+      "requiredResponse": "Required Response",
+      "notifyContacts": "Notify Emergency Contacts"
+    },
+    "response": {
+      "title": "Emergency Response",
+      "dispatchTeam": "Dispatch Team",
+      "contactAuthorities": "Contact Authorities",
+      "evacuateArea": "Evacuate Area",
+      "provideAssistance": "Provide Assistance",
+      "updateStatus": "Update Status",
+      "documentIncident": "Document Incident"
+    }
+  },
+  
+  "zones": {
+    "title": "Zone Management",
+    "subtitle": "Manage safety zones and geofencing parameters",
+    "types": {
+      "safe": "Safe Zone",
+      "caution": "Caution Zone",
+      "restricted": "Restricted Zone",
+      "danger": "Danger Zone",
+      "emergency": "Emergency Zone",
+      "tourist": "Tourist Zone",
+      "medical": "Medical Zone",
+      "police": "Police Zone"
+    },
+    "properties": {
+      "name": "Zone Name",
+      "type": "Zone Type",
+      "riskLevel": "Risk Level",
+      "capacity": "Capacity",
+      "currentOccupancy": "Current Occupancy",
+      "description": "Description",
+      "coordinates": "Coordinates",
+      "radius": "Radius",
+      "emergencyContacts": "Emergency Contacts",
+      "specialInstructions": "Special Instructions"
+    },
+    "riskLevels": {
+      "very_low": "Very Low",
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "very_high": "Very High",
+      "extreme": "Extreme"
+    },
+    "actions": {
+      "editZone": "Edit Zone",
+      "deleteZone": "Delete Zone",
+      "activateZone": "Activate Zone",
+      "deactivateZone": "Deactivate Zone",
+      "broadcastAlert": "Broadcast Alert",
+      "evacuate": "Evacuate Zone",
+      "lockdown": "Lockdown Zone"
+    }
+  },
+  
+  "emergency": {
+    "title": "Emergency Response",
+    "panicButton": "PANIC BUTTON",
+    "emergencyContacts": "Emergency Contacts",
+    "numbers": {
+      "emergency": "Emergency - 112",
+      "police": "Police - 100",
+      "fire": "Fire - 101",
+      "medical": "Medical - 108",
+      "tourist": "Tourist Helpline - 1363",
+      "women": "Women Helpline - 1091",
+      "child": "Child Helpline - 1098"
+    },
+    "protocols": {
+      "title": "Emergency Protocols",
+      "medical": "Medical Emergency",
+      "fire": "Fire Emergency",
+      "natural": "Natural Disaster",
+      "security": "Security Threat",
+      "missing": "Missing Person",
+      "accident": "Accident"
+    },
+    "response": {
+      "immediate": "Immediate Response Required",
+      "dispatched": "Emergency Team Dispatched",
+      "enroute": "Help is on the way",
+      "onsite": "Responders on site",
+      "resolved": "Emergency resolved",
+      "followup": "Follow-up required"
+    },
+    "messages": {
+      "alertSent": "Emergency alert sent successfully",
+      "teamDispatched": "Emergency team has been dispatched",
+      "locationReceived": "Your location has been received",
+      "helpComming": "Help is coming, stay calm",
+      "stayInPlace": "Stay in place until help arrives",
+      "followInstructions": "Follow emergency responder instructions"
+    }
+  },
+  
+  "blockchain": {
+    "title": "Blockchain Digital Identity",
+    "subtitle": "Manage secure digital IDs for tourists",
+    "digitalId": {
+      "title": "Digital Identity",
+      "generate": "Generate Digital ID",
+      "verify": "Verify Identity",
+      "status": "ID Status",
+      "qrCode": "QR Code",
+      "blockchainHash": "Blockchain Hash",
+      "issuedDate": "Issued Date",
+      "expiryDate": "Expiry Date",
+      "validityPeriod": "Validity Period"
+    },
+    "verification": {
+      "title": "Identity Verification",
+      "scanning": "Scanning QR Code...",
+      "verified": "Identity Verified",
+      "invalid": "Invalid Identity",
+      "expired": "Identity Expired",
+      "pending": "Verification Pending",
+      "failed": "Verification Failed"
+    },
+    "transactions": {
+      "title": "Transaction History",
+      "issued": "ID Issued",
+      "verified": "ID Verified",
+      "updated": "ID Updated",
+      "revoked": "ID Revoked",
+      "expired": "ID Expired"
+    },
+    "security": {
+      "encrypted": "Encrypted Data",
+      "immutable": "Immutable Record",
+      "decentralized": "Decentralized Storage",
+      "tamperProof": "Tamper Proof"
+    }
+  },
+  
+  "analytics": {
+    "title": "Analytics & Reports",
+    "subtitle": "Comprehensive analytics for tourist safety insights",
+    "dashboardTitle": "Analytics Dashboard",
+    "sections": {
+      "overview": "Overview",
+      "tourists": "Tourist Analytics",
+      "incidents": "Incident Analytics",
+      "zones": "Zone Analytics",
+      "performance": "Performance Metrics",
+      "trends": "Trend Analysis",
+      "reports": "Custom Reports"
+    },
+    "metrics": {
+      "totalVisits": "Total Visits",
+      "averageStay": "Average Stay",
+      "incidentRate": "Incident Rate",
+      "responseTime": "Response Time",
+      "satisfactionScore": "Satisfaction Score",
+      "repeatVisitors": "Repeat Visitors",
+      "popularDestinations": "Popular Destinations",
+      "seasonalTrends": "Seasonal Trends"
+    },
+    "charts": {
+      "touristFlow": "Tourist Flow",
+      "incidentTrends": "Incident Trends",
+      "responseMetrics": "Response Metrics",
+      "zoneActivity": "Zone Activity",
+      "timelineAnalysis": "Timeline Analysis",
+      "heatmap": "Activity Heatmap"
+    },
+    "reports": {
+      "daily": "Daily Report",
+      "weekly": "Weekly Report",
+      "monthly": "Monthly Report",
+      "custom": "Custom Report",
+      "incident": "Incident Report",
+      "performance": "Performance Report"
+    }
+  },
+  
+  "forms": {
+    "validation": {
+      "required": "This field is required",
+      "email": "Please enter a valid email address",
+      "phone": "Please enter a valid phone number",
+      "passport": "Please enter a valid passport number",
+      "aadhaar": "Please enter a valid Aadhaar number",
+      "date": "Please select a valid date",
+      "time": "Please select a valid time",
+      "number": "Please enter a valid number",
+      "text": "Please enter valid text",
+      "url": "Please enter a valid URL",
+      "password": "Password must be at least 8 characters",
+      "confirmPassword": "Passwords do not match",
+      "minLength": "Minimum {{count}} characters required",
+      "maxLength": "Maximum {{count}} characters allowed",
+      "pattern": "Please match the required format"
+    },
+    "placeholders": {
+      "search": "Search...",
+      "email": "Enter your email",
+      "password": "Enter your password",
+      "firstName": "Enter first name",
+      "lastName": "Enter last name",
+      "phone": "Enter phone number",
+      "address": "Enter address",
+      "description": "Enter description",
+      "notes": "Enter notes",
+      "select": "Select an option"
+    }
+  },
+  
+  "notifications": {
+    "title": "Notifications",
+    "types": {
+      "emergency": "Emergency Alert",
+      "warning": "Warning",
+      "info": "Information",
+      "success": "Success",
+      "reminder": "Reminder",
+      "update": "System Update"
+    },
+    "actions": {
+      "markAsRead": "Mark as Read",
+      "markAllAsRead": "Mark All as Read",
+      "dismiss": "Dismiss",
+      "archive": "Archive",
+      "respond": "Respond"
+    },
+    "messages": {
+      "noNotifications": "No new notifications",
+      "allRead": "All notifications are read",
+      "emergencyAlert": "Emergency alert in your area",
+      "systemMaintenance": "System maintenance scheduled",
+      "newUpdate": "New system update available"
+    }
+  },
+  
+  "errors": {
+    "general": "An error occurred. Please try again.",
+    "network": "Network error. Please check your connection.",
+    "server": "Server error. Please try again later.",
+    "authentication": "Authentication failed. Please login again.",
+    "authorization": "You don't have permission to access this resource.",
+    "notFound": "Resource not found.",
+    "validation": "Please check your input and try again.",
+    "timeout": "Request timeout. Please try again.",
+    "fileUpload": "File upload failed. Please try again.",
+    "permissionDenied": "Permission denied.",
+    "sessionExpired": "Your session has expired. Please login again.",
+    "maintenance": "System is under maintenance. Please try again later.",
+    "rateLimit": "Too many requests. Please wait and try again."
+  },
+  
+  "success": {
+    "general": "Operation completed successfully.",
+    "saved": "Data saved successfully.",
+    "updated": "Data updated successfully.",
+    "deleted": "Data deleted successfully.",
+    "sent": "Message sent successfully.",
+    "uploaded": "File uploaded successfully.",
+    "registered": "Registration completed successfully.",
+    "verified": "Verification completed successfully.",
+    "resolved": "Issue resolved successfully.",
+    "dispatched": "Emergency team dispatched successfully."
+  },
+  
+  "dateTime": {
+    "formats": {
+      "short": "MM/DD/YYYY",
+      "long": "MMMM DD, YYYY",
+      "time": "HH:mm:ss",
+      "dateTime": "MM/DD/YYYY HH:mm:ss",
+      "relative": "relative"
+    },
+    "timeAgo": {
+      "justNow": "Just now",
+      "minuteAgo": "1 minute ago",
+      "minutesAgo": "{{count}} minutes ago",
+      "hourAgo": "1 hour ago",
+      "hoursAgo": "{{count}} hours ago",
+      "dayAgo": "1 day ago",
+      "daysAgo": "{{count}} days ago",
+      "weekAgo": "1 week ago",
+      "weeksAgo": "{{count}} weeks ago"
+    },
+    "days": {
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday"
+    },
+    "months": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    }
+  },
+  
+  "units": {
+    "distance": {
+      "km": "km",
+      "m": "m",
+      "miles": "miles",
+      "feet": "feet"
+    },
+    "time": {
+      "seconds": "seconds",
+      "minutes": "minutes",
+      "hours": "hours",
+      "days": "days"
+    },
+    "currency": {
+      "inr": "₹",
+      "usd": "$",
+      "eur": "€"
+    }
+  },
+  
+  "accessibility": {
+    "skipToContent": "Skip to main content",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "toggleTheme": "Toggle dark mode",
+    "selectLanguage": "Select language",
+    "loading": "Loading content",
+    "errorOccurred": "An error occurred",
+    "sortAscending": "Sort ascending",
+    "sortDescending": "Sort descending",
+    "showMore": "Show more",
+    "showLess": "Show less"
+  }
+}

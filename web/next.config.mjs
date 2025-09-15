@@ -1,13 +1,171 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enable standalone output for Docker
+  // ============================================================================
+  // PRODUCTION OPTIMIZATION
+  // ============================================================================
   output: 'standalone',
-  
-  // Optimize for production
   poweredByHeader: false,
   compress: true,
+  generateEtags: true,
   
-  // API configuration
+  // Performance optimizations
+  swcMinify: true,
+  modularizeImports: {
+    'lucide-react': {
+      transform: 'lucide-react/dist/esm/icons/{{member}}',
+    },
+  },
+
+  // ============================================================================
+  // THEME OPTIMIZATION
+  // ============================================================================
+  experimental: {
+    optimizeCss: true,
+    optimizeServerReact: true,
+  },
+  
+  // CSS optimization for themes
+  sassOptions: {
+    includePaths: ['./src/styles'],
+    prependData: `
+      @import './src/styles/theme-variables.scss';
+    `,
+  },
+  
+  // Bundle analysis
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    // Initialize optimization and splitChunks if they don't exist
+    if (!config.optimization) {
+      config.optimization = {};
+    }
+    if (!config.optimization.splitChunks) {
+      config.optimization.splitChunks = {};
+    }
+    if (!config.optimization.splitChunks.cacheGroups) {
+      config.optimization.splitChunks.cacheGroups = {};
+    }
+
+    // Theme-specific optimizations
+    if (!dev) {
+      // Extract CSS variables for better caching
+      config.optimization.splitChunks.cacheGroups.styles = {
+        name: 'styles',
+        test: /\.(css|scss|sass)$/,
+        chunks: 'all',
+        enforce: true,
+      };
+    }
+
+    // Optimize bundle size
+    if (!dev && !isServer) {
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+          theme: {
+            name: 'theme',
+            test: /[\\/]src[\\/](styles|theme)[\\/]/,
+            chunks: 'all',
+            priority: 10,
+          },
+        },
+      };
+    }
+    
+    // Add performance monitoring
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        __BUILD_ID__: JSON.stringify(buildId),
+        __BUILD_TIME__: JSON.stringify(new Date().toISOString()),
+      })
+    );
+    
+    return config;
+  },
+
+  // ============================================================================
+  // SECURITY CONFIGURATION
+  // ============================================================================
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          // Content Security Policy
+          {
+            key: 'Content-Security-Policy',
+            value: process.env.NODE_ENV === 'production' 
+              ? "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https: wss: ws:; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+              : "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https: http:; connect-src 'self' http://localhost:* https: wss: ws: data:; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+          },
+          // Security headers
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on'
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload'
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block'
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY'
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin'
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=(self), payment=()'
+          }
+        ],
+      },
+      {
+        source: '/api/(.*)',
+        headers: [
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: process.env.NODE_ENV === 'production' 
+              ? process.env.NEXT_PUBLIC_APP_URL || 'https://smart-tourist-safety.gov.in' 
+              : '*',
+          },
+          {
+            key: 'Access-Control-Allow-Methods',
+            value: 'GET, POST, PUT, DELETE, OPTIONS, PATCH',
+          },
+          {
+            key: 'Access-Control-Allow-Headers',
+            value: 'Content-Type, Authorization, X-Requested-With, Accept, Origin',
+          },
+          {
+            key: 'Access-Control-Allow-Credentials',
+            value: 'true',
+          },
+          {
+            key: 'X-API-Version',
+            value: '1.0',
+          }
+        ],
+      },
+    ];
+  },
+
+  // ============================================================================
+  // API ROUTING & REWRITES
+  // ============================================================================
   async rewrites() {
     return [
       {
@@ -17,53 +175,40 @@ const nextConfig = {
       {
         source: '/api/dashboard/:path*', 
         destination: '/api/dashboard/:path*',
+      },
+      {
+        source: '/api/blockchain/:path*',
+        destination: '/api/blockchain/:path*',
       }
     ];
   },
-  
-  // Headers for security and CORS
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'Content-Security-Policy',
-            value: process.env.NODE_ENV === 'production' 
-              ? "default-src 'self'; connect-src 'self' https: wss: ws:;"
-              : "default-src 'self'; connect-src 'self' http://localhost:3001 https: wss: ws: data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:;"
-          }
-        ],
-      },
-      {
-        source: '/api/(.*)',
-        headers: [
-          {
-            key: 'Access-Control-Allow-Origin',
-            value: process.env.NODE_ENV === 'production' ? 'https://yourdomain.com' : '*',
-          },
-          {
-            key: 'Access-Control-Allow-Methods',
-            value: 'GET, POST, PUT, DELETE, OPTIONS',
-          },
-          {
-            key: 'Access-Control-Allow-Headers',
-            value: 'Content-Type, Authorization',
-          },
-        ],
-      },
-    ];
-  },
-  
-  // Image optimization
+
+  // ============================================================================
+  // PERFORMANCE & CACHING
+  // ============================================================================
   images: {
-    domains: ['localhost', 'yourdomain.com'],
+    domains: [
+      'localhost', 
+      'smart-tourist-safety.gov.in',
+      'supabase.co',
+      'githubusercontent.com'
+    ],
     formats: ['image/webp', 'image/avif'],
+    minimumCacheTTL: 60,
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
-  
-  // Experimental features
+
+  // Enable experimental features
   experimental: {
-    serverComponentsExternalPackages: ['prisma'],
+    serverComponentsExternalPackages: ['prisma', '@supabase/supabase-js'],
+    optimizePackageImports: ['lucide-react', 'recharts'],
+  },
+
+  // Environment variables
+  env: {
+    BUILD_TIME: new Date().toISOString(),
+    APP_VERSION: process.env.npm_package_version || '1.0.0',
   },
 };
 

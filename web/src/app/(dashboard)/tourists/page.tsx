@@ -153,7 +153,7 @@ export default function TouristsPage() {
 
   const handleCreateTourist = () => {
     // Navigate to create tourist form
-    console.log('Navigate to create tourist form');
+    // Create new tourist functionality
   };
 
   // ========================================================================

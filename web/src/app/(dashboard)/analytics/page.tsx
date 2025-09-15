@@ -244,7 +244,7 @@ export default function AnalyticsDashboard() {
 
   const handleExport = () => {
     // Implement export functionality
-    console.log('Exporting analytics data...');
+    // Export analytics data functionality
   };
 
   // ============================================================================

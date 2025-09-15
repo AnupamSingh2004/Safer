@@ -6,8 +6,10 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import "../styles/globals-enhanced.css";
 import { Providers } from "@/components/providers/providers";
 import { APP_CONFIG } from "@/lib/constants";
+import { getThemeScript } from "@/lib/theme/theme-config";
 
 // Font configurations
 const inter = Inter({
@@ -152,6 +154,9 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//api.openweathermap.org" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        
+        {/* Theme script for FOIT prevention */}
+        <script dangerouslySetInnerHTML={{ __html: getThemeScript() }} />
       </head>
       
       <body
@@ -201,7 +206,7 @@ export default function RootLayout({
               if (typeof window !== 'undefined') {
                 window.addEventListener('load', function() {
                   const loadTime = performance.now();
-                  console.log('Page loaded in', Math.round(loadTime), 'ms');
+                  // Performance tracking for development
                   
                   // Report to analytics if available
                   if (window.gtag) {
@@ -216,7 +221,7 @@ export default function RootLayout({
                 const observer = new PerformanceObserver((list) => {
                   for (const entry of list.getEntries()) {
                     if (entry.name === 'first-contentful-paint') {
-                      console.log('FCP:', Math.round(entry.startTime), 'ms');
+                      // FCP tracking for development
                     }
                   }
                 });

@@ -1,0 +1,548 @@
+/**
+ * Smart Tourist Safety System - Enhanced CSS Variables
+ * Smooth theme transitions with no visual flashing
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+
+/* ============================================================================
+   CSS RESET & BASE STYLES
+   ============================================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  tab-size: 4;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  font-variation-settings: normal;
+}
+
+body {
+  font-family: var(--font-inter), var(--font-sans), system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ============================================================================
+   THEME TRANSITION SYSTEM
+   ============================================================================ */
+
+:root {
+  /* Transition configuration */
+  --theme-transition-duration: 300ms;
+  --theme-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+  --theme-transition-property: color, background-color, border-color, box-shadow, fill, stroke, opacity;
+  
+  /* Performance optimization */
+  --theme-transition-disabled: 0;
+  
+  /* Color scheme meta */
+  color-scheme: light;
+}
+
+:root.dark {
+  color-scheme: dark;
+}
+
+:root.high-contrast {
+  color-scheme: light;
+}
+
+/* Smooth transitions for all theme-aware elements */
+*:not(.no-transition) {
+  transition: var(--theme-transition-property) var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+/* Disable transitions temporarily during theme changes to prevent FOIT */
+:root[style*="--theme-transition-disabled: 1"] *:not(.force-transition) {
+  transition: none !important;
+}
+
+/* Force transitions for specific elements */
+.force-transition {
+  transition: var(--theme-transition-property) var(--theme-transition-duration) var(--theme-transition-timing) !important;
+}
+
+/* Disable transitions for reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================================
+   LIGHT THEME VARIABLES
+   ============================================================================ */
+
+:root,
+:root.light {
+  /* Background colors */
+  --background: #ffffff;
+  --background-secondary: #f8fafc;
+  --background-tertiary: #f1f5f9;
+  --background-hover: #f8fafc;
+  --background-active: #f1f5f9;
+  
+  /* Foreground colors */
+  --foreground: #0f172a;
+  --foreground-secondary: #475569;
+  --foreground-tertiary: #64748b;
+  --foreground-muted: #94a3b8;
+  
+  /* Border colors */
+  --border: #e2e8f0;
+  --border-secondary: #cbd5e1;
+  --border-hover: #94a3b8;
+  --border-focus: #3b82f6;
+  
+  /* Emergency Services Colors */
+  --emergency-50: #fef2f2;
+  --emergency-100: #fee2e2;
+  --emergency-200: #fecaca;
+  --emergency-300: #fca5a5;
+  --emergency-400: #f87171;
+  --emergency-500: #ef4444;
+  --emergency-600: #dc2626;
+  --emergency-700: #b91c1c;
+  --emergency-800: #991b1b;
+  --emergency-900: #7f1d1d;
+  --emergency-950: #450a0a;
+  
+  /* Primary Colors (Blue) */
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --primary-300: #93c5fd;
+  --primary-400: #60a5fa;
+  --primary-500: #3b82f6;
+  --primary-600: #2563eb;
+  --primary-700: #1d4ed8;
+  --primary-800: #1e40af;
+  --primary-900: #1e3a8a;
+  --primary-950: #172554;
+  
+  /* Success Colors (Green) */
+  --success-50: #f0fdf4;
+  --success-100: #dcfce7;
+  --success-200: #bbf7d0;
+  --success-300: #86efac;
+  --success-400: #4ade80;
+  --success-500: #22c55e;
+  --success-600: #16a34a;
+  --success-700: #15803d;
+  --success-800: #166534;
+  --success-900: #14532d;
+  --success-950: #052e16;
+  
+  /* Warning Colors (Amber) */
+  --warning-50: #fffbeb;
+  --warning-100: #fef3c7;
+  --warning-200: #fde68a;
+  --warning-300: #fcd34d;
+  --warning-400: #fbbf24;
+  --warning-500: #f59e0b;
+  --warning-600: #d97706;
+  --warning-700: #b45309;
+  --warning-800: #92400e;
+  --warning-900: #78350f;
+  --warning-950: #451a03;
+  
+  /* Info Colors (Cyan) */
+  --info-50: #ecfeff;
+  --info-100: #cffafe;
+  --info-200: #a5f3fc;
+  --info-300: #67e8f9;
+  --info-400: #22d3ee;
+  --info-500: #06b6d4;
+  --info-600: #0891b2;
+  --info-700: #0e7490;
+  --info-800: #155e75;
+  --info-900: #164e63;
+  --info-950: #083344;
+  
+  /* Accent colors */
+  --accent: #f1f5f9;
+  --accent-foreground: #0f172a;
+  --accent-hover: #e2e8f0;
+  
+  /* Muted colors */
+  --muted: #f8fafc;
+  --muted-foreground: #64748b;
+  
+  /* Card colors */
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --card-border: #e2e8f0;
+  
+  /* Popover colors */
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --popover-border: #e2e8f0;
+  
+  /* Input colors */
+  --input: #ffffff;
+  --input-foreground: #0f172a;
+  --input-border: #e2e8f0;
+  --input-placeholder: #94a3b8;
+  
+  /* Ring colors for focus states */
+  --ring: #3b82f6;
+  --ring-offset: #ffffff;
+  
+  /* Shadow colors */
+  --shadow-light: rgba(15, 23, 42, 0.04);
+  --shadow-medium: rgba(15, 23, 42, 0.08);
+  --shadow-heavy: rgba(15, 23, 42, 0.16);
+  --shadow-emergency: rgba(239, 68, 68, 0.2);
+}
+
+/* ============================================================================
+   DARK THEME VARIABLES
+   ============================================================================ */
+
+:root.dark {
+  /* Background colors */
+  --background: #0f172a;
+  --background-secondary: #1e293b;
+  --background-tertiary: #334155;
+  --background-hover: #1e293b;
+  --background-active: #334155;
+  
+  /* Foreground colors */
+  --foreground: #f8fafc;
+  --foreground-secondary: #cbd5e1;
+  --foreground-tertiary: #94a3b8;
+  --foreground-muted: #64748b;
+  
+  /* Border colors */
+  --border: #334155;
+  --border-secondary: #475569;
+  --border-hover: #64748b;
+  --border-focus: #60a5fa;
+  
+  /* Emergency colors remain vibrant in dark mode */
+  --emergency-50: #450a0a;
+  --emergency-100: #7f1d1d;
+  --emergency-200: #991b1b;
+  --emergency-300: #b91c1c;
+  --emergency-400: #dc2626;
+  --emergency-500: #ef4444;
+  --emergency-600: #f87171;
+  --emergency-700: #fca5a5;
+  --emergency-800: #fecaca;
+  --emergency-900: #fee2e2;
+  --emergency-950: #fef2f2;
+  
+  /* Primary colors adjusted for dark mode */
+  --primary-50: #172554;
+  --primary-100: #1e3a8a;
+  --primary-200: #1e40af;
+  --primary-300: #1d4ed8;
+  --primary-400: #2563eb;
+  --primary-500: #3b82f6;
+  --primary-600: #60a5fa;
+  --primary-700: #93c5fd;
+  --primary-800: #bfdbfe;
+  --primary-900: #dbeafe;
+  --primary-950: #eff6ff;
+  
+  /* Accent colors for dark mode */
+  --accent: #1e293b;
+  --accent-foreground: #f8fafc;
+  --accent-hover: #334155;
+  
+  /* Muted colors for dark mode */
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  
+  /* Card colors for dark mode */
+  --card: #1e293b;
+  --card-foreground: #f8fafc;
+  --card-border: #334155;
+  
+  /* Popover colors for dark mode */
+  --popover: #1e293b;
+  --popover-foreground: #f8fafc;
+  --popover-border: #334155;
+  
+  /* Input colors for dark mode */
+  --input: #1e293b;
+  --input-foreground: #f8fafc;
+  --input-border: #334155;
+  --input-placeholder: #64748b;
+  
+  /* Ring colors for dark mode */
+  --ring: #60a5fa;
+  --ring-offset: #0f172a;
+  
+  /* Shadow colors for dark mode */
+  --shadow-light: rgba(0, 0, 0, 0.2);
+  --shadow-medium: rgba(0, 0, 0, 0.4);
+  --shadow-heavy: rgba(0, 0, 0, 0.6);
+  --shadow-emergency: rgba(239, 68, 68, 0.4);
+}
+
+/* ============================================================================
+   HIGH CONTRAST THEME VARIABLES
+   ============================================================================ */
+
+:root.high-contrast {
+  /* High contrast backgrounds */
+  --background: #ffffff;
+  --background-secondary: #ffffff;
+  --background-tertiary: #f0f0f0;
+  --background-hover: #f0f0f0;
+  --background-active: #e0e0e0;
+  
+  /* High contrast foreground */
+  --foreground: #000000;
+  --foreground-secondary: #000000;
+  --foreground-tertiary: #333333;
+  --foreground-muted: #666666;
+  
+  /* High contrast borders */
+  --border: #000000;
+  --border-secondary: #333333;
+  --border-hover: #000000;
+  --border-focus: #0000ff;
+  
+  /* High contrast emergency colors */
+  --emergency-500: #ff0000;
+  --emergency-600: #cc0000;
+  --emergency-700: #990000;
+  
+  /* High contrast primary colors */
+  --primary-500: #0000ff;
+  --primary-600: #0000cc;
+  --primary-700: #000099;
+  
+  /* High contrast success colors */
+  --success-500: #008000;
+  --success-600: #006600;
+  --success-700: #004400;
+  
+  /* High contrast warning colors */
+  --warning-500: #ff8000;
+  --warning-600: #cc6600;
+  --warning-700: #994400;
+  
+  /* High contrast info colors */
+  --info-500: #008080;
+  --info-600: #006666;
+  --info-700: #004444;
+  
+  /* High contrast accents */
+  --accent: #f0f0f0;
+  --accent-foreground: #000000;
+  --accent-hover: #e0e0e0;
+  
+  /* High contrast cards */
+  --card: #ffffff;
+  --card-foreground: #000000;
+  --card-border: #000000;
+  
+  /* High contrast inputs */
+  --input: #ffffff;
+  --input-foreground: #000000;
+  --input-border: #000000;
+  --input-placeholder: #666666;
+  
+  /* High contrast focus rings */
+  --ring: #0000ff;
+  --ring-offset: #ffffff;
+  
+  /* High contrast shadows */
+  --shadow-light: rgba(0, 0, 0, 0.3);
+  --shadow-medium: rgba(0, 0, 0, 0.5);
+  --shadow-heavy: rgba(0, 0, 0, 0.8);
+  --shadow-emergency: rgba(255, 0, 0, 0.5);
+}
+
+/* ============================================================================
+   SEMANTIC COLOR UTILITIES
+   ============================================================================ */
+
+.text-emergency { color: rgb(var(--emergency-500)); }
+.text-primary { color: rgb(var(--primary-500)); }
+.text-success { color: rgb(var(--success-500)); }
+.text-warning { color: rgb(var(--warning-500)); }
+.text-info { color: rgb(var(--info-500)); }
+
+.bg-emergency { background-color: rgb(var(--emergency-500)); }
+.bg-primary { background-color: rgb(var(--primary-500)); }
+.bg-success { background-color: rgb(var(--success-500)); }
+.bg-warning { background-color: rgb(var(--warning-500)); }
+.bg-info { background-color: rgb(var(--info-500)); }
+
+.border-emergency { border-color: rgb(var(--emergency-500)); }
+.border-primary { border-color: rgb(var(--primary-500)); }
+.border-success { border-color: rgb(var(--success-500)); }
+.border-warning { border-color: rgb(var(--warning-500)); }
+.border-info { border-color: rgb(var(--info-500)); }
+
+/* ============================================================================
+   THEME-AWARE COMPONENT STYLES
+   ============================================================================ */
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--muted);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-secondary);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover);
+}
+
+/* Selection styles */
+::selection {
+  background-color: var(--primary-200);
+  color: var(--primary-900);
+}
+
+:root.dark ::selection {
+  background-color: var(--primary-800);
+  color: var(--primary-100);
+}
+
+:root.high-contrast ::selection {
+  background-color: var(--primary-500);
+  color: #ffffff;
+}
+
+/* Focus visible styles */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Emergency mode global styles */
+:root.emergency-mode {
+  --primary-500: var(--emergency-500);
+  --primary-600: var(--emergency-600);
+  --primary-700: var(--emergency-700);
+  --ring: var(--emergency-500);
+}
+
+/* Reduced motion styles */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --theme-transition-duration: 0ms;
+  }
+}
+
+/* ============================================================================
+   Z-INDEX SCALE
+   ============================================================================ */
+
+:root {
+  --z-dropdown: 1000;
+  --z-sticky: 1010;
+  --z-fixed: 1020;
+  --z-modal-backdrop: 1030;
+  --z-modal: 1040;
+  --z-popover: 1050;
+  --z-tooltip: 1060;
+  --z-toast: 1070;
+  --z-emergency: 1080;
+}
+
+/* ============================================================================
+   UTILITY CLASSES
+   ============================================================================ */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.not-sr-only {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+.theme-transition {
+  transition: var(--theme-transition-property) var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+.no-transition {
+  transition: none !important;
+}
+
+/* Safe area insets for mobile devices */
+.safe-area-inset-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-inset-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-area-inset-left {
+  padding-left: env(safe-area-inset-left);
+}
+
+.safe-area-inset-right {
+  padding-right: env(safe-area-inset-right);
+}
+
+/* ============================================================================
+   PRINT STYLES
+   ============================================================================ */
+
+@media print {
+  :root {
+    --theme-transition-duration: 0ms;
+  }
+  
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+  }
+}
+
+/* ============================================================================
+   CUSTOM STYLES (No Tailwind layers needed here)
+   ============================================================================ */

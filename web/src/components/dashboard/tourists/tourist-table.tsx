@@ -1,11 +1,12 @@
 /**
  * Smart Tourist Safety System - Tourist Table Component
- * Sortable table for displaying tourist data with bulk operations
+ * Mobile-first responsive table with card view for smaller screens
  */
 
 'use client';
 
 import React, { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Users, 
   Shield, 
@@ -19,8 +20,16 @@ import {
   AlertTriangle,
   CheckCircle,
   XCircle,
-  Clock
+  Clock,
+  Search,
+  Filter,
+  Menu,
+  Grid,
+  List,
+  RefreshCw
 } from 'lucide-react';
+import { useMediaQuery } from '@/hooks/use-media-query';
+import { SwipeableCard, MotionBox, StaggerContainer } from '@/components/animations';
 import type { Tourist } from '@/types/tourist';
 
 // ============================================================================
@@ -103,17 +112,49 @@ const TouristTable: React.FC<TouristTableProps> = ({
   selectedIds,
   isLoading = false
 }) => {
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const isTablet = useMediaQuery('(max-width: 1024px)');
+  
+  const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState<string>('all');
+
+  // Auto switch to card view on mobile
+  React.useEffect(() => {
+    if (isMobile) {
+      setViewMode('cards');
+    } else {
+      setViewMode('table');
+    }
+  }, [isMobile]);
+
   const [sortConfig, setSortConfig] = useState<SortConfig>({
     key: 'fullName',
     direction: 'asc'
   });
 
   // ========================================================================
+  // FILTERING LOGIC
+  // ========================================================================
+
+  const filteredTourists = useMemo(() => {
+    return tourists.filter(tourist => {
+      const matchesSearch = tourist.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          tourist.nationality.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          tourist.id.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      const matchesStatus = filterStatus === 'all' || tourist.status === filterStatus;
+      
+      return matchesSearch && matchesStatus;
+    });
+  }, [tourists, searchTerm, filterStatus]);
+
+  // ========================================================================
   // SORTING LOGIC
   // ========================================================================
 
   const sortedTourists = useMemo(() => {
-    const sorted = [...tourists].sort((a, b) => {
+    const sorted = [...filteredTourists].sort((a, b) => {
       let aValue: any;
       let bValue: any;
 
@@ -146,7 +187,149 @@ const TouristTable: React.FC<TouristTableProps> = ({
     });
 
     return sorted;
-  }, [tourists, sortConfig]);
+  }, [filteredTourists, sortConfig]);
+
+  // ========================================================================
+  // MOBILE CARD VIEW COMPONENT
+  // ========================================================================
+
+  const TouristCard: React.FC<{ tourist: Tourist; index: number }> = ({ tourist, index }) => (
+    <SwipeableCard
+      key={tourist.id}
+      onSwipeLeft={() => console.log('Swipe left:', tourist.id)}
+      onSwipeRight={() => console.log('Swipe right:', tourist.id)}
+      className="mb-4"
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: index * 0.1 }}
+        className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm hover:shadow-md transition-all duration-200"
+      >
+        {/* Card Header */}
+        <div className="flex items-start justify-between mb-3">
+          <div className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              checked={selectedIds.includes(tourist.id)}
+              onChange={(e) => handleSelectTourist(tourist.id, e.target.checked)}
+              className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 mt-1"
+            />
+            <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center">
+              <span className="text-lg font-medium text-blue-600">
+                {tourist.firstName?.charAt(0) || '?'}
+              </span>
+            </div>
+            <div>
+              <h3 className="text-base font-semibold text-gray-900 dark:text-white">
+                {tourist.fullName}
+              </h3>
+              <p className="text-sm text-gray-500">
+                {tourist.nationality}
+              </p>
+            </div>
+          </div>
+          
+          {/* Status Badge */}
+          <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(tourist.status)}`}>
+            {tourist.status.charAt(0).toUpperCase() + tourist.status.slice(1)}
+          </span>
+        </div>
+
+        {/* Card Content */}
+        <div className="space-y-3">
+          {/* Safety Score */}
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-gray-600 dark:text-gray-400">Safety Score</span>
+            <div className="flex items-center gap-2">
+              <div className="w-20 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                <div 
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    getSafetyScore(tourist) >= 80 ? 'bg-green-500' :
+                    getSafetyScore(tourist) >= 60 ? 'bg-yellow-500' : 'bg-red-500'
+                  }`}
+                  style={{ width: `${getSafetyScore(tourist)}%` }}
+                ></div>
+              </div>
+              <span className="text-sm font-medium text-gray-900 dark:text-white">
+                {getSafetyScore(tourist)}
+              </span>
+            </div>
+          </div>
+
+          {/* Location */}
+          <div className="flex items-center gap-2">
+            <MapPin className="w-4 h-4 text-gray-400 flex-shrink-0" />
+            <span className="text-sm text-gray-900 dark:text-white truncate">
+              {formatLocation(tourist)}
+            </span>
+          </div>
+
+          {/* Contact */}
+          <div className="flex items-center gap-2">
+            <Phone className="w-4 h-4 text-gray-400 flex-shrink-0" />
+            <span className="text-sm text-gray-900 dark:text-white">
+              {tourist.contactInfo?.phone || 'No contact'}
+            </span>
+          </div>
+
+          {/* Last Activity */}
+          <div className="flex items-center gap-2">
+            <Clock className="w-4 h-4 text-gray-400 flex-shrink-0" />
+            <span className="text-sm text-gray-900 dark:text-white">
+              {formatLastActivity(tourist)}
+            </span>
+          </div>
+
+          {/* Verification Status */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              {getVerificationStatusIcon(tourist.verificationStatus)}
+              <span className="text-sm text-gray-900 dark:text-white capitalize">
+                {tourist.verificationStatus}
+              </span>
+            </div>
+            <span className="text-xs text-gray-500">
+              ID: {tourist.id.substring(0, 8)}...
+            </span>
+          </div>
+        </div>
+
+        {/* Card Actions */}
+        <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => onTouristSelect(tourist)}
+            className="flex items-center gap-2 px-3 py-2 text-sm bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 text-blue-600 rounded-md transition-colors"
+          >
+            <Eye className="w-4 h-4" />
+            View Details
+          </motion.button>
+          
+          <div className="flex items-center gap-2">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="p-2 text-gray-400 hover:text-green-600 transition-colors"
+              title="Edit Tourist"
+            >
+              <Edit className="w-4 h-4" />
+            </motion.button>
+            
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+              title="More Actions"
+            >
+              <MoreVertical className="w-4 h-4" />
+            </motion.button>
+          </div>
+        </div>
+      </motion.div>
+    </SwipeableCard>
+  );
 
   // ========================================================================
   // HANDLERS
@@ -161,7 +344,7 @@ const TouristTable: React.FC<TouristTableProps> = ({
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      onBulkSelect(tourists.map(t => t.id));
+      onBulkSelect(sortedTourists.map(t => t.id));
     } else {
       onBulkSelect([]);
     }
@@ -188,8 +371,8 @@ const TouristTable: React.FC<TouristTableProps> = ({
   // CALCULATED VALUES
   // ========================================================================
 
-  const allSelected = tourists.length > 0 && selectedIds.length === tourists.length;
-  const someSelected = selectedIds.length > 0 && selectedIds.length < tourists.length;
+  const allSelected = sortedTourists.length > 0 && selectedIds.length === sortedTourists.length;
+  const someSelected = selectedIds.length > 0 && selectedIds.length < sortedTourists.length;
 
   // ========================================================================
   // RENDER
@@ -215,8 +398,128 @@ const TouristTable: React.FC<TouristTableProps> = ({
   }
 
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+    <div className="w-full">
+      {/* Header & Controls */}
+      <div className="mb-6 space-y-4">
+        {/* Search and Filter Bar */}
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+          {/* Search */}
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <input
+              type="text"
+              placeholder="Search tourists..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+
+          {/* Filters and View Toggle */}
+          <div className="flex items-center gap-3">
+            {/* Status Filter */}
+            <div className="relative">
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                className="appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 pr-8 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="emergency">Emergency</option>
+                <option value="checked_out">Checked Out</option>
+              </select>
+              <Filter className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 pointer-events-none" />
+            </div>
+
+            {/* View Toggle (Desktop only) */}
+            {!isMobile && (
+              <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setViewMode('table')}
+                  className={`p-2 rounded-md transition-colors ${
+                    viewMode === 'table'
+                      ? 'bg-white dark:bg-gray-700 text-blue-600 shadow-sm'
+                      : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                  }`}
+                  title="Table View"
+                >
+                  <List className="w-4 h-4" />
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setViewMode('cards')}
+                  className={`p-2 rounded-md transition-colors ${
+                    viewMode === 'cards'
+                      ? 'bg-white dark:bg-gray-700 text-blue-600 shadow-sm'
+                      : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                  }`}
+                  title="Card View"
+                >
+                  <Grid className="w-4 h-4" />
+                </motion.button>
+              </div>
+            )}
+
+            {/* Refresh Button */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95, rotate: 180 }}
+              className="p-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+              title="Refresh"
+            >
+              <RefreshCw className="w-4 h-4" />
+            </motion.button>
+          </div>
+        </div>
+
+        {/* Stats Bar */}
+        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex items-center gap-2">
+            <Users className="w-4 h-4" />
+            <span>
+              {sortedTourists.length} of {tourists.length} tourists
+            </span>
+          </div>
+          
+          {selectedIds.length > 0 && (
+            <>
+              <div className="h-4 w-px bg-gray-300 dark:bg-gray-600"></div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-blue-600" />
+                <span>{selectedIds.length} selected</span>
+              </div>
+            </>
+          )}
+
+          {searchTerm && (
+            <>
+              <div className="h-4 w-px bg-gray-300 dark:bg-gray-600"></div>
+              <div className="flex items-center gap-2">
+                <Search className="w-4 h-4" />
+                <span>Filtered by "{searchTerm}"</span>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Conditional Rendering: Cards vs Table */}
+      {viewMode === 'cards' || isMobile ? (
+        // Mobile Card View
+        <StaggerContainer className="space-y-4">
+          {sortedTourists.map((tourist, index) => (
+            <TouristCard key={tourist.id} tourist={tourist} index={index} />
+          ))}
+        </StaggerContainer>
+      ) : (
+        // Desktop Table View
+        <div className="overflow-x-auto border border-gray-200 dark:border-gray-700 rounded-lg">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
         {/* Table Header */}
         <thead className="bg-gray-50 dark:bg-gray-800/50">
           <tr>
@@ -425,19 +728,21 @@ const TouristTable: React.FC<TouristTableProps> = ({
         </tbody>
       </table>
 
-      {/* Table Footer */}
-      <div className="bg-gray-50 dark:bg-gray-800/50 px-6 py-3 border-t border-gray-200 dark:border-gray-700">
-        <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-          <span>
-            Showing {sortedTourists.length} of {tourists.length} tourists
-          </span>
-          {selectedIds.length > 0 && (
-            <span>
-              {selectedIds.length} selected
-            </span>
-          )}
+          {/* Table Footer */}
+          <div className="bg-gray-50 dark:bg-gray-800/50 px-6 py-3 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+              <span>
+                Showing {sortedTourists.length} of {tourists.length} tourists
+              </span>
+              {selectedIds.length > 0 && (
+                <span>
+                  {selectedIds.length} selected
+                </span>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

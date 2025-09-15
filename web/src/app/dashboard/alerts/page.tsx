@@ -54,12 +54,12 @@ function AlertsPage() {
 
   const handleEditAlert = (alertId: string) => {
     // Navigate to edit form (could be implemented later)
-    console.log('Edit alert:', alertId);
+    // Edit functionality for alert: ${alertId}
   };
 
   const handleDeleteAlert = async (alertId: string) => {
     // Handle alert deletion
-    console.log('Delete alert:', alertId);
+    // Delete functionality for alert: ${alertId}
     // After deletion, return to list
     showAlertList();
   };
@@ -70,14 +70,14 @@ function AlertsPage() {
 
   const handleDismissAlert = async (alertId: string) => {
     // Handle alert dismissal
-    console.log('Dismiss alert:', alertId);
+    // Dismiss functionality for alert: ${alertId}
     // After dismissal, return to list
     showAlertList();
   };
 
   const handleAlertResolution = async (alertId: string, resolutionData: any) => {
     // Handle resolution submission
-    console.log('Resolve alert:', alertId, resolutionData);
+    // Resolve functionality for alert: ${alertId}
     // After resolution, return to list
     showAlertList();
   };

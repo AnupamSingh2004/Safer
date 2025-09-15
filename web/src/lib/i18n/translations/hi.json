@@ -1,0 +1,676 @@
+{
+  "meta": {
+    "language": "Hindi",
+    "code": "hi",
+    "direction": "ltr",
+    "version": "1.0.0",
+    "lastUpdated": "2025-09-14",
+    "completeness": "100%",
+    "maintainer": "स्मार्ट टूरिस्ट सेफ्टी टीम"
+  },
+  
+  "common": {
+    "appName": "स्मार्ट टूरिस्ट सेफ्टी",
+    "tagline": "स्मार्ट तकनीक के साथ सुरक्षित यात्रा सुनिश्चित करना",
+    "version": "v1.0.0",
+    "loading": "लोड हो रहा है...",
+    "error": "त्रुटि",
+    "success": "सफलता",
+    "warning": "चेतावनी",
+    "info": "जानकारी",
+    "confirm": "पुष्टि करें",
+    "cancel": "रद्द करें",
+    "save": "सेव करें",
+    "delete": "डिलीट करें",
+    "edit": "संपादित करें",
+    "view": "देखें",
+    "close": "बंद करें",
+    "next": "अगला",
+    "previous": "पिछला",
+    "search": "खोजें",
+    "filter": "फिल्टर",
+    "sort": "क्रमबद्ध करें",
+    "refresh": "रीफ्रेश करें",
+    "export": "एक्सपोर्ट करें",
+    "import": "इम्पोर्ट करें",
+    "print": "प्रिंट करें",
+    "share": "साझा करें",
+    "copy": "कॉपी करें",
+    "download": "डाउनलोड करें",
+    "upload": "अपलोड करें",
+    "submit": "जमा करें",
+    "reset": "रीसेट करें",
+    "clear": "साफ़ करें",
+    "select": "चुनें",
+    "selectAll": "सभी चुनें",
+    "none": "कोई नहीं",
+    "all": "सभी",
+    "yes": "हाँ",
+    "no": "नहीं",
+    "ok": "ठीक है",
+    "done": "पूर्ण",
+    "finish": "समाप्त",
+    "start": "शुरू करें",
+    "stop": "रोकें",
+    "pause": "रोकें",
+    "resume": "जारी रखें",
+    "enable": "सक्षम करें",
+    "disable": "अक्षम करें",
+    "activate": "सक्रिय करें",
+    "deactivate": "निष्क्रिय करें",
+    "online": "ऑनलाइन",
+    "offline": "ऑफलाइन",
+    "active": "सक्रिय",
+    "inactive": "निष्क्रिय",
+    "available": "उपलब्ध",
+    "unavailable": "अनुपलब्ध",
+    "required": "आवश्यक",
+    "optional": "वैकल्पिक",
+    "public": "सार्वजनिक",
+    "private": "निजी",
+    "draft": "ड्राफ्ट",
+    "published": "प्रकाशित"
+  },
+  
+  "navigation": {
+    "home": "होम",
+    "dashboard": "डैशबोर्ड",
+    "overview": "अवलोकन",
+    "tourists": "पर्यटक",
+    "alerts": "अलर्ट",
+    "zones": "क्षेत्र",
+    "analytics": "एनालिटिक्स",
+    "blockchain": "ब्लॉकचेन",
+    "settings": "सेटिंग्स",
+    "profile": "प्रोफाइल",
+    "logout": "लॉगआउट",
+    "login": "लॉगिन",
+    "register": "पंजीकरण",
+    "help": "सहायता",
+    "support": "समर्थन",
+    "documentation": "दस्तावेज़ीकरण",
+    "reports": "रिपोर्ट",
+    "notifications": "सूचनाएं",
+    "emergency": "आपातकाल",
+    "contacts": "संपर्क",
+    "communication": "संचार",
+    "tracking": "ट्रैकिंग",
+    "monitoring": "निगरानी",
+    "management": "प्रबंधन",
+    "administration": "प्रशासन",
+    "configuration": "कॉन्फ़िगरेशन",
+    "maintenance": "रखरखाव",
+    "breadcrumb": {
+      "home": "होम",
+      "dashboard": "डैशबोर्ड",
+      "tourists": "पर्यटक प्रबंधन",
+      "alerts": "अलर्ट प्रबंधन",
+      "zones": "क्षेत्र प्रबंधन",
+      "analytics": "एनालिटिक्स और रिपोर्ट",
+      "blockchain": "डिजिटल पहचान",
+      "settings": "सिस्टम सेटिंग्स"
+    }
+  },
+  
+  "auth": {
+    "login": {
+      "title": "स्मार्ट टूरिस्ट सेफ्टी में लॉगिन करें",
+      "subtitle": "आपातकालीन प्रतिक्रिया डैशबोर्ड तक पहुंचें",
+      "email": "ईमेल पता",
+      "password": "पासवर्ड",
+      "rememberMe": "मुझे याद रखें",
+      "forgotPassword": "अपना पासवर्ड भूल गए?",
+      "loginButton": "साइन इन करें",
+      "noAccount": "क्या आपका कोई खाता नहीं है?",
+      "signUpLink": "खाता बनाएं",
+      "googleLogin": "Google के साथ जारी रखें",
+      "emergencyAccess": "आपातकालीन पहुंच",
+      "guestLogin": "गेस्ट लॉगिन",
+      "errors": {
+        "invalidCredentials": "अमान्य ईमेल या पासवर्ड",
+        "accountLocked": "खाता अस्थायी रूप से लॉक है",
+        "serverError": "सर्वर त्रुटि। कृपया पुनः प्रयास करें।",
+        "networkError": "नेटवर्क त्रुटि। अपना कनेक्शन जांचें।",
+        "sessionExpired": "सत्र समाप्त हो गया। कृपया पुनः लॉगिन करें।"
+      }
+    },
+    "register": {
+      "title": "आपातकालीन प्रतिक्रिया खाता बनाएं",
+      "subtitle": "स्मार्ट टूरिस्ट सेफ्टी नेटवर्क में शामिल हों",
+      "firstName": "पहला नाम",
+      "lastName": "अंतिम नाम",
+      "email": "ईमेल पता",
+      "password": "पासवर्ड",
+      "confirmPassword": "पासवर्ड की पुष्टि करें",
+      "department": "विभाग",
+      "role": "भूमिका",
+      "phoneNumber": "फोन नंबर",
+      "emergencyContact": "आपातकालीन संपर्क",
+      "terms": "मैं सेवा की शर्तों और गोपनीयता नीति से सहमत हूं",
+      "registerButton": "खाता बनाएं",
+      "hasAccount": "क्या आपका पहले से खाता है?",
+      "signInLink": "साइन इन करें",
+      "verification": {
+        "title": "अपना खाता सत्यापित करें",
+        "subtitle": "हमने आपके ईमेल पर एक सत्यापन कोड भेजा है",
+        "code": "सत्यापन कोड",
+        "verify": "खाता सत्यापित करें",
+        "resend": "कोड फिर से भेजें"
+      }
+    },
+    "roles": {
+      "admin": "सिस्टम प्रशासक",
+      "operator": "आपातकालीन ऑपरेटर",
+      "police": "पुलिस अधिकारी",
+      "medical": "चिकित्सा अधिकारी",
+      "tourism": "पर्यटन अधिकारी",
+      "security": "सुरक्षा कर्मी",
+      "supervisor": "पर्यवेक्षक",
+      "analyst": "डेटा विश्लेषक"
+    },
+    "departments": {
+      "police": "पुलिस विभाग",
+      "medical": "चिकित्सा सेवाएं",
+      "fire": "अग्निशमन विभाग",
+      "tourism": "पर्यटन बोर्ड",
+      "security": "सुरक्षा सेवाएं",
+      "administration": "प्रशासन",
+      "analytics": "एनालिटिक्स डिवीजन"
+    }
+  },
+  
+  "dashboard": {
+    "welcome": "स्मार्ट टूरिस्ट सेफ्टी डैशबोर्ड में आपका स्वागत है",
+    "lastUpdated": "अंतिम अपडेट",
+    "quickStats": {
+      "totalTourists": "कुल पर्यटक",
+      "activeTourists": "सक्रिय पर्यटक",
+      "emergencyAlerts": "आपातकालीन अलर्ट",
+      "resolvedIncidents": "हल की गई घटनाएं",
+      "responseTime": "औसत प्रतिक्रिया समय",
+      "safetyScore": "सुरक्षा स्कोर",
+      "riskZones": "जोखिम क्षेत्र",
+      "onlineOperators": "ऑनलाइन ऑपरेटर"
+    },
+    "recentActivity": {
+      "title": "हाल की गतिविधि",
+      "newTourist": "नया पर्यटक पंजीकृत",
+      "alertResolved": "आपातकालीन अलर्ट हल",
+      "zoneUpdated": "सुरक्षा क्षेत्र अपडेट",
+      "incidentReported": "घटना की रिपोर्ट",
+      "systemUpdate": "सिस्टम अपडेट पूर्ण"
+    },
+    "emergencyStatus": {
+      "title": "आपातकालीन स्थिति",
+      "allClear": "सब ठीक है",
+      "minorIncidents": "मामूली घटनाएं",
+      "majorIncidents": "प्रमुख घटनाएं",
+      "criticalAlerts": "गंभीर अलर्ट"
+    },
+    "quickActions": {
+      "title": "त्वरित कार्य",
+      "createAlert": "अलर्ट बनाएं",
+      "registerTourist": "पर्यटक पंजीकरण",
+      "addZone": "सुरक्षा क्षेत्र जोड़ें",
+      "generateReport": "रिपोर्ट जेनरेट करें",
+      "broadcastMessage": "संदेश प्रसारित करें",
+      "emergencyProtocol": "आपातकालीन प्रोटोकॉल"
+    }
+  },
+  
+  "tourists": {
+    "title": "पर्यटक प्रबंधन",
+    "subtitle": "पर्यटक पंजीकरण और गतिविधियों की निगरानी और प्रबंधन",
+    "registration": {
+      "title": "पर्यटक पंजीकरण",
+      "personalInfo": "व्यक्तिगत जानकारी",
+      "travelInfo": "यात्रा जानकारी",
+      "emergencyContact": "आपातकालीन संपर्क",
+      "fields": {
+        "firstName": "पहला नाम",
+        "lastName": "अंतिम नाम",
+        "nationality": "राष्ट्रीयता",
+        "passportNumber": "पासपोर्ट नंबर",
+        "aadhaarNumber": "आधार नंबर",
+        "dateOfBirth": "जन्म तिथि",
+        "gender": "लिंग",
+        "phoneNumber": "फोन नंबर",
+        "email": "ईमेल पता",
+        "arrivalDate": "आगमन तिथि",
+        "departureDate": "प्रस्थान तिथि",
+        "purposeOfVisit": "यात्रा का उद्देश्य",
+        "accommodation": "आवास",
+        "itinerary": "यात्रा कार्यक्रम",
+        "emergencyContactName": "आपातकालीन संपर्क नाम",
+        "emergencyContactPhone": "आपातकालीन संपर्क फोन",
+        "emergencyContactRelation": "रिश्ता"
+      }
+    },
+    "status": {
+      "active": "सक्रिय",
+      "inactive": "निष्क्रिय",
+      "emergency": "आपातकाल",
+      "missing": "लापता",
+      "safe": "सुरक्षित",
+      "atrisk": "जोखिम में",
+      "checked_in": "चेक इन",
+      "checked_out": "चेक आउट"
+    },
+    "actions": {
+      "viewProfile": "प्रोफाइल देखें",
+      "trackLocation": "स्थान ट्रैक करें",
+      "sendMessage": "संदेश भेजें",
+      "createAlert": "अलर्ट बनाएं",
+      "generateId": "डिजिटल आईडी जेनरेट करें",
+      "downloadInfo": "जानकारी डाउनलोड करें",
+      "updateStatus": "स्थिति अपडेट करें"
+    },
+    "filters": {
+      "all": "सभी पर्यटक",
+      "active": "सक्रिय",
+      "emergency": "आपातकाल",
+      "nationality": "राष्ट्रीयता के अनुसार",
+      "arrivalDate": "आगमन तिथि के अनुसार",
+      "riskLevel": "जोखिम स्तर के अनुसार"
+    },
+    "details": {
+      "basicInfo": "बुनियादी जानकारी",
+      "travelHistory": "यात्रा इतिहास",
+      "locationHistory": "स्थान इतिहास",
+      "alertHistory": "अलर्ट इतिहास",
+      "digitalId": "डिजिटल पहचान",
+      "safetyScore": "सुरक्षा स्कोर",
+      "riskAssessment": "जोखिम मूल्यांकन"
+    }
+  },
+  
+  "alerts": {
+    "title": "अलर्ट प्रबंधन",
+    "subtitle": "पर्यटक सुरक्षा अलर्ट की निगरानी और प्रतिक्रिया",
+    "types": {
+      "emergency": "आपातकाल",
+      "medical": "चिकित्सा",
+      "security": "सुरक्षा",
+      "weather": "मौसम",
+      "traffic": "यातायात",
+      "natural_disaster": "प्राकृतिक आपदा",
+      "crime": "अपराध",
+      "missing_person": "लापता व्यक्ति",
+      "accident": "दुर्घटना",
+      "general": "सामान्य"
+    },
+    "priority": {
+      "critical": "अत्यंत गंभीर",
+      "high": "उच्च",
+      "medium": "मध्यम",
+      "low": "निम्न"
+    },
+    "status": {
+      "active": "सक्रिय",
+      "resolved": "हल",
+      "in_progress": "प्रगति में",
+      "pending": "लंबित",
+      "dismissed": "खारिज",
+      "escalated": "बढ़ाया गया"
+    },
+    "actions": {
+      "respond": "प्रतिक्रिया",
+      "escalate": "बढ़ाएं",
+      "resolve": "हल करें",
+      "dismiss": "खारिज करें",
+      "assign": "असाइन करें",
+      "broadcast": "प्रसारण",
+      "investigate": "जांच करें",
+      "followUp": "फॉलो अप"
+    },
+    "creation": {
+      "title": "नया अलर्ट बनाएं",
+      "alertType": "अलर्ट प्रकार",
+      "priority": "प्राथमिकता स्तर",
+      "location": "स्थान",
+      "description": "विवरण",
+      "affectedTourists": "प्रभावित पर्यटक",
+      "estimatedImpact": "अनुमानित प्रभाव",
+      "requiredResponse": "आवश्यक प्रतिक्रिया",
+      "notifyContacts": "आपातकालीन संपर्कों को सूचित करें"
+    },
+    "response": {
+      "title": "आपातकालीन प्रतिक्रिया",
+      "dispatchTeam": "टीम भेजें",
+      "contactAuthorities": "अधिकारियों से संपर्क करें",
+      "evacuateArea": "क्षेत्र खाली करें",
+      "provideAssistance": "सहायता प्रदान करें",
+      "updateStatus": "स्थिति अपडेट करें",
+      "documentIncident": "घटना का दस्तावेजीकरण"
+    }
+  },
+  
+  "zones": {
+    "title": "क्षेत्र प्रबंधन",
+    "subtitle": "सुरक्षा क्षेत्र और जियोफेंसिंग पैरामीटर प्रबंधन",
+    "types": {
+      "safe": "सुरक्षित क्षेत्र",
+      "caution": "सावधानी क्षेत्र",
+      "restricted": "प्रतिबंधित क्षेत्र",
+      "danger": "खतरनाक क्षेत्र",
+      "emergency": "आपातकालीन क्षेत्र",
+      "tourist": "पर्यटन क्षेत्र",
+      "medical": "चिकित्सा क्षेत्र",
+      "police": "पुलिस क्षेत्र"
+    },
+    "properties": {
+      "name": "क्षेत्र का नाम",
+      "type": "क्षेत्र प्रकार",
+      "riskLevel": "जोखिम स्तर",
+      "capacity": "क्षमता",
+      "currentOccupancy": "वर्तमान उपस्थिति",
+      "description": "विवरण",
+      "coordinates": "निर्देशांक",
+      "radius": "त्रिज्या",
+      "emergencyContacts": "आपातकालीन संपर्क",
+      "specialInstructions": "विशेष निर्देश"
+    },
+    "riskLevels": {
+      "very_low": "बहुत कम",
+      "low": "कम",
+      "medium": "मध्यम",
+      "high": "उच्च",
+      "very_high": "बहुत उच्च",
+      "extreme": "अत्यधिक"
+    },
+    "actions": {
+      "editZone": "क्षेत्र संपादित करें",
+      "deleteZone": "क्षेत्र डिलीट करें",
+      "activateZone": "क्षेत्र सक्रिय करें",
+      "deactivateZone": "क्षेत्र निष्क्रिय करें",
+      "broadcastAlert": "अलर्ट प्रसारित करें",
+      "evacuate": "क्षेत्र खाली करें",
+      "lockdown": "लॉकडाउन क्षेत्र"
+    }
+  },
+  
+  "emergency": {
+    "title": "आपातकालीन प्रतिक्रिया",
+    "panicButton": "पैनिक बटन",
+    "emergencyContacts": "आपातकालीन संपर्क",
+    "numbers": {
+      "emergency": "आपातकाल - 112",
+      "police": "पुलिस - 100",
+      "fire": "अग्निशमन - 101",
+      "medical": "चिकित्सा - 108",
+      "tourist": "पर्यटक हेल्पलाइन - 1363",
+      "women": "महिला हेल्पलाइन - 1091",
+      "child": "बाल हेल्पलाइन - 1098"
+    },
+    "protocols": {
+      "title": "आपातकालीन प्रोटोकॉल",
+      "medical": "चिकित्सा आपातकाल",
+      "fire": "अग्नि आपातकाल",
+      "natural": "प्राकृतिक आपदा",
+      "security": "सुरक्षा खतरा",
+      "missing": "लापता व्यक्ति",
+      "accident": "दुर्घटना"
+    },
+    "response": {
+      "immediate": "तत्काल प्रतिक्रिया आवश्यक",
+      "dispatched": "आपातकालीन टीम भेजी गई",
+      "enroute": "सहायता आ रही है",
+      "onsite": "प्रतिक्रियाकर्ता मौके पर",
+      "resolved": "आपातकाल हल",
+      "followup": "फॉलो-अप आवश्यक"
+    },
+    "messages": {
+      "alertSent": "आपातकालीन अलर्ट सफलतापूर्वक भेजा गया",
+      "teamDispatched": "आपातकालीन टीम भेजी गई है",
+      "locationReceived": "आपका स्थान प्राप्त हो गया है",
+      "helpComming": "सहायता आ रही है, शांत रहें",
+      "stayInPlace": "सहायता आने तक अपनी जगह पर रहें",
+      "followInstructions": "आपातकालीन प्रतिक्रियाकर्ता के निर्देशों का पालन करें"
+    }
+  },
+  
+  "blockchain": {
+    "title": "ब्लॉकचेन डिजिटल पहचान",
+    "subtitle": "पर्यटकों के लिए सुरक्षित डिजिटल आईडी प्रबंधन",
+    "digitalId": {
+      "title": "डिजिटल पहचान",
+      "generate": "डिजिटल आईडी जेनरेट करें",
+      "verify": "पहचान सत्यापित करें",
+      "status": "आईडी स्थिति",
+      "qrCode": "QR कोड",
+      "blockchainHash": "ब्लॉकचेन हैश",
+      "issuedDate": "जारी करने की तिथि",
+      "expiryDate": "समाप्ति तिथि",
+      "validityPeriod": "वैधता अवधि"
+    },
+    "verification": {
+      "title": "पहचान सत्यापन",
+      "scanning": "QR कोड स्कैन कर रहे हैं...",
+      "verified": "पहचान सत्यापित",
+      "invalid": "अमान्य पहचान",
+      "expired": "पहचान समाप्त",
+      "pending": "सत्यापन लंबित",
+      "failed": "सत्यापन असफल"
+    },
+    "transactions": {
+      "title": "लेनदेन इतिहास",
+      "issued": "आईडी जारी",
+      "verified": "आईडी सत्यापित",
+      "updated": "आईडी अपडेट",
+      "revoked": "आईडी रद्द",
+      "expired": "आईडी समाप्त"
+    },
+    "security": {
+      "encrypted": "एन्क्रिप्टेड डेटा",
+      "immutable": "अपरिवर्तनीय रिकॉर्ड",
+      "decentralized": "विकेंद्रीकृत भंडारण",
+      "tamperProof": "छेड़छाड़ प्रूफ"
+    }
+  },
+  
+  "analytics": {
+    "title": "एनालिटिक्स और रिपोर्ट",
+    "subtitle": "पर्यटक सुरक्षा अंतर्दृष्टि के लिए व्यापक एनालिटिक्स",
+    "dashboardTitle": "एनालिटिक्स डैशबोर्ड",
+    "sections": {
+      "overview": "अवलोकन",
+      "tourists": "पर्यटक एनालिटिक्स",
+      "incidents": "घटना एनालिटिक्स",
+      "zones": "क्षेत्र एनालिटिक्स",
+      "performance": "प्रदर्शन मेट्रिक्स",
+      "trends": "ट्रेंड विश्लेषण",
+      "reports": "कस्टम रिपोर्ट"
+    },
+    "metrics": {
+      "totalVisits": "कुल यात्राएं",
+      "averageStay": "औसत ठहरना",
+      "incidentRate": "घटना दर",
+      "responseTime": "प्रतिक्रिया समय",
+      "satisfactionScore": "संतुष्टि स्कोर",
+      "repeatVisitors": "दोहराने वाले आगंतुक",
+      "popularDestinations": "लोकप्रिय गंतव्य",
+      "seasonalTrends": "मौसमी ट्रेंड"
+    },
+    "charts": {
+      "touristFlow": "पर्यटक प्रवाह",
+      "incidentTrends": "घटना ट्रेंड",
+      "responseMetrics": "प्रतिक्रिया मेट्रिक्स",
+      "zoneActivity": "क्षेत्र गतिविधि",
+      "timelineAnalysis": "समयरेखा विश्लेषण",
+      "heatmap": "गतिविधि हीटमैप"
+    },
+    "reports": {
+      "daily": "दैनिक रिपोर्ट",
+      "weekly": "साप्ताहिक रिपोर्ट",
+      "monthly": "मासिक रिपोर्ट",
+      "custom": "कस्टम रिपोर्ट",
+      "incident": "घटना रिपोर्ट",
+      "performance": "प्रदर्शन रिपोर्ट"
+    }
+  },
+  
+  "forms": {
+    "validation": {
+      "required": "यह फील्ड आवश्यक है",
+      "email": "कृपया एक वैध ईमेल पता दर्ज करें",
+      "phone": "कृपया एक वैध फोन नंबर दर्ज करें",
+      "passport": "कृपया एक वैध पासपोर्ट नंबर दर्ज करें",
+      "aadhaar": "कृपया एक वैध आधार नंबर दर्ज करें",
+      "date": "कृपया एक वैध तिथि चुनें",
+      "time": "कृपया एक वैध समय चुनें",
+      "number": "कृपया एक वैध संख्या दर्ज करें",
+      "text": "कृपया वैध टेक्स्ट दर्ज करें",
+      "url": "कृपया एक वैध URL दर्ज करें",
+      "password": "पासवर्ड कम से कम 8 अक्षर का होना चाहिए",
+      "confirmPassword": "पासवर्ड मेल नहीं खाते",
+      "minLength": "न्यूनतम {{count}} अक्षर आवश्यक",
+      "maxLength": "अधिकतम {{count}} अक्षर अनुमतित",
+      "pattern": "कृपया आवश्यक प्रारूप से मेल खाएं"
+    },
+    "placeholders": {
+      "search": "खोजें...",
+      "email": "अपना ईमेल दर्ज करें",
+      "password": "अपना पासवर्ड दर्ज करें",
+      "firstName": "पहला नाम दर्ज करें",
+      "lastName": "अंतिम नाम दर्ज करें",
+      "phone": "फोन नंबर दर्ज करें",
+      "address": "पता दर्ज करें",
+      "description": "विवरण दर्ज करें",
+      "notes": "नोट्स दर्ज करें",
+      "select": "एक विकल्प चुनें"
+    }
+  },
+  
+  "notifications": {
+    "title": "सूचनाएं",
+    "types": {
+      "emergency": "आपातकालीन अलर्ट",
+      "warning": "चेतावनी",
+      "info": "जानकारी",
+      "success": "सफलता",
+      "reminder": "अनुस्मारक",
+      "update": "सिस्टम अपडेट"
+    },
+    "actions": {
+      "markAsRead": "पढ़ा हुआ मार्क करें",
+      "markAllAsRead": "सभी को पढ़ा हुआ मार्क करें",
+      "dismiss": "खारिज करें",
+      "archive": "संग्रहीत करें",
+      "respond": "जवाब दें"
+    },
+    "messages": {
+      "noNotifications": "कोई नई सूचना नहीं",
+      "allRead": "सभी सूचनाएं पढ़ी गई हैं",
+      "emergencyAlert": "आपके क्षेत्र में आपातकालीन अलर्ट",
+      "systemMaintenance": "सिस्टम रखरखाव निर्धारित",
+      "newUpdate": "नया सिस्टम अपडेट उपलब्ध"
+    }
+  },
+  
+  "errors": {
+    "general": "एक त्रुटि हुई। कृपया पुनः प्रयास करें।",
+    "network": "नेटवर्क त्रुटि। कृपया अपना कनेक्शन जांचें।",
+    "server": "सर्वर त्रुटि। कृपया बाद में पुनः प्रयास करें।",
+    "authentication": "प्रमाणीकरण असफल। कृपया पुनः लॉगिन करें।",
+    "authorization": "आपके पास इस संसाधन तक पहुंचने की अनुमति नहीं है।",
+    "notFound": "संसाधन नहीं मिला।",
+    "validation": "कृपया अपना इनपुट जांचें और पुनः प्रयास करें।",
+    "timeout": "अनुरोध समय समाप्त। कृपया पुनः प्रयास करें।",
+    "fileUpload": "फाइल अपलोड असफल। कृपया पुनः प्रयास करें।",
+    "permissionDenied": "अनुमति अस्वीकृत।",
+    "sessionExpired": "आपका सत्र समाप्त हो गया है। कृपया पुनः लॉगिन करें।",
+    "maintenance": "सिस्टम रखरखाव के तहत है। कृपया बाद में पुनः प्रयास करें।",
+    "rateLimit": "बहुत सारे अनुरोध। कृपया प्रतीक्षा करें और पुनः प्रयास करें।"
+  },
+  
+  "success": {
+    "general": "ऑपरेशन सफलतापूर्वक पूर्ण।",
+    "saved": "डेटा सफलतापूर्वक सेव।",
+    "updated": "डेटा सफलतापूर्वक अपडेट।",
+    "deleted": "डेटा सफलतापूर्वक डिलीट।",
+    "sent": "संदेश सफलतापूर्वक भेजा गया।",
+    "uploaded": "फाइल सफलतापूर्वक अपलोड।",
+    "registered": "पंजीकरण सफलतापूर्वक पूर्ण।",
+    "verified": "सत्यापन सफलतापूर्वक पूर्ण।",
+    "resolved": "समस्या सफलतापूर्वक हल।",
+    "dispatched": "आपातकालीन टीम सफलतापूर्वक भेजी गई।"
+  },
+  
+  "dateTime": {
+    "formats": {
+      "short": "DD/MM/YYYY",
+      "long": "DD MMMM, YYYY",
+      "time": "HH:mm:ss",
+      "dateTime": "DD/MM/YYYY HH:mm:ss",
+      "relative": "सापेक्ष"
+    },
+    "timeAgo": {
+      "justNow": "अभी-अभी",
+      "minuteAgo": "1 मिनट पहले",
+      "minutesAgo": "{{count}} मिनट पहले",
+      "hourAgo": "1 घंटा पहले",
+      "hoursAgo": "{{count}} घंटे पहले",
+      "dayAgo": "1 दिन पहले",
+      "daysAgo": "{{count}} दिन पहले",
+      "weekAgo": "1 सप्ताह पहले",
+      "weeksAgo": "{{count}} सप्ताह पहले"
+    },
+    "days": {
+      "monday": "सोमवार",
+      "tuesday": "मंगलवार",
+      "wednesday": "बुधवार",
+      "thursday": "गुरुवार",
+      "friday": "शुक्रवार",
+      "saturday": "शनिवार",
+      "sunday": "रविवार"
+    },
+    "months": {
+      "january": "जनवरी",
+      "february": "फरवरी",
+      "march": "मार्च",
+      "april": "अप्रैल",
+      "may": "मई",
+      "june": "जून",
+      "july": "जुलाई",
+      "august": "अगस्त",
+      "september": "सितंबर",
+      "october": "अक्टूबर",
+      "november": "नवंबर",
+      "december": "दिसंबर"
+    }
+  },
+  
+  "units": {
+    "distance": {
+      "km": "किमी",
+      "m": "मी",
+      "miles": "मील",
+      "feet": "फीट"
+    },
+    "time": {
+      "seconds": "सेकंड",
+      "minutes": "मिनट",
+      "hours": "घंटे",
+      "days": "दिन"
+    },
+    "currency": {
+      "inr": "₹",
+      "usd": "$",
+      "eur": "€"
+    }
+  },
+  
+  "accessibility": {
+    "skipToContent": "मुख्य सामग्री पर जाएं",
+    "openMenu": "मेनू खोलें",
+    "closeMenu": "मेनू बंद करें",
+    "toggleTheme": "डार्क मोड टॉगल करें",
+    "selectLanguage": "भाषा चुनें",
+    "loading": "सामग्री लोड हो रही है",
+    "errorOccurred": "एक त्रुटि हुई",
+    "sortAscending": "आरोही क्रम",
+    "sortDescending": "अवरोही क्रम",
+    "showMore": "और दिखाएं",
+    "showLess": "कम दिखाएं"
+  }
+}

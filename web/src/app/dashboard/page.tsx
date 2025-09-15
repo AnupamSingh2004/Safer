@@ -17,9 +17,19 @@ import {
   MessageSquare,
   Clock,
   ArrowRight,
-  BarChart3
+  BarChart3,
+  Zap,
+  PhoneCall,
+  Navigation
 } from 'lucide-react';
 import { useAuth } from '@/stores/auth-store';
+import { 
+  demoTourists, 
+  demoAlerts, 
+  demoZones, 
+  demoDashboardStats,
+  demoRecentActivities 
+} from '@/data/demo-seed-data';
 
 // Dashboard Stats Card Component
 const StatsCard = ({ 
@@ -125,81 +135,195 @@ export default function DashboardPage() {
     return null;
   }
 
-  // Mock data - replace with real API calls
+  // Use realistic demo data from seed
   const dashboardStats = [
     {
       title: 'Active Tourists',
-      value: '2,347',
-      change: '+12.5%',
+      value: demoDashboardStats.totalTourists.toLocaleString(),
+      change: `+${demoDashboardStats.activeTourists - demoDashboardStats.totalTourists + 15}`,
       icon: Users,
       trend: 'up' as const,
       onClick: () => router.push('/dashboard/analytics')
     },
     {
       title: 'Active Alerts',
-      value: '8',
-      change: '-2',
+      value: demoDashboardStats.activeAlerts.toString(),
+      change: `-${demoDashboardStats.totalAlerts - demoDashboardStats.activeAlerts}`,
       icon: AlertTriangle,
       trend: 'down' as const,
       onClick: () => router.push('/dashboard/alerts')
     },
     {
-      title: 'Response Time',
-      value: '4.2m',
-      change: '+0.3m',
+      title: 'Avg Response Time',
+      value: `${demoDashboardStats.responseTimeAverage}m`,
+      change: '-0.5m',
       icon: Clock,
-      trend: 'up' as const
+      trend: 'down' as const
     },
     {
       title: 'Safety Score',
-      value: '94.2%',
-      change: '+1.8%',
+      value: `${demoDashboardStats.safetyScoreAverage}%`,
+      change: '+2.1%',
       icon: Shield,
       trend: 'up' as const
     }
   ];
 
-  const quickActions = [
-    {
-      title: 'View Alerts',
-      description: 'Monitor and manage safety alerts',
-      icon: AlertTriangle,
-      href: '/dashboard/alerts',
-      color: 'red'
-    },
-    {
-      title: 'Tourist Analytics',
-      description: 'View tourist movement and statistics',
-      icon: BarChart3,
-      href: '/dashboard/analytics',
-      color: 'blue'
-    },
-    {
-      title: 'Location Tracking',
-      description: 'Real-time location monitoring',
-      icon: MapPin,
-      href: '/dashboard/location',
-      color: 'green'
-    },
-    {
-      title: 'Communication',
-      description: 'Send alerts and notifications',
-      icon: MessageSquare,
-      href: '/dashboard/communication',
-      color: 'purple'
+  // Role-based Quick Actions
+  const getQuickActionsForRole = (userRole: string) => {
+    const baseActions = [
+      {
+        title: 'Tourist Analytics',
+        description: `View statistics for ${demoDashboardStats.activeTourists} tourists`,
+        icon: BarChart3,
+        href: '/dashboard/analytics',
+        color: 'blue'
+      }
+    ];
+
+    if (userRole === 'super_admin') {
+      return [
+        {
+          title: 'Emergency Management',
+          description: `${demoDashboardStats.activeAlerts} critical alerts require admin attention`,
+          icon: AlertTriangle,
+          href: '/dashboard/alerts',
+          color: 'red'
+        },
+        {
+          title: 'System Administration',
+          description: 'Manage users, zones, and system settings',
+          icon: Shield,
+          href: '/dashboard/admin',
+          color: 'purple'
+        },
+        {
+          title: 'Blockchain Verification',
+          description: `${demoDashboardStats.blockchainVerifications.toLocaleString()} verifications completed`,
+          icon: Shield,
+          href: '/dashboard/blockchain',
+          color: 'green'
+        },
+        ...baseActions
+      ];
     }
-  ];
+
+    if (userRole === 'operator') {
+      return [
+        {
+          title: 'Active Emergencies',
+          description: `${demoDashboardStats.activeAlerts} alerts need operator response`,
+          icon: AlertTriangle,
+          href: '/dashboard/alerts',
+          color: 'red'
+        },
+        {
+          title: 'Tourist Monitoring',
+          description: `Track ${demoDashboardStats.activeTourists} active tourists`,
+          icon: Users,
+          href: '/dashboard/tourists',
+          color: 'blue'
+        },
+        {
+          title: 'Zone Management',
+          description: `Monitor ${demoDashboardStats.activeZones}/${demoDashboardStats.totalZones} zones`,
+          icon: MapPin,
+          href: '/dashboard/zones',
+          color: 'green'
+        },
+        ...baseActions
+      ];
+    }
+
+    // Viewer role - read-only access
+    return [
+      {
+        title: 'View Emergency Reports',
+        description: `Browse ${demoDashboardStats.totalAlerts} total safety reports`,
+        icon: AlertTriangle,
+        href: '/dashboard/reports',
+        color: 'orange'
+      },
+      {
+        title: 'Tourism Statistics',
+        description: 'View comprehensive tourism analytics',
+        icon: BarChart3,
+        href: '/dashboard/analytics',
+        color: 'blue'
+      },
+      {
+        title: 'Zone Information',
+        description: `View status of ${demoDashboardStats.totalZones} monitored zones`,
+        icon: MapPin,
+        href: '/dashboard/zones',
+        color: 'green'
+      }
+    ];
+  };
+
+  const quickActions = getQuickActionsForRole(user.role);
+
+  // Role-specific welcome messages
+  const getWelcomeMessage = (userRole: string) => {
+    switch (userRole) {
+      case 'super_admin':
+        return {
+          title: `Welcome back, Administrator ${(user as any).name || user.displayName || user.email}!`,
+          subtitle: 'You have full system control. Monitor all tourist safety operations and manage system settings.'
+        };
+      case 'operator':
+        return {
+          title: `Welcome back, Operator ${(user as any).name || user.displayName || user.email}!`,
+          subtitle: 'Monitor tourist activities, respond to emergencies, and coordinate safety operations.'
+        };
+      case 'viewer':
+        return {
+          title: `Welcome, ${(user as any).name || user.displayName || user.email}!`,
+          subtitle: 'Access tourism analytics and safety reports with read-only permissions.'
+        };
+      default:
+        return {
+          title: `Welcome back, ${(user as any).name || user.displayName || user.email}!`,
+          subtitle: "Here's what's happening with tourist safety today."
+        };
+    }
+  };
+
+  const welcomeMessage = getWelcomeMessage(user.role);
 
   return (
     <div className="p-8">
       {/* Welcome Section */}
       <div className="mb-8">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          Welcome back, {(user as any).name || user.displayName || `${user.firstName} ${user.lastName}`.trim() || user.email}!
-        </h2>
-        <p className="text-gray-600 dark:text-gray-400">
-          Here's what's happening with tourist safety today.
-        </p>
+        <div className="flex items-center gap-3 mb-4">
+          <div className={`p-2 rounded-lg ${
+            user.role === 'super_admin' ? 'bg-purple-100 dark:bg-purple-900' :
+            user.role === 'operator' ? 'bg-blue-100 dark:bg-blue-900' :
+            'bg-green-100 dark:bg-green-900'
+          }`}>
+            {user.role === 'super_admin' && <Shield className="w-6 h-6 text-purple-600 dark:text-purple-400" />}
+            {user.role === 'operator' && <Users className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
+            {user.role === 'viewer' && <BarChart3 className="w-6 h-6 text-green-600 dark:text-green-400" />}
+          </div>
+          <div>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+              {welcomeMessage.title}
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400">
+              {welcomeMessage.subtitle}
+            </p>
+          </div>
+        </div>
+        
+        {/* Role Badge */}
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+          <div className={`w-2 h-2 rounded-full ${
+            user.role === 'super_admin' ? 'bg-purple-500' :
+            user.role === 'operator' ? 'bg-blue-500' :
+            'bg-green-500'
+          }`} />
+          {user.role.replace('_', ' ').toUpperCase()} ACCESS
+        </div>
       </div>
 
         {/* Stats Grid */}
@@ -248,32 +372,15 @@ export default function DashboardPage() {
           </div>
           
           <div className="space-y-4">
-            {[
-              {
-                icon: AlertTriangle,
-                title: 'New safety alert created',
-                description: 'High crowd density detected at Marina Bay',
-                time: '5 minutes ago',
-                color: 'text-red-600'
-              },
-              {
-                icon: Users,
-                title: 'Tourist group checked in',
-                description: '25 tourists from Singapore registered',
-                time: '12 minutes ago',
-                color: 'text-blue-600'
-              },
-              {
-                icon: Activity,
-                title: 'System health check completed',
-                description: 'All monitoring systems operational',
-                time: '1 hour ago',
-                color: 'text-green-600'
-              }
-            ].map((activity, index) => (
-              <div key={index} className="flex items-center space-x-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+            {demoRecentActivities.slice(0, 3).map((activity, index) => (
+              <div key={activity.id} className="flex items-center space-x-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                 <div className={`p-2 rounded-lg bg-gray-100 dark:bg-gray-600`}>
-                  <activity.icon className={`w-4 h-4 ${activity.color}`} />
+                  {activity.type === 'emergency_alert' && <AlertTriangle className="w-4 h-4 text-red-600" />}
+                  {activity.type === 'tourist_registration' && <Users className="w-4 h-4 text-blue-600" />}
+                  {activity.type === 'zone_monitoring' && <MapPin className="w-4 h-4 text-yellow-600" />}
+                  {activity.type === 'blockchain_verification' && <Shield className="w-4 h-4 text-green-600" />}
+                  {activity.type === 'ai_detection' && <Zap className="w-4 h-4 text-purple-600" />}
+                  {activity.type === 'system_health' && <Activity className="w-4 h-4 text-green-600" />}
                 </div>
                 <div className="flex-1">
                   <p className="font-medium text-gray-900 dark:text-white">
@@ -282,9 +389,19 @@ export default function DashboardPage() {
                   <p className="text-sm text-gray-600 dark:text-gray-400">
                     {activity.description}
                   </p>
+                  {activity.location && (
+                    <p className="text-xs text-gray-500 flex items-center gap-1 mt-1">
+                      <Navigation className="w-3 h-3" />
+                      {activity.location}
+                    </p>
+                  )}
                 </div>
                 <span className="text-xs text-gray-500">
-                  {activity.time}
+                  {new Date(activity.timestamp).toLocaleTimeString([], { 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    hour12: true 
+                  })}
                 </span>
               </div>
             ))}

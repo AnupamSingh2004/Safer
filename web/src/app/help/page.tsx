@@ -27,6 +27,7 @@ import {
   Settings,
   AlertTriangle
 } from 'lucide-react';
+import { ThemeToggle } from '@/components/theme/unified-theme-components';
 
 // ============================================================================
 // INTERFACES AND TYPES
@@ -770,7 +771,7 @@ export default function HelpPage() {
         <div className="bg-white p-6 rounded-lg border border-gray-200 mb-6">
           <div className="prose prose-sm max-w-none">
             <div dangerouslySetInnerHTML={{ 
-              __html: selectedArticle.content.replace(/\n/g, '<br/>').replace(/```(.*?)```/gs, '<pre><code>$1</code></pre>') 
+              __html: selectedArticle.content.replace(/\n/g, '<br/>').replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>') 
             }} />
           </div>
         </div>
@@ -809,23 +810,23 @@ export default function HelpPage() {
   // ============================================================================
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto py-8 px-4">
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-8 relative">
           <div className="flex items-center justify-between">
             <div>
               {activeView !== 'categories' && (
                 <button
                   onClick={handleBackToCategories}
-                  className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 mb-2"
+                  className="flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 mb-2"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span>Back to Help Center</span>
                 </button>
               )}
-              <h1 className="text-3xl font-bold text-gray-900">Help Center</h1>
-              <p className="mt-2 text-gray-600">
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Help Center</h1>
+              <p className="mt-2 text-gray-600 dark:text-gray-400">
                 {activeView === 'categories' && 'Find answers and learn how to use the Smart Tourist Safety System'}
                 {activeView === 'search' && 'Search results and category articles'}
                 {activeView === 'article' && 'Detailed guide and documentation'}
@@ -833,7 +834,8 @@ export default function HelpPage() {
             </div>
             {activeView !== 'article' && (
               <div className="flex items-center space-x-4">
-                <button className="flex items-center space-x-2 px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50">
+                <ThemeToggle variant="button" size="md" showLabel />
+                <button className="flex items-center space-x-2 px-4 py-2 text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20">
                   <MessageCircle className="w-4 h-4" />
                   <span>Contact Support</span>
                 </button>

@@ -34,6 +34,7 @@ import {
   Edit,
   Trash2
 } from 'lucide-react';
+import { ThemeToggle } from '@/components/theme/unified-theme-components';
 
 // ============================================================================
 // INTERFACES AND TYPES
@@ -963,12 +964,17 @@ export default function ContactPage() {
   // ============================================================================
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto py-8 px-4">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Contact & Support</h1>
-          <p className="mt-2 text-gray-600">Get help and stay connected with our support team</p>
+        <div className="mb-8 relative">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Contact & Support</h1>
+          <p className="mt-2 text-gray-600 dark:text-gray-400">Get help and stay connected with our support team</p>
+          
+          {/* Theme Switcher */}
+          <div className="absolute top-0 right-0">
+            <ThemeToggle variant="button" size="md" showLabel />
+          </div>
         </div>
 
         {/* Navigation Tabs */}

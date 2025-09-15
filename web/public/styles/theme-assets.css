@@ -1,0 +1,47 @@
+/**
+ * Smart Tourist Safety System - Theme Assets
+ * Additional theme-related CSS assets
+ */
+
+/* Theme transition utilities */
+.theme-transitioning * {
+  transition: color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+              background-color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+              border-color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+              box-shadow 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Emergency mode styles */
+.emergency-mode {
+  --emergency-glow: 0 0 20px rgba(239, 68, 68, 0.5);
+}
+
+.emergency-mode * {
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+}
+
+/* High contrast mode */
+.high-contrast {
+  filter: contrast(150%) brightness(110%);
+}
+
+/* Reduced motion */
+.reduce-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* Theme specific assets */
+:root {
+  --theme-shadow-light: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --theme-shadow-dark: 0 1px 3px 0 rgb(255 255 255 / 0.1), 0 1px 2px -1px rgb(255 255 255 / 0.1);
+}
+
+.light {
+  --theme-shadow: var(--theme-shadow-light);
+}
+
+.dark {
+  --theme-shadow: var(--theme-shadow-dark);
+}

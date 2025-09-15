@@ -6,10 +6,10 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import "../styles/globals-enhanced.css";
 import { Providers } from "@/components/providers/providers";
+import { PageTransition } from "@/components/transitions/page-transition";
 import { APP_CONFIG } from "@/lib/constants";
-import { getThemeScript } from "@/lib/theme/theme-config";
+import { getThemeScript } from "@/lib/theme/unified-theme-system";
 
 // Font configurations
 const inter = Inter({
@@ -189,8 +189,14 @@ export default function RootLayout({
         {/* Main application providers and content */}
         <Providers>
           <div id="portal-root" />
+          
           <main id="main-content">
-            {children}
+            <PageTransition 
+              transitionType="auto"
+              className="min-h-screen"
+            >
+              {children}
+            </PageTransition>
           </main>
         </Providers>
         

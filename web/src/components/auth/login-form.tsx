@@ -1,6 +1,6 @@
 /**
- * Smart Tourist Safety System - Enhanced Login Form
- * Professional login form with backend integration and security features
+ * Smart Tourist Safety System - Compact Login Form
+ * Optimized login form with reduced spacing for 100vh layout
  */
 
 'use client';
@@ -138,69 +138,69 @@ export function LoginForm({
 
   // Updated role options to match backend exactly
   const roleOptions = [
-    { value: 'super_admin', label: 'Super Administrator', description: 'Full system access with all permissions' },
-    { value: 'operator', label: 'System Operator', description: 'Safety operations and alert management' },
-    { value: 'viewer', label: 'Safety Viewer', description: 'Read-only access to reports and dashboards' },
+    { value: 'super_admin', label: 'Administrator', description: 'Full system access' },
+    { value: 'operator', label: 'Operator', description: 'Safety operations' },
+    { value: 'viewer', label: 'Viewer', description: 'Read-only access' },
   ];
 
   return (
-    <div className={cn('w-full space-y-6', className)}>
-      {/* Demo Account Quick Selection */}
-      <div className="bg-white/90 backdrop-blur-sm border border-white/20 rounded-lg p-4 shadow-lg">
-        <p className="text-sm font-medium text-gray-900 mb-3">Quick Demo Access:</p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+    <div className={cn('w-full space-y-3', className)}>
+      {/* Demo Account Quick Selection - Compact */}
+      <div className="bg-white/90 backdrop-blur-sm border border-white/20 rounded-lg p-3 shadow-sm">
+        <p className="text-md font-medium text-gray-900 mb-2">Quick Demo Access:</p>
+        <div className="grid grid-cols-3 gap-1">
           <button
             type="button"
             onClick={() => selectDemoAccount('admin')}
-            className="px-3 py-2 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors shadow-sm"
+            className="px-2 py-1.5 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors shadow-sm"
           >
-            Admin Login
+            Admin
           </button>
           <button
             type="button"
             onClick={() => selectDemoAccount('operator')}
-            className="px-3 py-2 text-xs bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors shadow-sm"
+            className="px-2 py-1.5 text-xs bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors shadow-sm"
           >
-            Operator Login
+            Operator
           </button>
           <button
             type="button"
             onClick={() => selectDemoAccount('viewer')}
-            className="px-3 py-2 text-xs bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors shadow-sm"
+            className="px-2 py-1.5 text-xs bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors shadow-sm"
           >
-            Viewer Login
+            Viewer
           </button>
         </div>
       </div>
 
-      {/* Success Message */}
+      {/* Success Message - Compact */}
       {loginSuccess && (
-        <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg shadow-sm">
-          <CheckCircle className="w-4 h-4 text-green-600" />
-          <span className="text-sm text-green-700 font-medium">Login successful! Redirecting...</span>
+        <div className="flex items-center gap-2 p-2 bg-green-50 border border-green-200 rounded-lg shadow-sm">
+          <CheckCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
+          <span className="text-xs text-green-700 font-medium">Login successful! Redirecting...</span>
         </div>
       )}
 
-      {/* Error Message */}
+      {/* Error Message - Compact */}
       {error && !loginSuccess && (
-        <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm">
-          <XCircle className="w-4 h-4 text-red-600" />
-          <span className="text-sm text-red-600 font-medium">{error}</span>
+        <div className="flex items-center gap-2 p-2 bg-red-50 border border-red-200 rounded-lg shadow-sm">
+          <XCircle className="w-3 h-3 text-red-600 flex-shrink-0" />
+          <span className="text-xs text-red-600 font-medium">{error}</span>
         </div>
       )}
 
-      {/* Form */}
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {/* Role Selection */}
+      {/* Form - Compact */}
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+        {/* Role Selection - Compact */}
         {showRoleSelection && (
           <div>
-            <label className="block text-sm font-semibold text-gray-900 mb-2">
+            <label className="block text-s font-semibold text-gray-900 mb-1">
               Login As
             </label>
             <div className="relative">
               <select
                 {...register('role')}
-                className="w-full px-3 py-3 pl-10 border-2 border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none text-gray-900 font-medium shadow-sm transition-all"
+                className="w-full px-2 py-2 pl-8 pr-8 border-2 border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none text-gray-900 font-medium shadow-sm transition-all text-sm"
                 disabled={isSubmitting}
               >
                 {roleOptions.map(role => (
@@ -209,23 +209,23 @@ export function LoginForm({
                   </option>
                 ))}
               </select>
-              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-600" />
-              <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <User className="absolute left-2 top-1/2 transform -translate-y-1/2 w-3 h-3 text-gray-600" />
+              <div className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                <svg className="w-3 h-3 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </div>
             </div>
-            {/* Role description */}
-            <p className="text-xs text-gray-700 mt-1 font-medium">
+            {/* Role description - Compact */}
+            <p className="text-xs text-gray-700 mt-0.5 font-medium">
               {roleOptions.find(r => r.value === watch('role'))?.description}
             </p>
           </div>
         )}
 
-        {/* Email */}
+        {/* Email - Compact */}
         <div>
-          <label className="block text-sm font-semibold text-gray-900 mb-2">
+          <label className="block text-sm font-semibold text-gray-800 mb-1">
             Email Address
           </label>
           <div className="relative">
@@ -234,26 +234,26 @@ export function LoginForm({
               type="email"
               placeholder="Enter your email"
               className={cn(
-                'w-full px-3 py-3 pl-10 border-2 rounded-lg bg-white transition-all shadow-sm text-gray-900 placeholder-gray-500',
+                'w-full px-2 py-2 pl-8 border-2 rounded-lg bg-white transition-all shadow-sm text-gray-900 placeholder-gray-500 text-sm',
                 'focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
                 errors.email ? 'border-red-300 bg-red-50' : 'border-gray-300'
               )}
               disabled={isSubmitting}
               autoComplete="email"
             />
-            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-600" />
+            <Mail className="absolute left-2 top-1/2 transform -translate-y-1/2 w-3 h-3 text-gray-600" />
           </div>
           {errors.email && (
-            <p className="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium">
-              <AlertTriangle className="w-3 h-3" />
+            <p className="text-xs text-red-600 mt-0.5 flex items-center gap-1 font-medium">
+              <AlertTriangle className="w-2.5 h-2.5" />
               {errors.email.message}
             </p>
           )}
         </div>
 
-        {/* Password */}
+        {/* Password - Compact */}
         <div>
-          <label className="block text-sm font-semibold text-gray-900 mb-2">
+          <label className="block text-sm font-semibold text-gray-900 mb-1">
             Password
           </label>
           <div className="relative">
@@ -262,58 +262,37 @@ export function LoginForm({
               type={showPassword ? 'text' : 'password'}
               placeholder="Enter your password"
               className={cn(
-                'w-full px-3 py-3 pl-10 pr-10 border-2 rounded-lg bg-white transition-all shadow-sm text-gray-900 placeholder-gray-500',
+                'w-full px-2 py-2 pl-8 pr-8 border-2 rounded-lg bg-white transition-all shadow-sm text-gray-900 placeholder-gray-500 text-sm',
                 'focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
                 errors.password ? 'border-red-300 bg-red-50' : 'border-gray-300'
               )}
               disabled={isSubmitting}
               autoComplete="current-password"
             />
-            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-600" />
+            <Lock className="absolute left-2 top-1/2 transform -translate-y-1/2 w-3 h-3 text-gray-600" />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-blue-600 transition-colors"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-blue-600 transition-colors"
               disabled={isSubmitting}
             >
-              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              {showPassword ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
             </button>
           </div>
           {errors.password && (
-            <p className="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium">
-              <AlertTriangle className="w-3 h-3" />
+            <p className="text-xs text-red-600 mt-0.5 flex items-center gap-1 font-medium">
+              <AlertTriangle className="w-2.5 h-2.5" />
               {errors.password.message}
             </p>
           )}
         </div>
 
-        {/* Remember Me & Forgot Password */}
-        {showRememberMe && (
-          <div className="flex items-center justify-between">
-            <label className="flex items-center gap-2">
-              <input
-                {...register('rememberMe')}
-                type="checkbox"
-                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                disabled={isSubmitting}
-              />
-              <span className="text-sm text-gray-800 font-medium">Remember me for 30 days</span>
-            </label>
-            <a 
-              href="/forgot-password" 
-              className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors font-medium"
-            >
-              Forgot password?
-            </a>
-          </div>
-        )}
-
-        {/* Submit Button */}
+        {/* Submit Button - Compact */}
         <button
           type="submit"
           disabled={!isValid || isSubmitting || loginSuccess}
           className={cn(
-            'w-full flex items-center justify-center px-4 py-3 text-white font-medium rounded-lg transition-all',
+            'w-full flex items-center justify-center px-3 py-2 text-white font-medium rounded-lg transition-all text-sm',
             'focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
             loginSuccess 
               ? 'bg-green-600 cursor-default'
@@ -325,28 +304,28 @@ export function LoginForm({
         >
           {loginSuccess ? (
             <>
-              <CheckCircle className="w-4 h-4 mr-2" />
-              Login Successful
+              <CheckCircle className="w-3 h-3 mr-2" />
+              Success
             </>
           ) : isSubmitting ? (
             <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              <Loader2 className="w-3 h-3 mr-2 animate-spin" />
               Signing In...
             </>
           ) : (
             <>
-              <Shield className="w-4 h-4 mr-2" />
+              <Shield className="w-3 h-3 mr-2" />
               Sign In Securely
             </>
           )}
         </button>
       </form>
 
-      {/* Security Notice */}
+      {/* Security Notice - Compact */}
       <div className="text-center">
-        <div className="text-xs text-gray-700 flex items-center justify-center gap-1 bg-gray-100 px-3 py-2 rounded-full shadow-sm border border-gray-200">
-          <Shield className="h-3 w-3" />
-          <span className="font-medium">Secured by 256-bit SSL encryption</span>
+        <div className="text-xs text-gray-700 flex items-center justify-center gap-1 bg-gray-100 px-2 py-1 rounded-full shadow-sm border border-gray-200">
+          <Shield className="h-2.5 w-2.5" />
+          <span className="font-medium">256-bit SSL encryption</span>
         </div>
       </div>
     </div>
@@ -354,40 +333,36 @@ export function LoginForm({
 }
 
 // ============================================================================
-// LOADING SKELETON
+// LOADING SKELETON - Compact
 // ============================================================================
 
 export function LoginFormSkeleton() {
   return (
-    <div className="w-full space-y-4 animate-pulse">
+    <div className="w-full space-y-3 animate-pulse">
       {/* Demo buttons skeleton */}
-      <div className="bg-gray-100 border border-gray-200 rounded-lg p-4">
-        <div className="h-4 bg-gray-200 rounded w-32 mb-3" />
-        <div className="grid grid-cols-3 gap-2">
-          <div className="h-8 bg-gray-200 rounded" />
-          <div className="h-8 bg-gray-200 rounded" />
-          <div className="h-8 bg-gray-200 rounded" />
+      <div className="bg-gray-100 border border-gray-200 rounded-lg p-3">
+        <div className="h-3 bg-gray-200 rounded w-24 mb-2" />
+        <div className="grid grid-cols-3 gap-1">
+          <div className="h-6 bg-gray-200 rounded" />
+          <div className="h-6 bg-gray-200 rounded" />
+          <div className="h-6 bg-gray-200 rounded" />
         </div>
       </div>
       
       {/* Form fields skeleton */}
       <div className="space-y-1">
-        <div className="h-4 bg-gray-200 rounded w-16" />
-        <div className="h-12 bg-gray-200 rounded-lg" />
+        <div className="h-3 bg-gray-200 rounded w-12" />
+        <div className="h-8 bg-gray-200 rounded-lg" />
       </div>
       <div className="space-y-1">
-        <div className="h-4 bg-gray-200 rounded w-24" />
-        <div className="h-12 bg-gray-200 rounded-lg" />
+        <div className="h-3 bg-gray-200 rounded w-20" />
+        <div className="h-8 bg-gray-200 rounded-lg" />
       </div>
       <div className="space-y-1">
-        <div className="h-4 bg-gray-200 rounded w-16" />
-        <div className="h-12 bg-gray-200 rounded-lg" />
+        <div className="h-3 bg-gray-200 rounded w-12" />
+        <div className="h-8 bg-gray-200 rounded-lg" />
       </div>
-      <div className="flex items-center justify-between">
-        <div className="h-4 bg-gray-200 rounded w-24" />
-        <div className="h-4 bg-gray-200 rounded w-20" />
-      </div>
-      <div className="h-12 bg-gray-200 rounded-lg" />
+      <div className="h-8 bg-gray-200 rounded-lg" />
     </div>
   );
 }

@@ -1,10 +1,48 @@
-// web/src/lib/theme/index.ts
+/**
+ * Smart Tourist Safety System - Unified Theme System Exports
+ * Central export point for all theme-related functionality
+ */
 
-// Export all theme configurations
-export * from './theme-config';
-export * from './color-palette';
-export * from './typography';
-export * from './animations';
+// Core theme system
+export * from './unified-theme-system';
+export * from './unified-theme-provider';
 
-// Re-export main theme configuration as default
-export { default as themeConfig } from './theme-config';
+// Theme components
+export * from '../../components/theme/unified-theme-components';
+
+// Re-export commonly used items with simpler names
+export {
+  UnifiedThemeProvider as ThemeProvider,
+  useUnifiedTheme as useTheme,
+  useThemeToggle,
+  useEmergencyMode,
+  useAccessibility,
+  useThemeValue,
+  useThemeClasses,
+} from './unified-theme-provider';
+
+export {
+  UnifiedThemeToggle as ThemeToggle,
+  UnifiedThemeSelector as ThemeSelector, 
+  UnifiedEmergencyToggle as EmergencyToggle,
+  UnifiedAccessibilityControls as AccessibilityControls,
+  UnifiedThemePanel as ThemePanel,
+} from '../../components/theme/unified-theme-components';
+
+// Theme utilities
+export {
+  themeConfig,
+  colorTokens,
+  getSystemTheme,
+  resolveTheme,
+  getCSSVariables,
+  applyThemeToDOM,
+  applyEmergencyMode,
+  getThemeScript,
+  type ThemeMode,
+  type ResolvedTheme,
+  type EmergencySeverity,
+} from './unified-theme-system';
+
+// Legacy exports for backward compatibility (DEPRECATED - will be removed)
+// Note: Some legacy files have been removed and consolidated into unified-theme-system

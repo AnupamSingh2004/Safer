@@ -24,6 +24,7 @@ import {
   AlertTriangle,
   Check
 } from 'lucide-react';
+import { ThemeToggle } from '@/components/theme/unified-theme-components';
 
 // ============================================================================
 // INTERFACES AND TYPES
@@ -883,12 +884,17 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-4xl mx-auto py-8 px-4">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Profile Settings</h1>
-          <p className="mt-2 text-gray-600">Manage your account settings and preferences</p>
+        <div className="mb-8 relative">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Profile Settings</h1>
+          <p className="mt-2 text-gray-600 dark:text-gray-400">Manage your account settings and preferences</p>
+          
+          {/* Theme Switcher */}
+          <div className="absolute top-0 right-0">
+            <ThemeToggle variant="button" size="md" showLabel />
+          </div>
         </div>
 
         {/* Navigation Tabs */}

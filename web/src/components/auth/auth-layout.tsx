@@ -10,7 +10,7 @@ import Image from 'next/image';
 import { Shield, MapPin, Users, AlertTriangle, TrendingUp, Globe, Moon, Sun } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { APP_CONFIG } from '@/lib/constants';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { ThemeToggle } from '@/components/theme/unified-theme-components';
 
 // ============================================================================
 // COMPONENT PROPS

@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { SessionProvider } from "next-auth/react";
-import { ThemeProvider as EnhancedThemeProvider } from "@/lib/theme/theme-provider";
+import { UnifiedThemeProvider } from "@/lib/theme/unified-theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { ENV } from "@/lib/constants";
 
@@ -141,20 +141,31 @@ class ErrorBoundary extends React.Component<
 }
 
 // ============================================================================
+// TRANSITION PROVIDER WRAPPER - Simplified
+// ============================================================================
+
+function AppTransitionProvider({ children }: { children: React.ReactNode }) {
+  // Since we simplified the page transitions, we don't need a complex provider
+  // The transitions are handled directly in the layout
+  return <>{children}</>;
+}
+
+// ============================================================================
 // THEME PROVIDER WRAPPER
 // ============================================================================
 
 function AppThemeProvider({ children }: { children: React.ReactNode }) {
   return (
-    <EnhancedThemeProvider
+    <UnifiedThemeProvider
       defaultTheme="system"
       storageKey="smart-tourist-theme"
       enableSystem
-      disableTransitionOnChange={false}
-      attribute="class"
+      enableTransitions
+      enableEmergencyMode
+      enableAccessibility
     >
       {children}
-    </EnhancedThemeProvider>
+    </UnifiedThemeProvider>
   );
 }
 
@@ -255,6 +266,7 @@ export function Providers({ children }: ProvidersProps) {
       console.log('🏗️ Smart Tourist Safety System - Development Mode');
       console.log('🎨 Theme switching enabled');
       console.log('🔐 Authentication provider active');
+      console.log('🎬 Page transitions enabled');
     }
   }, []);
 
@@ -263,9 +275,11 @@ export function Providers({ children }: ProvidersProps) {
       <AppAccessibilityProvider>
         <AppThemeProvider>
           <AppAuthProvider>
-            <AppToastProvider>
-              {children}
-            </AppToastProvider>
+            <AppTransitionProvider>
+              <AppToastProvider>
+                {children}
+              </AppToastProvider>
+            </AppTransitionProvider>
           </AppAuthProvider>
         </AppThemeProvider>
       </AppAccessibilityProvider>

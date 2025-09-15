@@ -16,13 +16,46 @@ import {
   UserPlus
 } from 'lucide-react';
 import type { Alert } from '@/types/alert';
+import { AlertSeverity, AlertStatus, AlertType } from '@/types/alert';
 
 interface EmergencyResponseProps {
-  alert: Alert;
-  onClose: () => void;
+  alert?: Alert;
+  onClose?: () => void;
+  onBack?: () => void;
+  onBroadcastCreated?: () => void;
 }
 
-const EmergencyResponse: React.FC<EmergencyResponseProps> = ({ alert, onClose }) => {
+const EmergencyResponse: React.FC<EmergencyResponseProps> = ({ 
+  alert: alertData, 
+  onClose, 
+  onBack, 
+  onBroadcastCreated 
+}) => {
+  // Provide fallback alert data if none provided
+  const alert = alertData || {
+    id: 'demo-alert',
+    title: 'Emergency Response Demo',
+    message: 'Emergency response interface demonstration',
+    severity: AlertSeverity.MEDIUM,
+    location: { 
+      coordinates: { latitude: 0, longitude: 0 }, 
+      address: 'Demo Location' 
+    },
+    createdAt: new Date().toISOString(),
+    status: AlertStatus.ACTIVE,
+    type: AlertType.EMERGENCY,
+    target: {},
+    actions: [],
+    triggerCondition: {},
+    updatedAt: new Date().toISOString(),
+    createdBy: 'demo',
+    source: 'manual' as const,
+    affectedZones: [],
+    deliveryStats: { sent: 0, delivered: 0, read: 0, failed: 0, acknowledged: 0 },
+    metadata: {},
+    tags: []
+  };
+
   const [selectedTeam, setSelectedTeam] = useState<string>('');
   const [responseNotes, setResponseNotes] = useState('');
   const [isDeploying, setIsDeploying] = useState(false);
@@ -46,13 +79,14 @@ const EmergencyResponse: React.FC<EmergencyResponseProps> = ({ alert, onClose })
     // Simulate deployment
     setTimeout(() => {
       setIsDeploying(false);
-      alert(`Team deployed for ${alert.title}`);
+      window.alert(`Team deployed for ${alertData?.title || 'Unknown Alert'}`);
+      if (onClose) onClose();
     }, 2000);
   };
 
   const handleCallEmergency = (number: string) => {
     // In real app, would integrate with phone system
-    alert(`Calling ${number}...`);
+    window.alert(`Calling ${number}...`);
   };
 
   const getAlertSeverityColor = (severity: string) => {
@@ -102,12 +136,12 @@ const EmergencyResponse: React.FC<EmergencyResponseProps> = ({ alert, onClose })
               {alert.title}
             </h3>
             <p className="text-red-800 dark:text-red-200 mb-3">
-              {alert.description}
+              {alert.message}
             </p>
             {alert.location && (
               <div className="flex items-center gap-2 text-red-700 dark:text-red-300">
                 <MapPin className="w-4 h-4" />
-                <span className="text-sm">{alert.location}</span>
+                <span className="text-sm">{alert.location?.address || 'Unknown Location'}</span>
               </div>
             )}
           </div>

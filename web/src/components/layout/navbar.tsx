@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/stores/auth-store';
+import { ThemeToggle } from '@/components/theme/unified-theme-components';
 
 // Navigation items for different user types
 const navigationItems = {
@@ -138,7 +139,7 @@ export function Navbar() {
               <Shield className="w-6 h-6 text-white" />
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-primary-600 bg-clip-text text-transparent">
+              <h1 className="text-xl font-bold bg-gradient-to-r from-primary via-blue-500 to-primary-400 bg-clip-text text-transparent dark:from-primary-400 dark:via-blue-400 dark:to-primary-300">
                 Smart Tourist Safety
               </h1>
               <p className="text-xs text-gray-500 dark:text-gray-400 -mt-1">
@@ -174,6 +175,9 @@ export function Navbar() {
 
           {/* Right side */}
           <div className="flex items-center space-x-4">
+            {/* Theme Toggle */}
+            <ThemeToggle variant="icon" size="sm" className="p-2" />
+
             {/* Search (if authenticated) */}
             {isLoggedIn && (
               <button className="hidden lg:flex items-center px-3 py-2 text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">

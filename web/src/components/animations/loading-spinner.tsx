@@ -7,7 +7,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useEnhancedTheme } from '@/components/providers/enhanced-theme-provider';
+import { useUnifiedTheme } from '@/lib/theme/unified-theme-provider';
 
 // ============================================================================
 // LOADING SPINNER VARIANTS
@@ -74,7 +74,16 @@ export function LoadingSpinner({
   className = '',
   message,
 }: LoadingSpinnerProps) {
-  const { theme, emergencyMode, animationsEnabled } = useEnhancedTheme();
+  const { resolvedTheme, emergencyMode } = useUnifiedTheme();
+  
+  // Check if animations should be reduced (simple check for reduced motion)
+  const [animationsEnabled, setAnimationsEnabled] = React.useState(true);
+  
+  React.useEffect(() => {
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setAnimationsEnabled(!prefersReducedMotion);
+  }, []);
 
   const getSizeClasses = () => {
     const sizes = {
@@ -88,11 +97,11 @@ export function LoadingSpinner({
 
   const getColorClasses = () => {
     const colors = {
-      primary: emergencyMode ? 'text-emergency-500' : 'text-primary-500',
-      emergency: 'text-emergency-500',
-      warning: 'text-warning-500',
-      info: 'text-info-500',
-      success: 'text-success-500',
+      primary: emergencyMode ? 'text-red-500' : 'text-blue-500',
+      emergency: 'text-red-500',
+      warning: 'text-yellow-500',
+      info: 'text-blue-500',
+      success: 'text-green-500',
     };
     return colors[color];
   };
@@ -155,10 +164,10 @@ export function LoadingSpinner({
           <motion.div
             variants={spinnerVariants}
             animate="animate"
-            className={`${getSizeClasses()} text-emergency-500 relative`}
+            className={`${getSizeClasses()} text-red-500 relative`}
           >
-            <div className="absolute inset-0 border-2 border-emergency-200 rounded-full" />
-            <div className="absolute inset-0 border-2 border-emergency-500 border-t-transparent rounded-full" />
+            <div className="absolute inset-0 border-2 border-red-200 rounded-full" />
+            <div className="absolute inset-0 border-2 border-red-500 border-t-transparent rounded-full" />
             <motion.div
               animate={{
                 scale: [1, 1.5, 1],
@@ -169,7 +178,7 @@ export function LoadingSpinner({
                 repeat: Infinity,
                 ease: 'easeInOut',
               }}
-              className="absolute inset-0 border border-emergency-300 rounded-full"
+              className="absolute inset-0 border border-red-300 rounded-full"
             />
           </motion.div>
         );

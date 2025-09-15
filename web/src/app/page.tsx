@@ -21,7 +21,8 @@ import {
   Eye,
   Heart,
   LogIn,
-  UserPlus
+  UserPlus,
+  Mail
 } from 'lucide-react';
 import { Navbar } from '@/components/layout/navbar';
 import { useAuthStore } from '@/stores/auth-store';
@@ -31,6 +32,7 @@ const HomePage: React.FC = () => {
   const router = useRouter();
   const { isAuthenticated, isLoading, isInitialized, user } = useAuthStore();
   const [mounted, setMounted] = useState(false);
+  const [isDemoLoading, setIsDemoLoading] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -42,6 +44,16 @@ const HomePage: React.FC = () => {
       router.push('/dashboard');
     }
   }, [isAuthenticated, isInitialized, mounted, user, router]);
+
+  // Demo button handler
+  const handleWatchDemo = () => {
+    setIsDemoLoading(true);
+    // Simulate loading for better UX
+    setTimeout(() => {
+      window.open('https://www.youtube.com/watch?v=demo-video', '_blank');
+      setIsDemoLoading(false);
+    }, 500);
+  };
 
   // Show loading spinner during authentication check
   if (!mounted || isLoading || !isInitialized) {
@@ -179,10 +191,22 @@ const HomePage: React.FC = () => {
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Link>
               
-              <button className="group inline-flex items-center px-8 py-4 text-lg font-semibold text-gray-700 dark:text-gray-300 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-2 border-gray-200 dark:border-gray-700 rounded-xl hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl">
-                <Play className="w-5 h-5 mr-2" />
-                Watch Demo
+              <button 
+                onClick={handleWatchDemo}
+                disabled={isDemoLoading}
+                className="group inline-flex items-center px-8 py-4 text-lg font-semibold text-gray-700 dark:text-gray-300 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-2 border-gray-200 dark:border-gray-700 rounded-xl hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+              >
+                <Play className={`w-5 h-5 mr-2 ${isDemoLoading ? 'animate-spin' : ''}`} />
+                {isDemoLoading ? 'Loading...' : 'Watch Demo'}
               </button>
+              
+              <Link
+                href="/demo/transitions"
+                className="group inline-flex items-center px-6 py-3 text-sm font-medium text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-all duration-300"
+              >
+                <Zap className="w-4 h-4 mr-2" />
+                🎬 Try Transitions
+              </Link>
             </div>
 
             {/* Trust Indicators */}
@@ -320,16 +344,18 @@ const HomePage: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/register"
-              className="inline-flex items-center px-8 py-4 text-lg font-semibold text-blue-600 bg-white rounded-xl hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="group inline-flex items-center px-8 py-4 text-lg font-semibold text-blue-600 bg-white rounded-xl hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
             >
+              <Shield className="w-5 h-5 mr-2" />
               Get Started Free
-              <ArrowRight className="w-5 h-5 ml-2" />
+              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </Link>
             
             <Link
               href="/contact"
-              className="inline-flex items-center px-8 py-4 text-lg font-semibold text-white border-2 border-white/30 rounded-xl hover:border-white hover:bg-white/10 transition-all duration-300"
+              className="inline-flex items-center px-8 py-4 text-lg font-semibold text-white border-2 border-white/30 rounded-xl hover:border-white hover:bg-white/10 transition-all duration-300 transform hover:scale-105"
             >
+              <Mail className="w-5 h-5 mr-2" />
               Contact Sales
             </Link>
           </div>
@@ -364,9 +390,9 @@ const HomePage: React.FC = () => {
               <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
               <ul className="space-y-2 text-gray-400">
                 <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
-                <li><Link href="/features" className="hover:text-white transition-colors">Features</Link></li>
-                <li><Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
                 <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
+                <li><Link href="/help" className="hover:text-white transition-colors">Help Center</Link></li>
+                <li><Link href="/login" className="hover:text-white transition-colors">Login</Link></li>
               </ul>
             </div>
 
@@ -375,9 +401,9 @@ const HomePage: React.FC = () => {
               <h4 className="text-lg font-semibold mb-4">Support</h4>
               <ul className="space-y-2 text-gray-400">
                 <li><Link href="/help" className="hover:text-white transition-colors">Help Center</Link></li>
-                <li><Link href="/docs" className="hover:text-white transition-colors">Documentation</Link></li>
-                <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-                <li><Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
+                <li><Link href="/contact" className="hover:text-white transition-colors">Contact Support</Link></li>
+                <li><a href="mailto:support@touristsafety.gov.in" className="hover:text-white transition-colors">Email Support</a></li>
+                <li><a href="tel:+91-1800-XXX-XXXX" className="hover:text-white transition-colors">Emergency Hotline</a></li>
               </ul>
             </div>
           </div>

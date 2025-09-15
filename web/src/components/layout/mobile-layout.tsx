@@ -25,7 +25,7 @@ import {
   Battery,
   Signal
 } from 'lucide-react';
-import { useEnhancedTheme } from '@/hooks/use-enhanced-theme';
+import { useUnifiedTheme } from '@/lib/theme/unified-theme-provider';
 import { DrawerTransition } from '@/components/animations/page-transition';
 
 // ============================================================================
@@ -118,11 +118,9 @@ const emergencyActions = [
 // MOBILE STATUS BAR
 // ============================================================================
 
-function MobileStatusBar() {
-  const [time, setTime] = useState(new Date());
-  const { theme } = useEnhancedTheme();
-
-  useEffect(() => {
+  function MobileStatusBar() {
+    const [time, setTime] = useState(new Date());
+    const { theme } = useUnifiedTheme();  useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
@@ -177,11 +175,9 @@ function MobileHeader({
   onMenuToggle,
   actions,
   emergencyMode = false,
-}: MobileHeaderProps) {
-  const router = useRouter();
-  const { theme } = useEnhancedTheme();
-
-  return (
+  }: MobileHeaderProps) {
+    const router = useRouter();
+    const { theme } = useUnifiedTheme();  return (
     <motion.header
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -248,11 +244,9 @@ function BottomNavigation({
   onItemSelect,
   emergencyMode = false,
 }: BottomNavigationProps) {
-  const pathname = usePathname();
-  const router = useRouter();
-  const { theme } = useEnhancedTheme();
-
-  const handleItemClick = (item: NavigationItem) => {
+    const pathname = usePathname();
+    const router = useRouter();
+    const { theme } = useUnifiedTheme();  const handleItemClick = (item: NavigationItem) => {
     if (item.disabled) return;
     
     onItemSelect?.(item);
@@ -352,11 +346,9 @@ interface SideDrawerProps {
   emergencyMode?: boolean;
 }
 
-function SideDrawer({ isOpen, onClose, emergencyMode = false }: SideDrawerProps) {
-  const { theme, toggleEmergencyMode } = useEnhancedTheme();
-  const router = useRouter();
-
-  const menuItems = [
+  function SideDrawer({ isOpen, onClose, emergencyMode = false }: SideDrawerProps) {
+    const { theme, toggleEmergencyMode } = useUnifiedTheme();
+    const router = useRouter();  const menuItems = [
     { label: 'Dashboard', href: '/dashboard', icon: Home },
     { label: 'Safety Center', href: '/safety', icon: Shield },
     { label: 'Emergency Contacts', href: '/contacts', icon: Phone },
@@ -485,11 +477,9 @@ export function MobileLayout({
   emergencyMode = false,
   className = '',
 }: MobileLayoutProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const pathname = usePathname();
-  const { theme, emergencyMode: globalEmergencyMode, toggleEmergencyMode } = useEnhancedTheme();
-  
-  const isEmergencyActive = emergencyMode || globalEmergencyMode;
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const pathname = usePathname();
+    const { theme, emergencyMode: globalEmergencyMode, toggleEmergencyMode } = useUnifiedTheme();  const isEmergencyActive = emergencyMode || globalEmergencyMode;
 
   // Get page title from pathname
   const getPageTitle = (path: string) => {

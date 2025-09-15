@@ -28,7 +28,9 @@ import {
   HelpCircle
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { themeConfig, ThemeMode } from '@/lib/theme/theme-config';
+import { useUnifiedTheme } from '@/lib/theme/unified-theme-provider';
+
+type ThemeMode = 'light' | 'dark' | 'system';
 
 interface SystemPreferences {
   // Display & Theme

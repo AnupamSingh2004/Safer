@@ -337,20 +337,20 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
           'flex items-center justify-between w-full px-3 py-2 text-sm font-medium rounded-md transition-all duration-200',
           isChild ? 'pl-8' : 'px-3',
           isActive
-            ? 'bg-blue-100 text-blue-700 border-r-2 border-blue-600'
-            : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900',
+            ? 'bg-primary/10 text-primary border-r-2 border-primary dark:bg-primary/20 dark:text-primary-400'
+            : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-100',
           'group'
         )}
       >
         <div className="flex items-center space-x-3">
-          <item.icon className={cn('h-5 w-5', isActive ? 'text-blue-600' : 'text-gray-500')} />
+          <item.icon className={cn('h-5 w-5', isActive ? 'text-primary dark:text-primary-400' : 'text-gray-500 dark:text-gray-400')} />
           <span>{item.label}</span>
           {item.badge && (
             <span className={cn(
               'px-2 py-0.5 text-xs font-medium rounded-full',
               isActive 
-                ? 'bg-blue-200 text-blue-800' 
-                : 'bg-gray-200 text-gray-700'
+                ? 'bg-primary/20 text-primary dark:bg-primary/30 dark:text-primary-300' 
+                : 'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
             )}>
               {item.badge}
             </span>
@@ -410,25 +410,25 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
       {/* Sidebar */}
       <div
         className={cn(
-          'fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0',
+          'fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0',
           isOpen ? 'translate-x-0' : '-translate-x-full',
           className
         )}
       >
         {/* Sidebar Header */}
-        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
+        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center space-x-2">
-            <Shield className="h-8 w-8 text-blue-600" />
+            <Shield className="h-8 w-8 text-primary dark:text-primary-400" />
             <div>
-              <h2 className="text-lg font-bold text-gray-900">Safety Hub</h2>
-              <p className="text-xs text-gray-500">Emergency Response</p>
+              <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Safety Hub</h2>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Emergency Response</p>
             </div>
           </div>
         </div>
 
         {/* User Info */}
         {user && (
-          <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <div className="px-6 py-4 border-b border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
             <div className="flex items-center space-x-3">
               {user.avatar ? (
                 <img
@@ -437,15 +437,15 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                   className="w-10 h-10 rounded-full object-cover"
                 />
               ) : (
-                <div className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
+                <div className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">
                   {(user.displayName || 'User').split(' ').map(n => n[0]).join('')}
                 </div>
               )}
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">
+                <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
                   {user.displayName}
                 </p>
-                <p className="text-xs text-gray-500 capitalize">
+                <p className="text-xs text-gray-500 dark:text-gray-400 capitalize">
                   {user.role.replace('_', ' ')}
                 </p>
                 <p className="text-xs text-gray-400">{user.department}</p>

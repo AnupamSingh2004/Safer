@@ -2,6 +2,38 @@
 @tailwind components;  
 @tailwind utilities;
 
+/* Custom animations for home page */
+@keyframes blob {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Grid pattern background */
+.bg-grid-pattern {
+  background-image: linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
 @layer base {
   /* =========================================================================
      ROOT VARIABLES - LIGHT THEME (DEFAULT)
@@ -78,7 +110,13 @@
     --animation-easing-bouncy: cubic-bezier(0.68, -0.55, 0.265, 1.55);
     
     /* Theme transition */
-    --theme-transition: none;
+    --theme-transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --theme-transition-property: color, background-color, border-color, box-shadow, fill, stroke, opacity;
+    --theme-transition-duration: 300ms;
+    --theme-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Color scheme meta */
+    color-scheme: light;
   }
 
   /* =========================================================================
@@ -137,11 +175,18 @@
     --zone-moderate: 45 93% 47%;
     --zone-high-risk: 0 91% 71%;
     --zone-restricted: 0 84% 25%;
+    
+    /* Color scheme meta */
+    color-scheme: dark;
   }
 
   /* =========================================================================
      SMOOTH THEME TRANSITIONS
      ========================================================================= */
+  *:not(.no-transition) {
+    transition: var(--theme-transition-property) var(--theme-transition-duration) var(--theme-transition-timing);
+  }
+
   .theme-transitioning * {
     transition: var(--theme-transition) !important;
   }
@@ -149,6 +194,18 @@
   .theme-transitioning *:before,
   .theme-transitioning *:after {
     transition: var(--theme-transition) !important;
+  }
+
+  /* Disable transitions for reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 
   /* =========================================================================
@@ -174,6 +231,35 @@
     }
   }
 
+  @keyframes gradient-x {
+    0%, 100% {
+      background-size: 200% 200%;
+      background-position: left center;
+    }
+    50% {
+      background-size: 200% 200%;
+      background-position: right center;
+    }
+  }
+
+  /* Additional utility classes for enhanced login page */
+  .animate-gradient-x {
+    animation: gradient-x 3s ease infinite;
+  }
+
+  /* Login form skeleton styles */
+  .login-form-skeleton {
+    @apply animate-pulse;
+  }
+
+  .login-form-skeleton .skeleton-field {
+    @apply bg-gray-200 h-12 rounded-lg;
+  }
+
+  .login-form-skeleton .skeleton-button {
+    @apply bg-gray-300 h-11 rounded-lg;
+  }
+
   /* =========================================================================
      BASE ELEMENT STYLING
      ========================================================================= */
@@ -184,9 +270,461 @@
   html {
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    tab-size: 4;
   }
 
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-inter), var(--font-sans), system-ui, -apple-system, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
+
+  /* =========================================================================
+     CUSTOM SCROLLBAR
+     ========================================================================= */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--border) / 0.8);
+  }
+
+  /* =========================================================================
+     SELECTION STYLES
+     ========================================================================= */
+  ::selection {
+    background-color: hsl(var(--primary) / 0.2);
+    color: hsl(var(--primary-foreground));
+  }
+
+  /* =========================================================================
+     FOCUS STYLES
+     ========================================================================= */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  /* =========================================================================
+     UTILITY CLASSES
+     ========================================================================= */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .not-sr-only {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+
+  .no-transition {
+    transition: none !important;
+  }
+}
+
+/* ============================================================================
+   SIMPLE & SMOOTH PAGE TRANSITIONS
+   Gentle, professional transitions focused on simplicity and elegance
+   ============================================================================ */
+
+/* Base transition wrapper optimization */
+.page-transition-wrapper {
+  /* GPU acceleration for smooth transitions */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  
+  /* Prevent layout shifts during transitions */
+  contain: layout style paint;
+  
+  /* Smooth scrolling on mobile devices */
+  -webkit-overflow-scrolling: touch;
+  
+  /* Re-enable text selection immediately */
+  user-select: auto;
+  -webkit-user-select: auto;
+}
+
+/* Simple fade transitions */
+.simple-fade-enter {
+  opacity: 0;
+}
+
+.simple-fade-enter-active {
+  opacity: 1;
+  transition: opacity 400ms cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.simple-fade-exit {
+  opacity: 1;
+}
+
+.simple-fade-exit-active {
+  opacity: 0;
+  transition: opacity 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Gentle slide transitions */
+.gentle-slide-enter {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.gentle-slide-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 400ms cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.gentle-slide-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.gentle-slide-exit-active {
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Sidebar transitions - smooth slide from left */
+.sidebar-transition {
+  will-change: transform, opacity;
+  contain: layout style;
+  overflow: hidden;
+}
+
+.sidebar-slide-enter {
+  transform: translateX(-280px);
+  opacity: 0;
+}
+
+.sidebar-slide-enter-active {
+  transform: translateX(0);
+  opacity: 1;
+  transition: all 500ms cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.sidebar-slide-exit {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.sidebar-slide-exit-active {
+  transform: translateX(-280px);
+  opacity: 0;
+  transition: all 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Dashboard content with sidebar margin - smooth adjustment */
+.main-content-transition {
+  will-change: margin-left;
+  contain: layout style;
+  min-height: 100vh;
+  transition: margin-left 500ms cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.main-content-transition.sidebar-open {
+  margin-left: 280px;
+}
+
+.main-content-transition.sidebar-closed {
+  margin-left: 0;
+}
+
+/* Dashboard layout - simple fade */
+.dashboard-layout {
+  contain: layout style;
+  opacity: 0;
+  animation: gentleFadeIn 400ms cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+}
+
+@keyframes gentleFadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Widget containers - gentle hover and focus */
+.widget-container {
+  contain: layout style paint;
+  transform: translateZ(0);
+  transition: all 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.widget-container:hover {
+  transform: translateY(-1px) translateZ(0);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Emergency transition styling - subtle emphasis */
+.emergency-transition {
+  position: relative;
+}
+
+.emergency-transition::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.02) 0%,
+    rgba(239, 68, 68, 0.01) 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 300ms ease-in-out;
+}
+
+.emergency-transition > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Modal backdrop - gentle blur */
+.modal-backdrop {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.3);
+  transition: all 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Focus management - smooth focus ring */
+.page-transition-wrapper:focus-within {
+  outline: none;
+}
+
+/* Enhanced focus styles for accessibility */
+*:focus {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+  transition: outline-color 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Gentle loading states */
+.gentle-loading {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.gentle-loading.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Smooth hover effects */
+.gentle-hover {
+  transition: all 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.gentle-hover:hover {
+  transform: translateY(-1px);
+}
+
+/* Page container for consistent layout */
+.page-container {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  .page-transition-wrapper,
+  .sidebar-transition,
+  .main-content-transition,
+  .dashboard-layout,
+  .widget-container,
+  .modal-backdrop,
+  .gentle-loading,
+  .gentle-hover,
+  .simple-fade-enter-active,
+  .simple-fade-exit-active,
+  .gentle-slide-enter-active,
+  .gentle-slide-exit-active,
+  .sidebar-slide-enter-active,
+  .sidebar-slide-exit-active {
+    /* Disable all animations for reduced motion */
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-delay: 0ms !important;
+  }
+}
+
+/* High contrast mode adjustments */
+@media (prefers-contrast: high) {
+  .emergency-transition::before {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 0, 0, 0.05) 0%,
+      rgba(255, 0, 0, 0.02) 100%
+    );
+  }
+}
+
+/* Performance optimization for mobile devices */
+@media (max-width: 768px) {
+  .page-transition-wrapper {
+    /* Simplified transitions on mobile for better performance */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+  
+  .sidebar-transition {
+    /* Optimize sidebar for mobile */
+    will-change: transform;
+  }
+  
+  .main-content-transition {
+    /* Reduce complexity on mobile */
+    will-change: auto;
+  }
+  
+  .widget-container:hover {
+    /* Disable hover effects on touch devices */
+    transform: translateZ(0);
+    box-shadow: none;
+  }
+}
+
+/* Safari-specific optimizations */
+@supports (-webkit-backdrop-filter: none) {
+  .page-transition-wrapper {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000px;
+    -webkit-perspective: 1000px;
+  }
+  
+  .modal-backdrop {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+}
+
+/* Focus management during transitions */
+.page-transition-wrapper:focus-within {
+  /* Ensure focus is visible during transitions */
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Loading states */
+.transition-loading {
+  cursor: wait;
+  pointer-events: none;
+}
+
+.transition-loading * {
+  cursor: wait;
+}
+
+/* Page transition performance indicators (development only) */
+@media screen and (min-width: 1px) {
+  .page-transition-wrapper[data-dev-mode="true"]::before {
+    content: "🎬";
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  
+  .page-transition-wrapper[data-animating="true"][data-dev-mode="true"]::before {
+    opacity: 1;
+  }
+}
+
+/* Custom scrollbar for transition containers */
+.page-transition-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.page-transition-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.page-transition-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.page-transition-wrapper::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* Safari-specific optimizations */
+@supports (-webkit-touch-callout: none) {
+  .page-transition-wrapper {
+    /* iOS Safari optimizations */
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+}
+
+/* Ensure icons transition properly with theme changes */
+svg, .lucide {
+  transition: color 200ms ease-in-out;
+}
+
+/* Fix icon colors in theme toggle buttons */
+button svg, 
+.theme-toggle svg,
+[data-theme-toggle] svg {
+  color: inherit;
+  transition: color 200ms ease-in-out;
 }

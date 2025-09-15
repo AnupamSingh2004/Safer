@@ -22,7 +22,7 @@ import {
   X
 } from 'lucide-react';
 import { useAuth } from '@/stores/auth-store';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { ThemeToggle } from '@/components/theme/unified-theme-components';
 import { cn } from '@/lib/utils';
 
 interface DashboardLayoutProps {

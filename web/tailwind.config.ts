@@ -1,5 +1,166 @@
 import { Config } from 'tailwindcss'
-import { designTokens } from './src/lib/theme/design-tokens'
+
+// Simplified design tokens to replace the deleted design-tokens file
+const simpleTokens = {
+  colors: {
+    primary: {
+      50: '#eff6ff',
+      100: '#dbeafe',
+      200: '#bfdbfe',
+      300: '#93c5fd',
+      400: '#60a5fa',
+      500: '#3b82f6',
+      600: '#2563eb',
+      700: '#1d4ed8',
+      800: '#1e40af',
+      900: '#1e3a8a',
+    },
+    secondary: {
+      50: '#f8fafc',
+      100: '#f1f5f9',
+      200: '#e2e8f0',
+      300: '#cbd5e1',
+      400: '#94a3b8',
+      500: '#64748b',
+      600: '#475569',
+      700: '#334155',
+      800: '#1e293b',
+      900: '#0f172a',
+    },
+    neutral: {
+      50: '#fafafa',
+      100: '#f5f5f5',
+      200: '#e5e5e5',
+      300: '#d4d4d4',
+      400: '#a3a3a3',
+      500: '#737373',
+      600: '#525252',
+      700: '#404040',
+      800: '#262626',
+      900: '#171717',
+    },
+    emergency: {
+      critical: {
+        50: '#fef2f2',
+        500: '#ef4444',
+        900: '#7f1d1d',
+      },
+      high: {
+        50: '#fef3c7',
+        500: '#f59e0b',
+        900: '#78350f',
+      },
+      medium: {
+        50: '#fef7cd',
+        500: '#eab308',
+        900: '#713f12',
+      },
+      low: {
+        50: '#f0f9ff',
+        500: '#0ea5e9',
+        900: '#0c4a6e',
+      },
+      resolved: {
+        50: '#f0fdf4',
+        500: '#22c55e',
+        900: '#14532d',
+      },
+    },
+    zones: {
+      safe: { 50: '#f0fdf4', 500: '#22c55e', 900: '#14532d' },
+      lowRisk: { 50: '#f0f9ff', 500: '#0ea5e9', 900: '#0c4a6e' },
+      moderate: { 50: '#fef3c7', 500: '#f59e0b', 900: '#78350f' },
+      highRisk: { 50: '#fef2f2', 500: '#ef4444', 900: '#7f1d1d' },
+      restricted: { 50: '#faf5ff', 500: '#a855f7', 900: '#581c87' },
+    },
+  },
+  borderRadius: {
+    xs: '0.125rem',
+    xl: '0.75rem',
+    '2xl': '1rem',
+    '3xl': '1.5rem',
+    full: '9999px',
+  },
+  spacing: {
+    '18': '4.5rem',
+    '88': '22rem',
+  },
+  typography: {
+    fontSize: {
+      xs: { size: '0.75rem', lineHeight: '1rem' },
+      sm: { size: '0.875rem', lineHeight: '1.25rem' },
+      base: { size: '1rem', lineHeight: '1.5rem' },
+      lg: { size: '1.125rem', lineHeight: '1.75rem' },
+      xl: { size: '1.25rem', lineHeight: '1.75rem' },
+      '2xl': { size: '1.5rem', lineHeight: '2rem' },
+      '3xl': { size: '1.875rem', lineHeight: '2.25rem' },
+      '4xl': { size: '2.25rem', lineHeight: '2.5rem' },
+      '5xl': { size: '3rem', lineHeight: '1' },
+      '6xl': { size: '3.75rem', lineHeight: '1' },
+    },
+    fontFamily: {
+      sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      mono: ['ui-monospace', 'SFMono-Regular', 'monospace'],
+      display: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+    },
+    fontWeight: {
+      thin: '100',
+      light: '300',
+      normal: '400',
+      medium: '500',
+      semibold: '600',
+      bold: '700',
+      black: '900',
+    },
+    letterSpacing: {
+      tighter: '-0.05em',
+      tight: '-0.025em',
+      normal: '0em',
+      wide: '0.025em',
+      wider: '0.05em',
+      widest: '0.1em',
+    },
+  },
+  shadows: {
+    xs: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+    sm: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+    md: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+    lg: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+    xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+    '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    inner: 'inset 0 2px 4px 0 rgb(0 0 0 / 0.05)',
+    none: '0 0 #0000',
+    emergency: '0 0 0 1px rgb(239 68 68 / 0.5)',
+    success: '0 0 0 1px rgb(34 197 94 / 0.5)',
+    warning: '0 0 0 1px rgb(245 158 11 / 0.5)',
+    info: '0 0 0 1px rgb(14 165 233 / 0.5)',
+    glow: {
+      sm: '0 0 10px rgb(59 130 246 / 0.5)',
+      md: '0 0 20px rgb(59 130 246 / 0.5)',
+      lg: '0 0 30px rgb(59 130 246 / 0.5)',
+    },
+  },
+  components: {
+    button: {
+      height: {
+        sm: '2rem',
+        md: '2.5rem',
+        lg: '3rem',
+        xl: '3.5rem',
+      },
+    },
+    input: {
+      height: {
+        sm: '2rem',
+        md: '2.5rem',
+        lg: '3rem',
+      },
+    },
+  },
+  accessibility: {
+    minimumTouchTarget: '44px',
+  },
+};
 
 const config: Config = {
   darkMode: ['class'],
@@ -46,12 +207,12 @@ const config: Config = {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
-          ...designTokens.colors.primary,
+          ...simpleTokens.colors.primary,
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
-          ...designTokens.colors.secondary,
+          ...simpleTokens.colors.secondary,
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -74,29 +235,29 @@ const config: Config = {
           foreground: "hsl(var(--card-foreground))",
         },
         // Neutral colors
-        neutral: designTokens.colors.neutral,
+        neutral: simpleTokens.colors.neutral,
         
         // Emergency service colors
         emergency: {
           critical: {
             DEFAULT: "hsl(var(--emergency-critical))",
-            ...designTokens.colors.emergency.critical,
+            ...simpleTokens.colors.emergency.critical,
           },
           high: {
             DEFAULT: "hsl(var(--emergency-high))",
-            ...designTokens.colors.emergency.high,
+            ...simpleTokens.colors.emergency.high,
           },
           medium: {
             DEFAULT: "hsl(var(--emergency-medium))",
-            ...designTokens.colors.emergency.medium,
+            ...simpleTokens.colors.emergency.medium,
           },
           low: {
             DEFAULT: "hsl(var(--emergency-low))",
-            ...designTokens.colors.emergency.low,
+            ...simpleTokens.colors.emergency.low,
           },
           resolved: {
             DEFAULT: "hsl(var(--emergency-resolved))",
-            ...designTokens.colors.emergency.resolved,
+            ...simpleTokens.colors.emergency.resolved,
           },
         },
         
@@ -104,23 +265,23 @@ const config: Config = {
         zone: {
           safe: {
             DEFAULT: "hsl(var(--zone-safe))",
-            ...designTokens.colors.zones.safe,
+            ...simpleTokens.colors.zones.safe,
           },
           lowRisk: {
             DEFAULT: "hsl(var(--zone-low-risk))",
-            ...designTokens.colors.zones.lowRisk,
+            ...simpleTokens.colors.zones.lowRisk,
           },
           moderate: {
             DEFAULT: "hsl(var(--zone-moderate))",
-            ...designTokens.colors.zones.moderate,
+            ...simpleTokens.colors.zones.moderate,
           },
           highRisk: {
             DEFAULT: "hsl(var(--zone-high-risk))",
-            ...designTokens.colors.zones.highRisk,
+            ...simpleTokens.colors.zones.highRisk,
           },
           restricted: {
             DEFAULT: "hsl(var(--zone-restricted))",
-            ...designTokens.colors.zones.restricted,
+            ...simpleTokens.colors.zones.restricted,
           },
         },
         
@@ -137,44 +298,44 @@ const config: Config = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-        xs: designTokens.borderRadius.xs,
-        xl: designTokens.borderRadius.xl,
-        '2xl': designTokens.borderRadius['2xl'],
-        '3xl': designTokens.borderRadius['3xl'],
-        full: designTokens.borderRadius.full,
+        xs: simpleTokens.borderRadius.xs,
+        xl: simpleTokens.borderRadius.xl,
+        '2xl': simpleTokens.borderRadius['2xl'],
+        '3xl': simpleTokens.borderRadius['3xl'],
+        full: simpleTokens.borderRadius.full,
       },
       spacing: {
-        ...designTokens.spacing,
+        ...simpleTokens.spacing,
       },
       fontSize: {
-        ...Object.entries(designTokens.typography.fontSize).reduce((acc, [key, value]) => {
+        ...Object.entries(simpleTokens.typography.fontSize).reduce((acc, [key, value]) => {
           acc[key] = [value.size, { lineHeight: value.lineHeight }];
           return acc;
         }, {} as Record<string, [string, { lineHeight: string }]>),
       },
       fontFamily: {
-        sans: [...designTokens.typography.fontFamily.sans],
-        mono: [...designTokens.typography.fontFamily.mono],
-        display: [...designTokens.typography.fontFamily.display],
+        sans: [...simpleTokens.typography.fontFamily.sans],
+        mono: [...simpleTokens.typography.fontFamily.mono],
+        display: [...simpleTokens.typography.fontFamily.display],
       },
-      fontWeight: designTokens.typography.fontWeight,
-      letterSpacing: designTokens.typography.letterSpacing,
+      fontWeight: simpleTokens.typography.fontWeight,
+      letterSpacing: simpleTokens.typography.letterSpacing,
       boxShadow: {
-        xs: designTokens.shadows.xs,
-        sm: designTokens.shadows.sm,
-        md: designTokens.shadows.md,
-        lg: designTokens.shadows.lg,
-        xl: designTokens.shadows.xl,
-        '2xl': designTokens.shadows['2xl'],
-        inner: designTokens.shadows.inner,
-        none: designTokens.shadows.none,
-        emergency: designTokens.shadows.emergency,
-        success: designTokens.shadows.success,
-        warning: designTokens.shadows.warning,
-        info: designTokens.shadows.info,
-        'glow-sm': designTokens.shadows.glow.sm,
-        'glow-md': designTokens.shadows.glow.md,
-        'glow-lg': designTokens.shadows.glow.lg,
+        xs: simpleTokens.shadows.xs,
+        sm: simpleTokens.shadows.sm,
+        md: simpleTokens.shadows.md,
+        lg: simpleTokens.shadows.lg,
+        xl: simpleTokens.shadows.xl,
+        '2xl': simpleTokens.shadows['2xl'],
+        inner: simpleTokens.shadows.inner,
+        none: simpleTokens.shadows.none,
+        emergency: simpleTokens.shadows.emergency,
+        success: simpleTokens.shadows.success,
+        warning: simpleTokens.shadows.warning,
+        info: simpleTokens.shadows.info,
+        'glow-sm': simpleTokens.shadows.glow.sm,
+        'glow-md': simpleTokens.shadows.glow.md,
+        'glow-lg': simpleTokens.shadows.glow.lg,
       },
       zIndex: {
         hide: '-1',
@@ -335,16 +496,16 @@ const config: Config = {
       },
       // Component specific tokens
       height: {
-        'button-sm': designTokens.components.button.height.sm,
-        'button-md': designTokens.components.button.height.md,
-        'button-lg': designTokens.components.button.height.lg,
-        'button-xl': designTokens.components.button.height.xl,
-        'input-sm': designTokens.components.input.height.sm,
-        'input-md': designTokens.components.input.height.md,
-        'input-lg': designTokens.components.input.height.lg,
+        'button-sm': simpleTokens.components.button.height.sm,
+        'button-md': simpleTokens.components.button.height.md,
+        'button-lg': simpleTokens.components.button.height.lg,
+        'button-xl': simpleTokens.components.button.height.xl,
+        'input-sm': simpleTokens.components.input.height.sm,
+        'input-md': simpleTokens.components.input.height.md,
+        'input-lg': simpleTokens.components.input.height.lg,
       },
       minHeight: {
-        'touch-target': designTokens.accessibility.minimumTouchTarget,
+        'touch-target': simpleTokens.accessibility.minimumTouchTarget,
       },
       // Grid templates
       gridTemplateColumns: {

@@ -27,8 +27,9 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { PermissionGuard } from "@/components/layout/permission-renderer";
+import { ConditionalRender } from "@/components/layout/permission-renderer";
 import { PageLoading } from "@/components/common/loading";
+import { ThemeToggle } from '@/components/theme/unified-theme-components';
 
 // ============================================================================
 // TYPES & INTERFACES
@@ -161,9 +162,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Admin Header */}
-      <header className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+      <header className="sticky top-0 z-40 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
         <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4">
             <button
@@ -187,14 +188,17 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           </div>
 
           <div className="flex items-center gap-4">
+            {/* Theme Switcher */}
+            <ThemeToggle variant="icon" size="sm" />
+            
             {/* System Status */}
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1 bg-green-50 rounded-full">
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1 bg-green-50 dark:bg-green-900/20 rounded-full">
               <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="text-xs text-green-700 font-medium">System Online</span>
+              <span className="text-xs text-green-700 dark:text-green-400 font-medium">System Online</span>
             </div>
 
             {/* Current Time */}
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-gray-500 dark:text-gray-400">
               {currentTime.toLocaleTimeString()}
             </div>
 

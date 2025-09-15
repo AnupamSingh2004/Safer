@@ -1,6 +1,6 @@
 /**
- * Smart Tourist Safety System - Login Page (Fixed Layout & Spacing)
- * Professional security-focused login interface with improved spacing and alignment
+ * Smart Tourist Safety System - Login Page (Fixed Layout - Clean Right Section)
+ * Professional security-focused login interface with proper vh fitting and no overflow
  */
 
 import type { Metadata } from 'next';
@@ -34,12 +34,12 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen w-full overflow-hidden relative">
+    <div className="h-screen w-full overflow-hidden relative">
       {/* Enhanced Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900" />
       <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-blue-500/10 to-cyan-400/20" />
       
-      {/* Animated Background Elements - Fixed positioning */}
+      {/* Animated Background Elements */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-72 h-72 sm:w-96 sm:h-96 bg-blue-400/30 rounded-full blur-3xl animate-pulse" />
         <div 
@@ -52,82 +52,53 @@ export default function LoginPage() {
         />
       </div>
 
-      <div className="relative z-10 min-h-screen flex flex-col lg:flex-row">
+      <div className="relative z-10 h-full flex flex-col lg:flex-row">
         
-        {/* Left Section - Enhanced Branding */}
-        <div className="hidden lg:flex lg:w-2/5 xl:w-1/3 flex-col justify-between p-6 xl:p-12">
-          {/* Hero Section */}
-          <div className="space-y-8">
-  
+      
 
-          </div>
-
-        </div>
-
-        {/* Right Section - Compact & Neat Login Area */}
-        <div className="flex-1 lg:w-3/5 xl:w-2/3 flex flex-col justify-center min-h-screen p-4 lg:p-6">
-            
-          {/* Compact Content Wrapper - Fits in Viewport */}
-          <div className="w-full max-w-md mx-auto space-y-4">
-            
-            {/* Compact Branding */}
-            <div className="text-center mb-2">
-              <div className="flex items-center justify-center gap-3 mb-4">
-                <div className="relative flex-shrink-0">
-                  <div className="p-2.5 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl shadow-xl">
-                    <Shield className="h-7 w-7 text-white" />
-                  </div>
-                  <div className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full border border-white animate-pulse shadow-sm" />
-                </div>
-                <div className="text-left">
-                  <h1 className="text-lg lg:text-xl font-bold text-white leading-tight">
-                    Smart Tourist Safety
-                  </h1>
-                  <p className="text-blue-200 text-sm font-medium">Emergency Response Dashboard</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Compact Login Card */}
-            <div className="w-full">
-              <div className="relative">
-                {/* Background blur effect */}
-                <div className="absolute -inset-2 bg-white/5 rounded-2xl blur-lg" />
+        {/* Right Section - Clean Login Area (Fixed) */}
+        <div className="flex-1 lg:w-3/5 xl:w-2/3 flex items-center justify-center h-full p-4">
+          {/* Clean Login Card - Only the white container */}
+          <div className="w-full max-w-md">
+            <div className="relative">
+              {/* Background blur effect */}
+              <div className="absolute -inset-1 bg-white/5 rounded-xl blur-lg" />
+              
+              {/* Main card container */}
+              <div className="relative bg-white/95 backdrop-blur-xl rounded-xl shadow-xl border border-white/40 overflow-hidden">
+                {/* Header Accent */}
+                <div className="h-0.5 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
                 
-                {/* Main card container */}
-                <div className="relative bg-white/95 backdrop-blur-xl rounded-xl shadow-xl border border-white/40">
-                  {/* Header Accent */}
-                  <div className="h-0.5 bg-gradient-to-r from-blue-500 via-indigo-500 to-blue-600 rounded-t-xl" />
-                  
-                  {/* Compact Card Content */}
-                  <div className="p-8">
-                    {/* Minimal Form Header */}
-                    <div className="text-center mb-5">
-                      <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg mx-auto mb-3 flex items-center justify-center shadow-md">
-                        <Shield className="h-5 w-5 text-white" />
-                      </div>
-                      <h2 className="text-lg font-bold text-gray-900 mb-1">
-                        Secure Login
-                      </h2>
-                      <p className="text-sm text-gray-600">
-                        Emergency Response Dashboard
-                      </p>
+                {/* Card Content */}
+                <div className="p-6">
+                  {/* Form Header */}
+                  <div className="text-center mb-5">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 rounded-xl mx-auto mb-3 flex items-center justify-center shadow-lg">
+                      <Shield className="h-6 w-6 text-white" />
                     </div>
+                    <h2 className="text-lg font-bold text-gray-950 mb-1">
+                      Secure Access
+                    </h2>
+                    <p className="text-sm text-gray-600">
+                      Emergency Response Dashboard
+                    </p>
+                  </div>
 
-                    {/* Compact Login Form */}
-                    <div className="space-y-4">
-                      <Suspense fallback={<LoginFormSkeleton />}>
-                        <LoginForm 
-                          showRoleSelection={true}
-                          showRememberMe={false}
-                          className="space-y-4"
-                        />
-                      </Suspense>
-                    </div>
+                  {/* Login Form */}
+                  <div className="space-y-4">
+                    <Suspense fallback={<LoginFormSkeleton />}>
+                      <LoginForm 
+                        showRoleSelection={true}
+                        showRememberMe={false}
+                        className="space-y-4"
+                      />
+                    </Suspense>
+                  </div>
 
-                    {/* Minimal Footer Links */}
-                    <div className="mt-5 pt-4 border-t border-gray-200 text-center space-y-2">
-                      <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4 text-xs">
+                  {/* Footer Links */}
+                  <div className="mt-5 pt-4 border-t border-gray-200">
+                    <div className="text-center space-y-3">
+                      <div className="flex justify-center gap-4 text-xs">
                         <Link 
                           href="/forgot-password" 
                           className="text-blue-600 hover:text-blue-700 font-medium hover:underline transition-colors"
@@ -141,16 +112,17 @@ export default function LoginPage() {
                           Help & Support
                         </Link>
                       </div>
-                      <div className="text-xs text-gray-500 flex items-center justify-center gap-1 bg-gray-50 px-3 py-1.5 rounded-full">
-                        <Shield className="h-3 w-3" />
-                        <span>Government Secured System</span>
+                      
+                      {/* Security badge */}
+                      <div className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-full">
+                        <Shield className="h-3 w-3 text-green-600" />
+                        <span className="text-green-700 text-xs font-medium">Government Secured</span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -164,7 +136,7 @@ export default function LoginPage() {
 
 export function ErrorBoundary() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center p-4">
+    <div className="h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center p-4 overflow-hidden">
       <div className="text-center max-w-md w-full">
         <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-red-500/30">
           <AlertTriangle className="h-8 w-8 text-red-400" />

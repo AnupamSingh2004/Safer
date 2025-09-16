@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   MessageCircle,
@@ -32,7 +33,8 @@ import {
   Upload,
   X,
   Edit,
-  Trash2
+  Trash2,
+  Home
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme/unified-theme-components';
 
@@ -391,29 +393,29 @@ export default function ContactPage() {
   const ContactTab = () => (
     <div className="space-y-8">
       {/* Emergency Contacts */}
-      <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+      <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6">
         <div className="flex items-center space-x-2 mb-4">
-          <AlertTriangle className="w-6 h-6 text-red-600" />
-          <h2 className="text-xl font-semibold text-red-900">Emergency Contacts</h2>
+          <AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-400" />
+          <h2 className="text-xl font-semibold text-red-900 dark:text-red-300">Emergency Contacts</h2>
         </div>
-        <p className="text-red-700 mb-6">
+        <p className="text-red-700 dark:text-red-300 mb-6">
           For immediate assistance in emergency situations, please contact these numbers:
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {emergencyContacts.map((contact) => (
-            <div key={contact.id} className="bg-white p-4 rounded-lg border border-red-200">
+            <div key={contact.id} className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-red-200 dark:border-red-800">
               <div className="flex items-center justify-between mb-2">
-                <h3 className="font-semibold text-gray-900">{contact.name}</h3>
+                <h3 className="font-semibold text-gray-900 dark:text-white">{contact.name}</h3>
                 {contact.available24h && (
-                  <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+                  <span className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-1 rounded-full">
                     24/7
                   </span>
                 )}
               </div>
-              <p className="text-2xl font-bold text-red-600 mb-2">{contact.phone}</p>
-              <p className="text-sm text-gray-600 mb-1">{contact.location}</p>
-              <p className="text-xs text-gray-500">{contact.description}</p>
+              <p className="text-2xl font-bold text-red-600 dark:text-red-400 mb-2">{contact.phone}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">{contact.location}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">{contact.description}</p>
             </div>
           ))}
         </div>
@@ -422,8 +424,8 @@ export default function ContactPage() {
       {/* Contact Information */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Contact Details */}
-        <div className="bg-white p-6 rounded-lg border border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">Contact Information</h2>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Contact Information</h2>
           
           <div className="space-y-6">
             {contactInfo.map((info, index) => {
@@ -431,15 +433,15 @@ export default function ContactPage() {
               return (
                 <div key={index} className="flex items-start space-x-4">
                   <div className="flex-shrink-0">
-                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <IconComponent className="w-5 h-5 text-blue-600" />
+                    <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                      <IconComponent className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                     </div>
                   </div>
                   <div>
-                    <h3 className="font-medium text-gray-900">{info.label}</h3>
-                    <p className="text-gray-700 mt-1">{info.value}</p>
+                    <h3 className="font-medium text-gray-900 dark:text-white">{info.label}</h3>
+                    <p className="text-gray-700 dark:text-gray-300 mt-1">{info.value}</p>
                     {info.description && (
-                      <p className="text-sm text-gray-500 mt-1">{info.description}</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{info.description}</p>
                     )}
                   </div>
                 </div>
@@ -448,21 +450,21 @@ export default function ContactPage() {
           </div>
 
           {/* Social Media */}
-          <div className="mt-8 pt-6 border-t border-gray-200">
-            <h3 className="font-medium text-gray-900 mb-4">Follow Us</h3>
+          <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+            <h3 className="font-medium text-gray-900 dark:text-white mb-4">Follow Us</h3>
             <div className="flex space-x-4">
               {[
-                { icon: Facebook, color: 'text-blue-600', href: '#' },
+                { icon: Facebook, color: 'text-blue-600 dark:text-blue-400', href: '#' },
                 { icon: Twitter, color: 'text-blue-400', href: '#' },
-                { icon: Linkedin, color: 'text-blue-700', href: '#' },
-                { icon: Youtube, color: 'text-red-600', href: '#' }
+                { icon: Linkedin, color: 'text-blue-700 dark:text-blue-500', href: '#' },
+                { icon: Youtube, color: 'text-red-600 dark:text-red-400', href: '#' }
               ].map((social, index) => {
                 const IconComponent = social.icon;
                 return (
                   <a
                     key={index}
                     href={social.href}
-                    className={`w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center hover:bg-gray-50 ${social.color}`}
+                    className={`w-10 h-10 rounded-lg border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-700 ${social.color}`}
                   >
                     <IconComponent className="w-5 h-5" />
                   </a>
@@ -473,13 +475,13 @@ export default function ContactPage() {
         </div>
 
         {/* Contact Form */}
-        <div className="bg-white p-6 rounded-lg border border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">Send us a Message</h2>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Send us a Message</h2>
           
           <form onSubmit={handleContactSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Name *
                 </label>
                 <input
@@ -487,12 +489,12 @@ export default function ContactPage() {
                   required
                   value={contactForm.name}
                   onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Email *
                 </label>
                 <input
@@ -500,13 +502,13 @@ export default function ContactPage() {
                   required
                   value={contactForm.email}
                   onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Subject *
               </label>
               <input
@@ -514,20 +516,20 @@ export default function ContactPage() {
                 required
                 value={contactForm.subject}
                 onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Category *
                 </label>
                 <select
                   required
                   value={contactForm.category}
                   onChange={(e) => setContactForm({ ...contactForm, category: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">Select Category</option>
                   {supportCategories.map((category) => (
@@ -539,13 +541,13 @@ export default function ContactPage() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Priority
                 </label>
                 <select
                   value={contactForm.priority}
                   onChange={(e) => setContactForm({ ...contactForm, priority: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="low">Low</option>
                   <option value="medium">Medium</option>
@@ -556,7 +558,7 @@ export default function ContactPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Message *
               </label>
               <textarea
@@ -564,7 +566,7 @@ export default function ContactPage() {
                 rows={5}
                 value={contactForm.message}
                 onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Please describe your inquiry or issue in detail..."
               />
             </div>
@@ -586,8 +588,8 @@ export default function ContactPage() {
   const SupportTab = () => (
     <div className="space-y-6">
       {/* Support Categories */}
-      <div className="bg-white p-6 rounded-lg border border-gray-200">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">How can we help you?</h2>
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">How can we help you?</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {supportCategories.map((category) => {
@@ -595,17 +597,17 @@ export default function ContactPage() {
             return (
               <div
                 key={category.id}
-                className="p-4 border border-gray-200 rounded-lg hover:border-gray-300 cursor-pointer transition-all"
+                className="p-4 border border-gray-200 dark:border-gray-600 rounded-lg hover:border-gray-300 dark:hover:border-gray-500 cursor-pointer transition-all"
                 onClick={() => {
                   setTicketForm({ ...ticketForm, category: category.id });
                   setShowNewTicketForm(true);
                 }}
               >
-                <div className={`w-10 h-10 rounded-lg ${category.color} flex items-center justify-center mb-3`}>
+                <div className={`w-10 h-10 rounded-lg ${category.color} dark:bg-opacity-20 flex items-center justify-center mb-3`}>
                   <IconComponent className="w-5 h-5" />
                 </div>
-                <h3 className="font-medium text-gray-900 mb-1">{category.name}</h3>
-                <p className="text-sm text-gray-600">{category.description}</p>
+                <h3 className="font-medium text-gray-900 dark:text-white mb-1">{category.name}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">{category.description}</p>
               </div>
             );
           })}
@@ -615,8 +617,8 @@ export default function ContactPage() {
       {/* Tickets Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-gray-900">Support Tickets</h2>
-          <p className="text-gray-600">Track and manage your support requests</p>
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Support Tickets</h2>
+          <p className="text-gray-600 dark:text-gray-400">Track and manage your support requests</p>
         </div>
         <button
           onClick={() => setShowNewTicketForm(true)}
@@ -628,7 +630,7 @@ export default function ContactPage() {
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-white p-4 rounded-lg border border-gray-200">
+      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
         <div className="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4">
           <div className="flex-1">
             <div className="relative">
@@ -638,7 +640,7 @@ export default function ContactPage() {
                 placeholder="Search tickets..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
           </div>
@@ -646,7 +648,7 @@ export default function ContactPage() {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="all">All Status</option>
             <option value="open">Open</option>
@@ -658,7 +660,7 @@ export default function ContactPage() {
           <select
             value={filterPriority}
             onChange={(e) => setFilterPriority(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="all">All Priority</option>
             <option value="low">Low</option>
@@ -670,19 +672,19 @@ export default function ContactPage() {
       </div>
 
       {/* Tickets List */}
-      <div className="bg-white rounded-lg border border-gray-200">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
         {filteredTickets.length === 0 ? (
           <div className="p-8 text-center">
             <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No tickets found</h3>
-            <p className="text-gray-600">Create your first support ticket to get started.</p>
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No tickets found</h3>
+            <p className="text-gray-600 dark:text-gray-400">Create your first support ticket to get started.</p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-200">
+          <div className="divide-y divide-gray-200 dark:divide-gray-700">
             {filteredTickets.map((ticket) => (
               <div
                 key={ticket.id}
-                className="p-6 hover:bg-gray-50 cursor-pointer"
+                className="p-6 hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer"
                 onClick={() => setSelectedTicket(ticket)}
               >
                 <div className="flex items-start justify-between">
@@ -707,10 +709,10 @@ export default function ContactPage() {
                       </span>
                     </div>
                     
-                    <h3 className="font-medium text-gray-900 mb-1">{ticket.subject}</h3>
-                    <p className="text-gray-600 text-sm line-clamp-2">{ticket.description}</p>
+                    <h3 className="font-medium text-gray-900 dark:text-white mb-1">{ticket.subject}</h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2">{ticket.description}</p>
                     
-                    <div className="flex items-center space-x-4 mt-3 text-xs text-gray-500">
+                    <div className="flex items-center space-x-4 mt-3 text-xs text-gray-500 dark:text-gray-400">
                       <span>Created: {new Date(ticket.createdAt).toLocaleDateString()}</span>
                       <span>Updated: {new Date(ticket.updatedAt).toLocaleDateString()}</span>
                       {ticket.assignedTo && <span>Assigned to: {ticket.assignedTo}</span>}
@@ -738,14 +740,14 @@ export default function ContactPage() {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+              className="bg-white dark:bg-gray-800 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto"
             >
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-semibold text-gray-900">Create Support Ticket</h2>
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Create Support Ticket</h2>
                   <button
                     onClick={() => setShowNewTicketForm(false)}
-                    className="text-gray-400 hover:text-gray-600"
+                    className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                   >
                     <X className="w-6 h-6" />
                   </button>
@@ -753,7 +755,7 @@ export default function ContactPage() {
                 
                 <form onSubmit={handleTicketSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       Subject *
                     </label>
                     <input
@@ -761,21 +763,21 @@ export default function ContactPage() {
                       required
                       value={ticketForm.subject}
                       onChange={(e) => setTicketForm({ ...ticketForm, subject: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Brief description of your issue"
                     />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Category *
                       </label>
                       <select
                         required
                         value={ticketForm.category}
                         onChange={(e) => setTicketForm({ ...ticketForm, category: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       >
                         <option value="">Select Category</option>
                         {supportCategories.map((category) => (
@@ -787,13 +789,13 @@ export default function ContactPage() {
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Priority
                       </label>
                       <select
                         value={ticketForm.priority}
                         onChange={(e) => setTicketForm({ ...ticketForm, priority: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       >
                         <option value="low">Low</option>
                         <option value="medium">Medium</option>
@@ -804,7 +806,7 @@ export default function ContactPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       Description *
                     </label>
                     <textarea
@@ -812,7 +814,7 @@ export default function ContactPage() {
                       rows={6}
                       value={ticketForm.description}
                       onChange={(e) => setTicketForm({ ...ticketForm, description: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Detailed description of your issue, including steps to reproduce if applicable..."
                     />
                   </div>
@@ -971,15 +973,23 @@ export default function ContactPage() {
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Contact & Support</h1>
           <p className="mt-2 text-gray-600 dark:text-gray-400">Get help and stay connected with our support team</p>
           
-          {/* Theme Switcher */}
-          <div className="absolute top-0 right-0">
+          {/* Theme Switcher and Home Button */}
+          <div className="absolute top-0 right-0 flex items-center space-x-2">
+            <Link 
+              href="/"
+              className="px-3 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors flex items-center space-x-2"
+              title="Go to Home"
+            >
+              <Home className="w-4 h-4" />
+              <span className="text-sm">Home</span>
+            </Link>
             <ThemeToggle variant="button" size="md" showLabel />
           </div>
         </div>
 
         {/* Navigation Tabs */}
-        <div className="bg-white rounded-lg shadow-sm border mb-6">
-          <div className="border-b border-gray-200">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mb-6">
+          <div className="border-b border-gray-200 dark:border-gray-700">
             <nav className="flex space-x-8 px-6">
               {[
                 { id: 'contact', label: 'Contact Us', icon: MessageCircle },
@@ -990,10 +1000,10 @@ export default function ContactPage() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                    className={`flex items-center space-x-2 py-4 px-1 font-medium text-sm transition-colors ${
                       activeTab === tab.id
-                        ? 'border-blue-500 text-blue-600'
-                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                        ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 rounded-t-lg border-b-2 border-blue-500 dark:border-blue-400'
+                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-t-lg'
                     }`}
                   >
                     <IconComponent className="w-5 h-5" />

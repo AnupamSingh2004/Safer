@@ -363,11 +363,11 @@ function AnalyticsPage() {
       <div className="dashboard-card">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold text-foreground mb-3 flex items-center gap-4">
-              <BarChart3 className="w-10 h-10 text-primary" />
+            <h1 className="text-2xl font-bold text-foreground mb-1 flex items-center gap-3">
+              <BarChart3 className="w-6 h-6 text-primary" />
               Analytics Dashboard
             </h1>
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="text-base text-muted-foreground">
               Comprehensive analytics and insights for the tourist safety system
             </p>
           </div>
@@ -375,7 +375,7 @@ function AnalyticsPage() {
           <div className="flex items-center space-x-6">
             <div className="text-right">
               <div className="text-sm font-medium text-muted-foreground">Last Updated</div>
-              <div className="text-2xl font-bold text-foreground">
+              <div className="text-base font-semibold text-foreground">
                 {new Date().toLocaleTimeString('en-IN', { 
                   hour: '2-digit', 
                   minute: '2-digit' 

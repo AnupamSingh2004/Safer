@@ -6,7 +6,8 @@
 'use client';
 
 import * as React from 'react';
-import { Bell, Menu, Search, Settings, User, LogOut, Shield, Moon, Sun } from 'lucide-react';
+import Link from 'next/link';
+import { Bell, Menu, Search, Settings, User, LogOut, Shield, Moon, Sun, Home } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth-store';
 import { ThemeToggle } from '@/components/theme/unified-theme-components';
@@ -116,6 +117,15 @@ export function Header({ onMenuToggle, className }: HeaderProps) {
 
         {/* Right Side Actions */}
         <div className="flex items-center space-x-2 ml-auto">
+          {/* Home Button */}
+          <Link 
+            href="/"
+            className="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md transition-colors"
+            title="Go to Home"
+          >
+            <Home className="h-5 w-5" />
+          </Link>
+          
           {/* Theme Toggle */}
           <ThemeToggle variant="icon" size="sm" className="!p-2" />
 

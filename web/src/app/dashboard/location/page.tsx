@@ -245,13 +245,13 @@ function LocationServicesPage() {
   return (
     <div className="dashboard-container">
       {/* Page Header */}
-      <div className="dashboard-card p-8">
+      <div className="dashboard-card p-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-foreground mb-2">
+            <h1 className="text-2xl font-bold text-foreground mb-1">
               Location Services
             </h1>
-            <p className="text-muted-foreground text-lg">
+            <p className="text-muted-foreground">
               Real-time tracking, geofencing, and location-based safety services
             </p>
           </div>

@@ -137,16 +137,18 @@ export default function AlertsPage() {
   }
 
   return (
-    <div className="p-8">
+    <div className="dashboard-container component-stack-lg">
       {/* Header */}
-      <div className="mb-8">
+      <div className="dashboard-section">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-              <Activity className="w-8 h-8 text-red-600" />
+            <h1 className="text-4xl font-bold text-foreground mb-3 flex items-center gap-4">
+              <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-xl shadow-sm">
+                <Activity className="w-10 h-10 text-red-600" />
+              </div>
               Live Emergency Alerts
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-lg text-muted-foreground leading-relaxed">
               {canManageAlerts 
                 ? 'Real-time monitoring and emergency response management' 
                 : 'View live tourist safety alerts and reports'
@@ -154,13 +156,13 @@ export default function AlertsPage() {
             </p>
           </div>
           
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             {/* New Alerts Badge */}
             {newAlertCount > 0 && (
-              <div className="bg-red-100 border border-red-200 rounded-lg px-3 py-2">
-                <div className="flex items-center gap-2 text-red-800">
-                  <Bell className="w-4 h-4" />
-                  <span className="text-sm font-medium">
+              <div className="bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-xl px-4 py-3 shadow-sm">
+                <div className="flex items-center gap-3 text-red-800 dark:text-red-400">
+                  <Bell className="w-5 h-5" />
+                  <span className="text-sm font-semibold">
                     {newAlertCount} new alert{newAlertCount !== 1 ? 's' : ''}
                   </span>
                 </div>
@@ -171,10 +173,10 @@ export default function AlertsPage() {
             <button
               onClick={() => setAutoRefresh(!autoRefresh)}
               className={cn(
-                'flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors',
+                'flex items-center gap-3 px-4 py-3 rounded-xl border-2 transition-all font-medium',
                 autoRefresh 
-                  ? 'bg-green-50 border-green-200 text-green-800' 
-                  : 'bg-gray-50 border-gray-200 text-gray-800'
+                  ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-800 dark:text-green-400' 
+                  : 'bg-muted/50 border-border text-muted-foreground hover:text-foreground'
               )}
             >
               <RefreshCw className={cn('w-4 h-4', autoRefresh && 'animate-spin')} />
@@ -185,7 +187,7 @@ export default function AlertsPage() {
             <button
               onClick={handleRefresh}
               disabled={refreshing}
-              className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              className="flex items-center gap-3 px-4 py-3 bg-card border-2 border-border rounded-xl hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
             >
               <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
               Refresh
@@ -194,7 +196,7 @@ export default function AlertsPage() {
             {/* Demo Controls */}
             <button
               onClick={simulateRandomAlert}
-              className="flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
+              className="flex items-center gap-3 px-4 py-3 bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition-colors shadow-sm font-medium"
             >
               <Zap className="w-4 h-4" />
               <span className="text-sm">Simulate Alert</span>
@@ -202,7 +204,7 @@ export default function AlertsPage() {
 
             {/* Emergency Response Button (for operators/admins) */}
             {canManageAlerts && (
-              <button className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+              <button className="flex items-center gap-3 px-6 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors shadow-sm font-medium">
                 <Siren className="w-4 h-4" />
                 Emergency Response
               </button>
@@ -211,31 +213,50 @@ export default function AlertsPage() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 mt-6">
+        <div className="grid-stats mt-8">
           {[
-            { label: 'Active Alerts', value: liveAlerts.filter(a => a.status === 'active').length, color: 'red' },
-            { label: 'Responding', value: liveAlerts.filter(a => a.status === 'responding').length, color: 'blue' },
-            { label: 'Resolved Today', value: liveAlerts.filter(a => a.status === 'resolved').length, color: 'green' },
-            { label: 'Total Alerts', value: liveAlerts.length, color: 'gray' }
-          ].map(stat => (
-            <div key={stat.label} className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-              <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
-              <div className={cn(
-                'text-2xl font-bold',
-                stat.color === 'red' && 'text-red-600',
-                stat.color === 'blue' && 'text-blue-600',
-                stat.color === 'green' && 'text-green-600',
-                stat.color === 'gray' && 'text-gray-600'
-              )}>
-                {stat.value}
+            { label: 'Active Alerts', value: liveAlerts.filter(a => a.status === 'active').length, color: 'red', icon: AlertTriangle },
+            { label: 'Responding', value: liveAlerts.filter(a => a.status === 'responding').length, color: 'blue', icon: Activity },
+            { label: 'Resolved Today', value: liveAlerts.filter(a => a.status === 'resolved').length, color: 'green', icon: CheckCircle },
+            { label: 'Total Alerts', value: liveAlerts.length, color: 'gray', icon: Shield }
+          ].map(stat => {
+            const Icon = stat.icon;
+            return (
+              <div key={stat.label} className="dashboard-card group hover:shadow-lg transition-all duration-300">
+                <div className="flex items-center gap-4">
+                  <div className={cn('p-3 rounded-xl shadow-sm group-hover:scale-110 transition-transform',
+                    stat.color === 'red' && 'bg-red-100 dark:bg-red-900/30',
+                    stat.color === 'blue' && 'bg-blue-100 dark:bg-blue-900/30',
+                    stat.color === 'green' && 'bg-green-100 dark:bg-green-900/30',
+                    stat.color === 'gray' && 'bg-gray-100 dark:bg-gray-900/30'
+                  )}>
+                    <Icon className={cn('w-6 h-6',
+                      stat.color === 'red' && 'text-red-600',
+                      stat.color === 'blue' && 'text-blue-600',
+                      stat.color === 'green' && 'text-green-600',
+                      stat.color === 'gray' && 'text-gray-600'
+                    )} />
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-muted-foreground">{stat.label}</div>
+                    <div className={cn('text-3xl font-bold',
+                      stat.color === 'red' && 'text-red-600',
+                      stat.color === 'blue' && 'text-blue-600',
+                      stat.color === 'green' && 'text-green-600',
+                      stat.color === 'gray' && 'text-foreground'
+                    )}>
+                      {stat.value}
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Filter Tabs */}
-        <div className="flex items-center justify-between">
-          <div className="flex gap-2">
+        <div className="flex items-center justify-between mt-8">
+          <div className="flex gap-3">
             {[
               { key: 'all', label: 'All Alerts', count: liveAlerts.length },
               { key: 'active', label: 'Active', count: liveAlerts.filter(a => a.status === 'active').length },
@@ -245,10 +266,10 @@ export default function AlertsPage() {
                 key={tab.key}
                 onClick={() => setFilter(tab.key as any)}
                 className={cn(
-                  'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+                  'px-6 py-3 rounded-xl text-sm font-semibold transition-all border-2',
                   filter === tab.key
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
+                    ? 'bg-primary text-white border-primary shadow-sm'
+                    : 'bg-card text-muted-foreground border-border hover:text-foreground hover:bg-muted/50'
                 )}
               >
                 {tab.label} ({tab.count})
@@ -260,7 +281,7 @@ export default function AlertsPage() {
           {liveAlerts.length > 0 && canManageAlerts && (
             <button
               onClick={clearAllAlerts}
-              className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm"
+              className="flex items-center gap-2 px-4 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors text-sm font-medium shadow-sm"
             >
               <XCircle className="w-4 h-4" />
               Clear All
@@ -268,45 +289,47 @@ export default function AlertsPage() {
           )}
 
           {/* Last Update */}
-          <div className="text-sm text-gray-600 dark:text-gray-400">
+          <div className="text-sm font-medium text-muted-foreground bg-muted/50 px-4 py-3 rounded-xl">
             Last updated: {new Date(lastUpdate).toLocaleTimeString()}
           </div>
         </div>
       </div>
 
       {/* Alerts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid-dashboard">
         {filteredAlerts.map((alert) => {
           return (
             <div
               key={alert.id}
               className={cn(
-                'bg-white dark:bg-gray-800 rounded-xl shadow-sm border-2 p-6 transition-all duration-200 hover:shadow-md cursor-pointer',
-                getSeverityColor(alert.priority)
+                'dashboard-card cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border-l-4',
+                alert.priority === 'high' ? 'border-l-red-500 hover:border-red-400' :
+                alert.priority === 'medium' ? 'border-l-yellow-500 hover:border-yellow-400' :
+                'border-l-blue-500 hover:border-blue-400'
               )}
               onClick={() => setSelectedAlert(selectedAlert === alert.id ? null : alert.id)}
             >
               {/* Alert Header */}
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-3">
+              <div className="flex items-start justify-between mb-6">
+                <div className="flex items-center gap-4">
                   <div className={cn(
-                    'p-2 rounded-lg',
+                    'p-3 rounded-xl shadow-sm',
                     alert.priority === 'high' ? 'bg-red-100 dark:bg-red-900/30' :
                     alert.priority === 'medium' ? 'bg-yellow-100 dark:bg-yellow-900/30' :
                     'bg-blue-100 dark:bg-blue-900/30'
                   )}>
                     <AlertTriangle className={cn(
-                      'w-5 h-5',
+                      'w-6 h-6',
                       alert.priority === 'high' ? 'text-red-600' :
                       alert.priority === 'medium' ? 'text-yellow-600' :
                       'text-blue-600'
                     )} />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white">
+                    <h3 className="font-bold text-foreground text-lg">
                       {alert.title}
                     </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-sm font-semibold text-muted-foreground">
                       {alert.priority.toUpperCase()} PRIORITY
                     </p>
                   </div>
@@ -314,7 +337,7 @@ export default function AlertsPage() {
                 
                 {/* Status Badge */}
                 <span className={cn(
-                  'px-2 py-1 rounded-full text-xs font-medium',
+                  'px-3 py-2 rounded-xl text-xs font-bold shadow-sm',
                   getStatusColor(alert.status)
                 )}>
                   {alert.status.toUpperCase()}
@@ -322,40 +345,40 @@ export default function AlertsPage() {
               </div>
 
               {/* Alert Details */}
-              <div className="space-y-3">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="component-stack-sm">
+                <p className="text-muted-foreground leading-relaxed">
                   {alert.description}
                 </p>
 
                 {/* Location */}
-                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                  <MapPin className="w-4 h-4" />
-                  {alert.location.address}
+                <div className="flex items-center gap-3 text-sm text-muted-foreground bg-muted/30 p-3 rounded-lg">
+                  <MapPin className="w-5 h-5 text-primary" />
+                  <span className="font-medium">{alert.location.address}</span>
                 </div>
 
                 {/* Tourist Info */}
-                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                  <User className="w-4 h-4" />
-                  {alert.tourist.name} ({alert.tourist.nationality})
+                <div className="flex items-center gap-3 text-sm text-muted-foreground bg-muted/30 p-3 rounded-lg">
+                  <User className="w-5 h-5 text-primary" />
+                  <span className="font-medium">{alert.tourist.name} ({alert.tourist.nationality})</span>
                 </div>
 
                 {/* Timestamp */}
-                <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-500">
-                  <Clock className="w-4 h-4" />
-                  {new Date(alert.timestamp).toLocaleString()}
+                <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                  <Clock className="w-5 h-5 text-primary" />
+                  <span className="font-medium">{new Date(alert.timestamp).toLocaleString()}</span>
                 </div>
 
                 {/* Response Team Info */}
                 {alert.responseTeam && (
-                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
-                    <div className="flex items-center gap-2">
-                      <Shield className="w-4 h-4 text-blue-600" />
-                      <span className="text-sm font-medium text-blue-900 dark:text-blue-300">
+                  <div className="bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <Shield className="w-5 h-5 text-blue-600" />
+                      <span className="text-sm font-bold text-blue-900 dark:text-blue-300">
                         Assigned to: {alert.responseTeam}
                       </span>
                     </div>
                     {alert.estimatedArrival && (
-                      <div className="text-xs text-blue-700 dark:text-blue-400 mt-1">
+                      <div className="text-sm text-blue-700 dark:text-blue-400 font-medium">
                         ETA: {alert.estimatedArrival}
                       </div>
                     )}
@@ -365,17 +388,17 @@ export default function AlertsPage() {
 
               {/* Expanded Actions */}
               {selectedAlert === alert.id && canManageAlerts && alert.status !== 'resolved' && (
-                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <div className="flex gap-2">
+                <div className="mt-6 pt-6 border-t-2 border-border">
+                  <div className="grid grid-cols-2 gap-3 mb-4">
                     {alert.status === 'active' && (
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           handleStatusUpdate(alert.id, 'acknowledged', 'Emergency Response Team');
                         }}
-                        className="flex-1 px-3 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors text-sm"
+                        className="flex items-center justify-center gap-2 px-4 py-3 bg-yellow-600 text-white rounded-xl hover:bg-yellow-700 transition-colors text-sm font-medium shadow-sm"
                       >
-                        <Eye className="w-4 h-4 inline mr-2" />
+                        <Eye className="w-4 h-4" />
                         Acknowledge
                       </button>
                     )}
@@ -386,9 +409,9 @@ export default function AlertsPage() {
                           e.stopPropagation();
                           handleStatusUpdate(alert.id, 'responding', 'Emergency Response Team Alpha');
                         }}
-                        className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                        className="flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors text-sm font-medium shadow-sm"
                       >
-                        <Navigation className="w-4 h-4 inline mr-2" />
+                        <Navigation className="w-4 h-4" />
                         Dispatch Team
                       </button>
                     )}
@@ -399,22 +422,22 @@ export default function AlertsPage() {
                           e.stopPropagation();
                           resolveAlert(alert.id);
                         }}
-                        className="flex-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
+                        className="flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors text-sm font-medium shadow-sm col-span-2"
                       >
-                        <CheckCircle className="w-4 h-4 inline mr-2" />
+                        <CheckCircle className="w-4 h-4" />
                         Resolve
                       </button>
                     )}
                   </div>
                   
                   {/* Contact Actions */}
-                  <div className="flex gap-2 mt-2">
-                    <button className="flex-1 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm">
-                      <Phone className="w-4 h-4 inline mr-2" />
+                  <div className="grid grid-cols-2 gap-3">
+                    <button className="flex items-center justify-center gap-2 px-4 py-3 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition-colors text-sm font-medium shadow-sm">
+                      <Phone className="w-4 h-4" />
                       Call Tourist
                     </button>
-                    <button className="flex-1 px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm">
-                      <MessageSquare className="w-4 h-4 inline mr-2" />
+                    <button className="flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors text-sm font-medium shadow-sm">
+                      <MessageSquare className="w-4 h-4" />
                       Send Message
                     </button>
                   </div>
@@ -423,10 +446,10 @@ export default function AlertsPage() {
 
               {/* View-only message for viewers */}
               {selectedAlert === alert.id && !canManageAlerts && (
-                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                    <Eye className="w-4 h-4" />
-                    Read-only access - Contact operator for emergency response
+                <div className="mt-6 pt-6 border-t-2 border-border">
+                  <div className="flex items-center gap-3 text-sm text-muted-foreground bg-muted/50 p-4 rounded-xl">
+                    <Eye className="w-5 h-5" />
+                    <span className="font-medium">Read-only access - Contact operator for emergency response</span>
                   </div>
                 </div>
               )}

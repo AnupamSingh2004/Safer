@@ -1,6 +1,6 @@
 import { Config } from 'tailwindcss'
 
-// Simplified design tokens to replace the deleted design-tokens file
+// Enhanced design tokens with modern, accessible color system
 const simpleTokens = {
   colors: {
     primary: {
@@ -9,8 +9,8 @@ const simpleTokens = {
       200: '#bfdbfe',
       300: '#93c5fd',
       400: '#60a5fa',
-      500: '#3b82f6',
-      600: '#2563eb',
+      500: '#0066ff', // Enhanced vibrant blue
+      600: '#0052cc',
       700: '#1d4ed8',
       800: '#1e40af',
       900: '#1e3a8a',
@@ -42,36 +42,36 @@ const simpleTokens = {
     emergency: {
       critical: {
         50: '#fef2f2',
-        500: '#ef4444',
+        500: '#dc2626', // Enhanced critical red
         900: '#7f1d1d',
       },
       high: {
         50: '#fef3c7',
-        500: '#f59e0b',
+        500: '#d97706', // Enhanced warning orange
         900: '#78350f',
       },
       medium: {
         50: '#fef7cd',
-        500: '#eab308',
+        500: '#ca8a04', // Enhanced medium yellow
         900: '#713f12',
       },
       low: {
         50: '#f0f9ff',
-        500: '#0ea5e9',
+        500: '#0284c7', // Enhanced info blue
         900: '#0c4a6e',
       },
       resolved: {
         50: '#f0fdf4',
-        500: '#22c55e',
+        500: '#16a34a', // Enhanced success green
         900: '#14532d',
       },
     },
     zones: {
-      safe: { 50: '#f0fdf4', 500: '#22c55e', 900: '#14532d' },
-      lowRisk: { 50: '#f0f9ff', 500: '#0ea5e9', 900: '#0c4a6e' },
-      moderate: { 50: '#fef3c7', 500: '#f59e0b', 900: '#78350f' },
-      highRisk: { 50: '#fef2f2', 500: '#ef4444', 900: '#7f1d1d' },
-      restricted: { 50: '#faf5ff', 500: '#a855f7', 900: '#581c87' },
+      safe: { 50: '#f0fdf4', 500: '#16a34a', 900: '#14532d' },
+      lowRisk: { 50: '#f0f9ff', 500: '#0284c7', 900: '#0c4a6e' },
+      moderate: { 50: '#fef3c7', 500: '#d97706', 900: '#78350f' },
+      highRisk: { 50: '#fef2f2', 500: '#dc2626', 900: '#7f1d1d' },
+      restricted: { 50: '#faf5ff', 500: '#9333ea', 900: '#581c87' },
     },
   },
   borderRadius: {
@@ -82,8 +82,35 @@ const simpleTokens = {
     full: '9999px',
   },
   spacing: {
-    '18': '4.5rem',
-    '88': '22rem',
+    // Enhanced 8pt grid system
+    '1.5': '0.375rem', // 6px
+    '2.5': '0.625rem', // 10px
+    '3.5': '0.875rem', // 14px
+    '4.5': '1.125rem', // 18px
+    '5.5': '1.375rem', // 22px
+    '6.5': '1.625rem', // 26px
+    '7.5': '1.875rem', // 30px
+    '8.5': '2.125rem', // 34px
+    '9.5': '2.375rem', // 38px
+    '10.5': '2.625rem', // 42px
+    '11.5': '2.875rem', // 46px
+    '12.5': '3.125rem', // 50px
+    '13': '3.25rem',   // 52px
+    '15': '3.75rem',   // 60px
+    '17': '4.25rem',   // 68px
+    '18': '4.5rem',    // 72px
+    '19': '4.75rem',   // 76px
+    '21': '5.25rem',   // 84px
+    '22': '5.5rem',    // 88px
+    '25': '6.25rem',   // 100px
+    '26': '6.5rem',    // 104px
+    '30': '7.5rem',    // 120px
+    '34': '8.5rem',    // 136px
+    '88': '22rem',     // 352px - Dashboard widths
+    '100': '25rem',    // 400px
+    '112': '28rem',    // 448px
+    '128': '32rem',    // 512px
+    '144': '36rem',    // 576px
   },
   typography: {
     fontSize: {
@@ -200,144 +227,98 @@ const config: Config = {
     extend: {
       colors: {
         border: "hsl(var(--border))",
-        "border-hover": "hsl(var(--border-hover))",
-        "border-focus": "hsl(var(--border-focus))",
         input: "hsl(var(--input))",
-        "input-focus": "hsl(var(--input-focus))",
         ring: "hsl(var(--ring))",
-        "ring-offset": "hsl(var(--ring-offset))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
-          hover: "hsl(var(--primary-hover))",
-          active: "hsl(var(--primary-active))",
           foreground: "hsl(var(--primary-foreground))",
-          light: "hsl(var(--primary-light))",
-          dark: "hsl(var(--primary-dark))",
           ...simpleTokens.colors.primary,
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
-          hover: "hsl(var(--secondary-hover))",
-          active: "hsl(var(--secondary-active))",
           foreground: "hsl(var(--secondary-foreground))",
-          accent: "hsl(var(--secondary-accent))",
           ...simpleTokens.colors.secondary,
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
-          hover: "hsl(var(--destructive-hover))",
           foreground: "hsl(var(--destructive-foreground))",
-          light: "hsl(var(--destructive-light))",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
-          hover: "hsl(var(--muted-hover))",
           foreground: "hsl(var(--muted-foreground))",
-          dark: "hsl(var(--muted-dark))",
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",
-          hover: "hsl(var(--accent-hover))",
-          active: "hsl(var(--accent-active))",
           foreground: "hsl(var(--accent-foreground))",
-          primary: "hsl(var(--accent-primary))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
-          border: "hsl(var(--popover-border))",
         },
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
-          border: "hsl(var(--card-border))",
-          shadow: "hsl(var(--card-shadow))",
         },
         // Neutral colors
         neutral: simpleTokens.colors.neutral,
         
-        // Emergency service colors - Enhanced with background variants
+        // Emergency service colors
         emergency: {
           critical: {
             DEFAULT: "hsl(var(--emergency-critical))",
-            bg: "hsl(var(--emergency-critical-bg))",
             ...simpleTokens.colors.emergency.critical,
           },
           high: {
             DEFAULT: "hsl(var(--emergency-high))",
-            bg: "hsl(var(--emergency-high-bg))",
             ...simpleTokens.colors.emergency.high,
           },
           medium: {
             DEFAULT: "hsl(var(--emergency-medium))",
-            bg: "hsl(var(--emergency-medium-bg))",
             ...simpleTokens.colors.emergency.medium,
           },
           low: {
             DEFAULT: "hsl(var(--emergency-low))",
-            bg: "hsl(var(--emergency-low-bg))",
             ...simpleTokens.colors.emergency.low,
           },
           resolved: {
             DEFAULT: "hsl(var(--emergency-resolved))",
-            bg: "hsl(var(--emergency-resolved-bg))",
             ...simpleTokens.colors.emergency.resolved,
           },
         },
         
-        // Zone risk colors - Enhanced with background variants
+        // Zone risk colors
         zone: {
           safe: {
             DEFAULT: "hsl(var(--zone-safe))",
-            bg: "hsl(var(--zone-safe-bg))",
             ...simpleTokens.colors.zones.safe,
           },
           lowRisk: {
             DEFAULT: "hsl(var(--zone-low-risk))",
-            bg: "hsl(var(--zone-low-risk-bg))",
             ...simpleTokens.colors.zones.lowRisk,
           },
           moderate: {
             DEFAULT: "hsl(var(--zone-moderate))",
-            bg: "hsl(var(--zone-moderate-bg))",
             ...simpleTokens.colors.zones.moderate,
           },
           highRisk: {
             DEFAULT: "hsl(var(--zone-high-risk))",
-            bg: "hsl(var(--zone-high-risk-bg))",
             ...simpleTokens.colors.zones.highRisk,
           },
           restricted: {
             DEFAULT: "hsl(var(--zone-restricted))",
-            bg: "hsl(var(--zone-restricted-bg))",
             ...simpleTokens.colors.zones.restricted,
           },
         },
         
-        // Status colors - Enhanced with background variants
+        // Status colors
         status: {
-          online: {
-            DEFAULT: "hsl(var(--status-online))",
-            bg: "hsl(var(--status-online-bg))",
-          },
-          offline: {
-            DEFAULT: "hsl(var(--status-offline))",
-            bg: "hsl(var(--status-offline-bg))",
-          },
-          away: {
-            DEFAULT: "hsl(var(--status-away))",
-            bg: "hsl(var(--status-away-bg))",
-          },
-          busy: {
-            DEFAULT: "hsl(var(--status-busy))",
-            bg: "hsl(var(--status-busy-bg))",
-          },
-          maintenance: {
-            DEFAULT: "hsl(var(--status-maintenance))",
-            bg: "hsl(var(--status-maintenance-bg))",
-          },
+          online: "hsl(var(--status-online))",
+          offline: "hsl(var(--status-offline))",
+          away: "hsl(var(--status-away))",
+          busy: "hsl(var(--status-busy))",
+          maintenance: "hsl(var(--status-maintenance))",
         }
       },
       borderRadius: {
@@ -352,58 +333,18 @@ const config: Config = {
       },
       spacing: {
         ...simpleTokens.spacing,
-        // 8pt grid system for modern design
-        '0.5': '0.125rem',   // 2px
-        '1': '0.25rem',      // 4px
-        '1.5': '0.375rem',   // 6px
-        '2': '0.5rem',       // 8px (base unit)
-        '2.5': '0.625rem',   // 10px
-        '3': '0.75rem',      // 12px
-        '3.5': '0.875rem',   // 14px
-        '4': '1rem',         // 16px (2 * base)
-        '5': '1.25rem',      // 20px
-        '6': '1.5rem',       // 24px (3 * base)
-        '7': '1.75rem',      // 28px
-        '8': '2rem',         // 32px (4 * base)
-        '9': '2.25rem',      // 36px
-        '10': '2.5rem',      // 40px (5 * base)
-        '11': '2.75rem',     // 44px
-        '12': '3rem',        // 48px (6 * base)
-        '14': '3.5rem',      // 56px (7 * base)
-        '16': '4rem',        // 64px (8 * base)
-        '18': '4.5rem',      // 72px (9 * base)
-        '20': '5rem',        // 80px (10 * base)
-        '24': '6rem',        // 96px (12 * base)
-        '28': '7rem',        // 112px (14 * base)
-        '32': '8rem',        // 128px (16 * base)
-        '36': '9rem',        // 144px (18 * base)
-        '40': '10rem',       // 160px (20 * base)
-        '44': '11rem',       // 176px (22 * base)
-        '48': '12rem',       // 192px (24 * base)
-        '52': '13rem',       // 208px (26 * base)
-        '56': '14rem',       // 224px (28 * base)
-        '60': '15rem',       // 240px (30 * base)
-        '64': '16rem',       // 256px (32 * base)
-        '72': '18rem',       // 288px (36 * base)
-        '80': '20rem',       // 320px (40 * base)
-        '96': '24rem',       // 384px (48 * base)
-        
-        // Dashboard specific spacing
-        'dashboard-gutter': '1.5rem',      // 24px - Dashboard content padding
-        'dashboard-margin': '2rem',        // 32px - Dashboard section margins
-        'card-padding': '1.5rem',          // 24px - Default card padding
-        'card-margin': '1rem',             // 16px - Card spacing
-        'section-spacing': '3rem',         // 48px - Between major sections
-        'component-spacing': '1.5rem',     // 24px - Between components
-        'element-spacing': '0.75rem',      // 12px - Between small elements
-        
-        // Component specific spacing
-        'button-padding-x': '1.5rem',      // 24px - Button horizontal padding
-        'button-padding-y': '0.75rem',     // 12px - Button vertical padding
-        'input-padding-x': '1rem',         // 16px - Input horizontal padding
-        'input-padding-y': '0.75rem',      // 12px - Input vertical padding
-        'modal-padding': '2rem',           // 32px - Modal content padding
-        'drawer-padding': '1.5rem',        // 24px - Drawer content padding
+        // Dashboard-specific spacing
+        'sidebar': '20rem',
+        'sidebar-collapsed': '4rem', 
+        'header': '4rem',
+        'content-padding': '1.5rem',
+        // Card and component spacing
+        'card-padding': '1.5rem',
+        'card-gap': '1rem',
+        'section-gap': '3rem',
+        // Form spacing
+        'form-gap': '1rem',
+        'field-gap': '0.5rem',
       },
       fontSize: {
         ...Object.entries(simpleTokens.typography.fontSize).reduce((acc, [key, value]) => {

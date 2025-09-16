@@ -36,30 +36,26 @@ function LocationServicesPage() {
       label: 'Overview',
       icon: MapPin,
       description: 'Location services overview',
-      permission: 'view_location',
     },
     {
       id: 'tracking',
       label: 'Live Tracking',
       icon: Navigation,
       description: 'Real-time tourist location tracking',
-      permission: 'track_location',
     },
     {
       id: 'geofences',
       label: 'Geofences',
       icon: Shield,
       description: 'Manage geofence zones',
-      permission: 'view_geofence',
     },
     {
       id: 'services',
       label: 'Nearby Services',
       icon: Settings,
       description: 'Emergency and tourist services',
-      permission: 'view_services',
     },
-  ].filter(item => hasPermission(item.permission));
+  ];
 
   // Handle location update
   const handleLocationUpdate = (location: any) => {
@@ -247,15 +243,15 @@ function LocationServicesPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="dashboard-container">
       {/* Page Header */}
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+      <div className="dashboard-card p-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-3xl font-bold text-foreground mb-2">
               Location Services
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-muted-foreground text-lg">
               Real-time tracking, geofencing, and location-based safety services
             </p>
           </div>
@@ -263,8 +259,8 @@ function LocationServicesPage() {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="bg-white dark:bg-gray-800 p-2 rounded-lg shadow">
-        <nav className="flex space-x-1">
+      <div className="dashboard-card p-4">
+        <nav className="flex space-x-2">
           {navigationItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeView === item.id;
@@ -274,13 +270,13 @@ function LocationServicesPage() {
                 key={item.id}
                 onClick={() => setActiveView(item.id as LocationView)}
                 className={cn(
-                  'flex items-center px-4 py-3 text-sm font-medium rounded-md transition-colors',
+                  'flex items-center px-6 py-4 text-sm font-semibold rounded-xl transition-all duration-200',
                   isActive
-                    ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    ? 'bg-primary text-primary-foreground shadow-lg'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
                 )}
               >
-                <Icon className="h-4 w-4 mr-2" />
+                <Icon className="w-4 h-4 mr-3" />
                 {item.label}
               </button>
             );
@@ -290,16 +286,18 @@ function LocationServicesPage() {
 
       {/* Current Location Display */}
       {userLocation && (
-        <div className="bg-blue-50 dark:bg-blue-900/10 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-          <div className="flex items-center">
-            <MapPin className="h-5 w-5 text-blue-600 mr-2" />
+        <div className="dashboard-card p-6 bg-primary/5 border border-primary/20">
+          <div className="flex items-center space-x-4">
+            <div className="p-3 bg-primary/20 rounded-xl">
+              <MapPin className="w-5 h-5 text-primary" />
+            </div>
             <div>
-              <p className="text-sm font-medium text-blue-900 dark:text-blue-400">
+              <p className="text-sm font-semibold text-foreground">
                 Current Reference Location
               </p>
-              <p className="text-sm text-blue-700 dark:text-blue-300">
+              <p className="text-sm text-muted-foreground">
                 {userLocation.latitude.toFixed(6)}, {userLocation.longitude.toFixed(6)}
-                <span className="ml-2 text-blue-600">
+                <span className="ml-2 text-primary font-medium">
                   (India Gate, New Delhi)
                 </span>
               </p>

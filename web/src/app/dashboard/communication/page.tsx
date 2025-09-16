@@ -239,30 +239,30 @@ function CommunicationPage() {
 
   // Render analytics tab content
   const renderAnalytics = () => (
-    <div className="space-y-6">
+    <div className="component-stack-8">
       {/* Metrics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid-responsive gap-6">
         {COMMUNICATION_METRICS.map((metric) => {
           const Icon = metric.icon;
           const trendInfo = getTrendInfo(metric.trend);
           const TrendIcon = trendInfo.icon;
           
           return (
-            <div key={metric.title} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+            <div key={metric.title} className="dashboard-card p-6">
               <div className="flex items-center justify-between">
-                <div className={cn('p-3 rounded-full', metric.bg)}>
-                  <Icon className={cn('h-6 w-6', metric.color)} />
+                <div className={cn('p-3 rounded-xl', metric.bg)}>
+                  <Icon className={cn('w-6 h-6', metric.color)} />
                 </div>
-                <div className={cn('flex items-center text-sm font-medium', trendInfo.color)}>
-                  <TrendIcon className={cn('h-4 w-4 mr-1', trendInfo.rotation)} />
+                <div className={cn('flex items-center text-sm font-semibold', trendInfo.color)}>
+                  <TrendIcon className={cn('w-4 h-4 mr-1', trendInfo.rotation)} />
                   {metric.change}
                 </div>
               </div>
-              <div className="mt-4">
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">
+              <div className="component-stack-4">
+                <div className="text-3xl font-bold text-foreground">
                   {metric.value}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-sm text-muted-foreground">
                   {metric.title}
                 </div>
               </div>
@@ -272,71 +272,76 @@ function CommunicationPage() {
       </div>
 
       {/* Delivery Channel Performance */}
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-6">
+      <div className="dashboard-card p-8">
+        <h3 className="text-xl font-bold text-foreground mb-8">
           Delivery Channel Performance
         </h3>
         
-        <div className="space-y-4">
+        <div className="component-stack-6">
           {DELIVERY_STATS.map((stat) => {
             const Icon = stat.icon;
             const deliveryRate = Math.round((stat.delivered / stat.sent) * 100);
             const openRate = Math.round((stat.opened / stat.delivered) * 100);
             
             return (
-              <div key={stat.channel} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-                <div className="flex items-center justify-between mb-3">
+              <div key={stat.channel} className="border border-border rounded-xl p-6">
+                <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center">
-                    <Icon className={cn('h-5 w-5 mr-3', stat.color)} />
-                    <span className="font-medium text-gray-900 dark:text-white">
+                    <div className={cn('p-2 rounded-lg mr-4', stat.color.replace('text-', 'bg-').replace('-600', '-500/20'))}>
+                      <Icon className={cn('w-5 h-5', stat.color)} />
+                    </div>
+                    <span className="font-semibold text-foreground text-lg">
                       {stat.channel}
                     </span>
                   </div>
-                  <span className={cn('text-sm font-medium', stat.color)}>
+                  <span className={cn('text-sm font-semibold px-3 py-1 rounded-full', 
+                    stat.color.replace('text-', 'bg-').replace('-600', '-100 dark:bg-'),
+                    stat.color.replace('-600', '-600')
+                  )}>
                     {stat.rate}% delivery rate
                   </span>
                 </div>
                 
-                <div className="grid grid-cols-4 gap-4 text-sm">
+                <div className="grid grid-cols-4 gap-6 text-sm">
                   <div className="text-center">
-                    <div className="font-medium text-gray-900 dark:text-white">
+                    <div className="text-xl font-bold text-foreground">
                       {formatNumber(stat.sent)}
                     </div>
-                    <div className="text-gray-600 dark:text-gray-400">Sent</div>
+                    <div className="text-muted-foreground">Sent</div>
                   </div>
                   <div className="text-center">
-                    <div className="font-medium text-blue-600">
+                    <div className="text-xl font-bold text-primary">
                       {formatNumber(stat.delivered)}
                     </div>
-                    <div className="text-gray-600 dark:text-gray-400">
+                    <div className="text-muted-foreground">
                       Delivered ({deliveryRate}%)
                     </div>
                   </div>
                   <div className="text-center">
-                    <div className="font-medium text-green-600">
+                    <div className="text-xl font-bold text-green-600 dark:text-green-400">
                       {formatNumber(stat.opened)}
                     </div>
-                    <div className="text-gray-600 dark:text-gray-400">
+                    <div className="text-muted-foreground">
                       Opened ({openRate}%)
                     </div>
                   </div>
                   <div className="text-center">
-                    <div className="font-medium text-purple-600">
+                    <div className="text-xl font-bold text-red-600 dark:text-red-400">
                       {formatNumber(stat.sent - stat.delivered)}
                     </div>
-                    <div className="text-gray-600 dark:text-gray-400">Failed</div>
+                    <div className="text-muted-foreground">Failed</div>
                   </div>
                 </div>
                 
                 {/* Progress Bar */}
-                <div className="mt-3">
-                  <div className="flex text-xs text-gray-600 dark:text-gray-400 mb-1">
+                <div className="component-stack-3">
+                  <div className="flex text-sm text-muted-foreground justify-between">
                     <span>Delivery Progress</span>
-                    <span className="ml-auto">{deliveryRate}%</span>
+                    <span className="font-semibold">{deliveryRate}%</span>
                   </div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div className="w-full bg-muted rounded-full h-3">
                     <div 
-                      className={cn('h-2 rounded-full', 
+                      className={cn('h-3 rounded-full transition-all duration-300', 
                         stat.color.replace('text-', 'bg-').replace('-600', '-500')
                       )}
                       style={{ width: `${deliveryRate}%` }}
@@ -350,28 +355,28 @@ function CommunicationPage() {
       </div>
 
       {/* Recent Activities */}
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-6">
+      <div className="dashboard-card p-8">
+        <h3 className="text-xl font-bold text-foreground mb-8">
           Recent Communication Activities
         </h3>
         
-        <div className="space-y-4">
+        <div className="component-stack-6">
           {RECENT_ACTIVITIES.map((activity) => {
             const Icon = activity.icon;
             
             return (
               <div key={activity.id} className="flex items-start space-x-4">
-                <div className={cn('p-2 rounded-full flex-shrink-0', activity.bg)}>
-                  <Icon className={cn('h-4 w-4', activity.color)} />
+                <div className={cn('p-3 rounded-xl flex-shrink-0', activity.bg)}>
+                  <Icon className={cn('w-5 h-5', activity.color)} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium text-gray-900 dark:text-white">
+                  <div className="text-sm font-semibold text-foreground">
                     {activity.title}
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-sm text-muted-foreground mt-1">
                     {activity.description}
                   </div>
-                  <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                  <div className="text-xs text-muted-foreground/75 mt-2">
                     {activity.timestamp}
                   </div>
                 </div>
@@ -384,32 +389,32 @@ function CommunicationPage() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="dashboard-container">
       {/* Page Header */}
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+      <div className="dashboard-card p-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-3xl font-bold text-foreground mb-2">
               Communication Center
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">
+            <p className="text-muted-foreground text-lg">
               Manage real-time messaging, notifications, and broadcasts
             </p>
           </div>
           
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-6">
             <div className="text-right">
-              <div className="text-sm text-gray-600 dark:text-gray-400">Online Now</div>
-              <div className="text-lg font-semibold text-green-600">
+              <div className="text-sm text-muted-foreground">Online Now</div>
+              <div className="text-xl font-bold text-green-600 dark:text-green-400">
                 {MOCK_STATS.activeConversations} conversations
               </div>
             </div>
             
-            <div className="h-8 w-px bg-gray-300 dark:bg-gray-600" />
+            <div className="h-8 w-px bg-border" />
             
-            {hasPermission('manage_communication') && (
-              <button className="flex items-center px-4 py-2 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded-md">
-                <Settings className="h-4 w-4 mr-2" />
+            {hasPermission('manage_settings') && (
+              <button className="btn-primary">
+                <Settings className="w-4 h-4 mr-2" />
                 Settings
               </button>
             )}
@@ -418,84 +423,96 @@ function CommunicationPage() {
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-          <div className="flex items-center">
-            <MessageSquare className="h-8 w-8 text-blue-600" />
-            <div className="ml-3">
-              <div className="text-lg font-semibold text-gray-900 dark:text-white">
+      <div className="grid-responsive gap-6">
+        <div className="dashboard-card p-6">
+          <div className="flex items-center space-x-4">
+            <div className="p-3 bg-primary/20 rounded-xl">
+              <MessageSquare className="w-8 h-8 text-primary" />
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-foreground">
                 {formatNumber(MOCK_STATS.totalMessages)}
               </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Total Messages</div>
+              <div className="text-sm text-muted-foreground">Total Messages</div>
             </div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-          <div className="flex items-center">
-            <Users className="h-8 w-8 text-green-600" />
-            <div className="ml-3">
-              <div className="text-lg font-semibold text-gray-900 dark:text-white">
+        <div className="dashboard-card p-6">
+          <div className="flex items-center space-x-4">
+            <div className="p-3 bg-green-500/20 rounded-xl">
+              <Users className="w-8 h-8 text-green-600 dark:text-green-400" />
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-foreground">
                 {MOCK_STATS.activeConversations}
               </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Active Chats</div>
+              <div className="text-sm text-muted-foreground">Active Chats</div>
             </div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-          <div className="flex items-center">
-            <Bell className="h-8 w-8 text-orange-600" />
-            <div className="ml-3">
-              <div className="text-lg font-semibold text-gray-900 dark:text-white">
+        <div className="dashboard-card p-6">
+          <div className="flex items-center space-x-4">
+            <div className="p-3 bg-orange-500/20 rounded-xl">
+              <Bell className="w-8 h-8 text-orange-600 dark:text-orange-400" />
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-foreground">
                 {MOCK_STATS.pendingNotifications}
               </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Pending</div>
+              <div className="text-sm text-muted-foreground">Pending</div>
             </div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-          <div className="flex items-center">
-            <Megaphone className="h-8 w-8 text-purple-600" />
-            <div className="ml-3">
-              <div className="text-lg font-semibold text-gray-900 dark:text-white">
+        <div className="dashboard-card p-6">
+          <div className="flex items-center space-x-4">
+            <div className="p-3 bg-purple-500/20 rounded-xl">
+              <Megaphone className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-foreground">
                 {MOCK_STATS.broadcastsSent}
               </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Broadcasts</div>
+              <div className="text-sm text-muted-foreground">Broadcasts</div>
             </div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-          <div className="flex items-center">
-            <Target className="h-8 w-8 text-blue-600" />
-            <div className="ml-3">
-              <div className="text-lg font-semibold text-gray-900 dark:text-white">
+        <div className="dashboard-card p-6">
+          <div className="flex items-center space-x-4">
+            <div className="p-3 bg-primary/20 rounded-xl">
+              <Target className="w-8 h-8 text-primary" />
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-foreground">
                 {MOCK_STATS.responseRate}%
               </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Response Rate</div>
+              <div className="text-sm text-muted-foreground">Response Rate</div>
             </div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-          <div className="flex items-center">
-            <Clock className="h-8 w-8 text-green-600" />
-            <div className="ml-3">
-              <div className="text-lg font-semibold text-gray-900 dark:text-white">
+        <div className="dashboard-card p-6">
+          <div className="flex items-center space-x-4">
+            <div className="p-3 bg-green-500/20 rounded-xl">
+              <Clock className="w-8 h-8 text-green-600 dark:text-green-400" />
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-foreground">
                 {MOCK_STATS.avgResponseTime}
               </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Avg Response</div>
+              <div className="text-sm text-muted-foreground">Avg Response</div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Tab Navigation */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
-        <div className="border-b border-gray-200 dark:border-gray-700">
-          <nav className="flex space-x-8 px-6" aria-label="Communication tabs">
+      <div className="dashboard-card overflow-hidden">
+        <div className="border-b border-border">
+          <nav className="flex space-x-8 px-8" aria-label="Communication tabs">
             {COMMUNICATION_TABS.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -505,13 +522,13 @@ function CommunicationPage() {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={cn(
-                    'flex items-center py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap',
+                    'flex items-center py-6 px-2 border-b-2 font-semibold text-sm whitespace-nowrap transition-all duration-200',
                     isActive
-                      ? 'border-blue-500 text-blue-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+                      ? 'border-primary text-primary'
+                      : 'border-transparent text-muted-foreground hover:text-foreground hover:border-muted'
                   )}
                 >
-                  <Icon className={cn('h-5 w-5 mr-2', isActive ? tab.color : 'text-gray-400')} />
+                  <Icon className={cn('w-5 h-5 mr-3', isActive ? 'text-primary' : 'text-muted-foreground')} />
                   {tab.label}
                 </button>
               );
@@ -520,14 +537,14 @@ function CommunicationPage() {
         </div>
 
         {/* Tab Content */}
-        <div className="p-6">
+        <div className="p-8">
           {activeTab === 'messaging' && (
             <div>
-              <div className="mb-6">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+              <div className="component-stack-6">
+                <h3 className="text-xl font-bold text-foreground">
                   Real-Time Messaging
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-muted-foreground">
                   Communicate directly with tourists and provide real-time assistance
                 </p>
               </div>
@@ -537,11 +554,11 @@ function CommunicationPage() {
 
           {activeTab === 'notifications' && (
             <div>
-              <div className="mb-6">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+              <div className="component-stack-6">
+                <h3 className="text-xl font-bold text-foreground">
                   Notification Management
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-muted-foreground">
                   Manage and send targeted notifications to users
                 </p>
               </div>
@@ -551,11 +568,11 @@ function CommunicationPage() {
 
           {activeTab === 'broadcast' && (
             <div>
-              <div className="mb-6">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+              <div className="component-stack-6">
+                <h3 className="text-xl font-bold text-foreground">
                   Broadcast System
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-muted-foreground">
                   Send mass announcements and emergency alerts to multiple users
                 </p>
               </div>
@@ -565,11 +582,11 @@ function CommunicationPage() {
 
           {activeTab === 'analytics' && (
             <div>
-              <div className="mb-6">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+              <div className="component-stack-6">
+                <h3 className="text-xl font-bold text-foreground">
                   Communication Analytics
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-muted-foreground">
                   Monitor communication metrics and performance insights
                 </p>
               </div>

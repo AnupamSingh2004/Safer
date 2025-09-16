@@ -48,24 +48,26 @@ const StatsCard = ({
   onClick?: () => void;
 }) => (
   <div 
-    className={`bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 transition-all duration-200 ${
-      onClick ? 'hover:shadow-md cursor-pointer transform hover:scale-105' : ''
+    className={`dashboard-card group transition-all duration-300 ${
+      onClick ? 'hover:shadow-lg cursor-pointer hover:-translate-y-1' : ''
     }`}
     onClick={onClick}
   >
     <div className="flex items-center justify-between">
-      <div className="flex items-center space-x-3">
-        <div className="p-2 bg-primary/10 rounded-lg">
-          <Icon className="w-6 h-6 text-primary" />
+      <div className="flex items-center space-x-4">
+        <div className="p-3 bg-primary/10 rounded-xl group-hover:bg-primary/15 transition-colors">
+          <Icon className="w-7 h-7 text-primary" />
         </div>
         <div>
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{title}</p>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
+          <p className="text-sm font-medium text-muted-foreground mb-1">{title}</p>
+          <p className="text-3xl font-bold text-foreground">{value}</p>
         </div>
       </div>
       {change && (
-        <div className={`flex items-center space-x-1 text-sm ${
-          trend === 'up' ? 'text-green-600' : trend === 'down' ? 'text-red-600' : 'text-gray-600'
+        <div className={`flex items-center space-x-1 text-sm font-medium px-2 py-1 rounded-full ${
+          trend === 'up' ? 'text-green-700 bg-green-100 dark:text-green-400 dark:bg-green-900/30' : 
+          trend === 'down' ? 'text-red-700 bg-red-100 dark:text-red-400 dark:bg-red-900/30' : 
+          'text-gray-700 bg-gray-100 dark:text-gray-400 dark:bg-gray-900/30'
         }`}>
           <span>{change}</span>
           <TrendingUp className={`w-4 h-4 ${trend === 'down' ? 'rotate-180' : ''}`} />
@@ -93,20 +95,20 @@ const QuickActionCard = ({
   
   return (
     <div 
-      className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all duration-200 cursor-pointer transform hover:scale-105"
+      className="dashboard-card group hover:shadow-lg cursor-pointer hover:-translate-y-1 transition-all duration-300"
       onClick={() => router.push(href)}
     >
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <div className={`p-3 bg-${color}/10 rounded-lg`}>
+        <div className="flex items-center space-x-5">
+          <div className={`p-4 bg-${color}/10 rounded-xl group-hover:bg-${color}/15 transition-colors`}>
             <IconComponent className={`w-6 h-6 text-${color}`} />
           </div>
-          <div>
-            <h3 className="font-semibold text-gray-900 dark:text-white">{title}</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">{description}</p>
+          <div className="flex-1">
+            <h3 className="font-semibold text-foreground text-lg mb-1">{title}</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
           </div>
         </div>
-        <ArrowRight className="w-5 h-5 text-gray-400" />
+        <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
       </div>
     </div>
   );
@@ -292,32 +294,32 @@ export default function DashboardPage() {
   const welcomeMessage = getWelcomeMessage(user.role);
 
   return (
-    <div className="p-8">
+    <div className="dashboard-container component-stack-lg">
       {/* Welcome Section */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-4">
-          <div className={`p-2 rounded-lg ${
-            user.role === 'super_admin' ? 'bg-purple-100 dark:bg-purple-900' :
-            user.role === 'operator' ? 'bg-blue-100 dark:bg-blue-900' :
-            'bg-green-100 dark:bg-green-900'
+      <div className="dashboard-section">
+        <div className="flex items-center gap-4 mb-6">
+          <div className={`p-3 rounded-xl shadow-sm ${
+            user.role === 'super_admin' ? 'bg-purple-100 dark:bg-purple-900/30 border border-purple-200 dark:border-purple-800' :
+            user.role === 'operator' ? 'bg-blue-100 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800' :
+            'bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800'
           }`}>
-            {user.role === 'super_admin' && <Shield className="w-6 h-6 text-purple-600 dark:text-purple-400" />}
-            {user.role === 'operator' && <Users className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
-            {user.role === 'viewer' && <BarChart3 className="w-6 h-6 text-green-600 dark:text-green-400" />}
+            {user.role === 'super_admin' && <Shield className="w-8 h-8 text-purple-600 dark:text-purple-400" />}
+            {user.role === 'operator' && <Users className="w-8 h-8 text-blue-600 dark:text-blue-400" />}
+            {user.role === 'viewer' && <BarChart3 className="w-8 h-8 text-green-600 dark:text-green-400" />}
           </div>
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+            <h2 className="text-4xl font-bold text-foreground mb-2">
               {welcomeMessage.title}
             </h2>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-lg text-muted-foreground leading-relaxed">
               {welcomeMessage.subtitle}
             </p>
           </div>
         </div>
         
         {/* Role Badge */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
-          <div className={`w-2 h-2 rounded-full ${
+        <div className="inline-flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold bg-secondary/50 text-secondary-foreground shadow-sm border border-border">
+          <div className={`w-3 h-3 rounded-full shadow-sm ${
             user.role === 'super_admin' ? 'bg-purple-500' :
             user.role === 'operator' ? 'bg-blue-500' :
             'bg-green-500'
@@ -327,26 +329,29 @@ export default function DashboardPage() {
       </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {dashboardStats.map((stat, index) => (
-            <StatsCard
-              key={index}
-              title={stat.title}
-              value={stat.value}
-              change={stat.change}
-              icon={stat.icon}
-              trend={stat.trend}
-              onClick={stat.onClick}
-            />
-          ))}
+        <div className="dashboard-section">
+          <div className="grid-stats">
+            {dashboardStats.map((stat, index) => (
+              <StatsCard
+                key={index}
+                title={stat.title}
+                value={stat.value}
+                change={stat.change}
+                icon={stat.icon}
+                trend={stat.trend}
+                onClick={stat.onClick}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Quick Actions */}
-        <div className="mb-8">
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+        <div className="dashboard-section">
+          <h3 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
+            <Zap className="w-7 h-7 text-primary" />
             Quick Actions
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid-cards">
             {quickActions.map((action, index) => (
               <QuickActionCard
                 key={index}
@@ -361,50 +366,67 @@ export default function DashboardPage() {
         </div>
 
         {/* Recent Activity */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-              Recent Activity
-            </h3>
-            <button className="text-primary hover:text-primary-600 text-sm font-medium">
-              View All
-            </button>
+        <div className="dashboard-card">
+          <div className="card-header">
+            <div className="flex items-center justify-between">
+              <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                <Activity className="w-7 h-7 text-primary" />
+                Recent Activity
+              </h3>
+              <button className="text-primary hover:text-primary/80 text-sm font-semibold px-4 py-2 rounded-lg hover:bg-primary/10 transition-colors">
+                View All
+              </button>
+            </div>
           </div>
           
-          <div className="space-y-4">
-            {demoRecentActivities.slice(0, 3).map((activity, index) => (
-              <div key={activity.id} className="flex items-center space-x-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                <div className={`p-2 rounded-lg bg-gray-100 dark:bg-gray-600`}>
-                  {activity.type === 'emergency_alert' && <AlertTriangle className="w-4 h-4 text-red-600" />}
-                  {activity.type === 'tourist_registration' && <Users className="w-4 h-4 text-blue-600" />}
-                  {activity.type === 'zone_monitoring' && <MapPin className="w-4 h-4 text-yellow-600" />}
-                  {activity.type === 'blockchain_verification' && <Shield className="w-4 h-4 text-green-600" />}
-                  {activity.type === 'ai_detection' && <Zap className="w-4 h-4 text-purple-600" />}
-                  {activity.type === 'system_health' && <Activity className="w-4 h-4 text-green-600" />}
-                </div>
-                <div className="flex-1">
-                  <p className="font-medium text-gray-900 dark:text-white">
-                    {activity.title}
-                  </p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {activity.description}
-                  </p>
-                  {activity.location && (
-                    <p className="text-xs text-gray-500 flex items-center gap-1 mt-1">
-                      <Navigation className="w-3 h-3" />
-                      {activity.location}
+          <div className="card-content">
+            <div className="component-stack-md">
+              {demoRecentActivities.slice(0, 3).map((activity, index) => (
+                <div key={activity.id} className="flex items-center space-x-5 p-4 rounded-xl hover:bg-muted/50 transition-colors border border-transparent hover:border-border">
+                  <div className={`p-3 rounded-xl shadow-sm bg-gradient-to-r ${
+                    activity.type === 'emergency_alert' ? 'from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20' :
+                    activity.type === 'tourist_registration' ? 'from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20' :
+                    activity.type === 'zone_monitoring' ? 'from-yellow-50 to-yellow-100 dark:from-yellow-900/20 dark:to-yellow-800/20' :
+                    activity.type === 'blockchain_verification' ? 'from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20' :
+                    activity.type === 'ai_detection' ? 'from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20' :
+                    'from-gray-50 to-gray-100 dark:from-gray-900/20 dark:to-gray-800/20'
+                  }`}>
+                    {activity.type === 'emergency_alert' && <AlertTriangle className="w-5 h-5 text-red-600" />}
+                    {activity.type === 'tourist_registration' && <Users className="w-5 h-5 text-blue-600" />}
+                    {activity.type === 'zone_monitoring' && <MapPin className="w-5 h-5 text-yellow-600" />}
+                    {activity.type === 'blockchain_verification' && <Shield className="w-5 h-5 text-green-600" />}
+                    {activity.type === 'ai_detection' && <Zap className="w-5 h-5 text-purple-600" />}
+                    {activity.type === 'system_health' && <Activity className="w-5 h-5 text-green-600" />}
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold text-foreground text-lg mb-1">
+                      {activity.title}
                     </p>
-                  )}
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {activity.description}
+                    </p>
+                    {activity.location && (
+                      <p className="text-xs text-muted-foreground flex items-center gap-2 mt-2">
+                        <Navigation className="w-3 h-3" />
+                        {activity.location}
+                      </p>
+                    )}
+                  </div>
+                  <div className="text-right">
+                    <span className="text-sm font-medium text-muted-foreground">
+                      {new Date(activity.timestamp).toLocaleTimeString([], { 
+                        hour: '2-digit', 
+                        minute: '2-digit',
+                        hour12: true 
+                      })}
+                    </span>
+                    <div className="text-xs text-muted-foreground mt-1">
+                      {new Date(activity.timestamp).toLocaleDateString()}
+                    </div>
+                  </div>
                 </div>
-                <span className="text-xs text-gray-500">
-                  {new Date(activity.timestamp).toLocaleTimeString([], { 
-                    hour: '2-digit', 
-                    minute: '2-digit',
-                    hour12: true 
-                  })}
-                </span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
     </div>

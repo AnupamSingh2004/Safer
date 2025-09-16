@@ -37,107 +37,70 @@
 @layer base {
   /* =========================================================================
      ROOT VARIABLES - ENHANCED LIGHT THEME (DEFAULT)
-     Professional vibrant colors with WCAG AAA compliance
      ========================================================================= */
   :root {
-    /* Base colors - Enhanced contrast and vibrancy */
-    --background: 220 33% 98%;
-    --foreground: 222 47% 11%;
+    /* Base colors - Clean, modern foundation */
+    --background: 210 20% 99%;
+    --foreground: 210 40% 8%;
     
-    /* Card colors - Enhanced depth and contrast */
+    /* Card colors - Crisp white with subtle shadow support */
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    --card-border: 220 13% 91%;
-    --card-shadow: 220 13% 88%;
+    --card-foreground: 210 40% 8%;
     
-    /* Popover colors - Enhanced visibility */
+    /* Popover colors - Clean popup backgrounds */
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --popover-border: 220 13% 91%;
+    --popover-foreground: 210 40% 8%;
     
-    /* Primary colors - Professional government blue */
-    --primary: 217 91% 60%;
-    --primary-hover: 217 91% 55%;
-    --primary-active: 217 91% 50%;
+    /* Primary colors - Vibrant government blue */
+    --primary: 215 100% 50%;
     --primary-foreground: 0 0% 100%;
-    --primary-light: 217 91% 95%;
-    --primary-dark: 217 91% 35%;
     
-    /* Secondary colors - Enhanced sage green */
-    --secondary: 142 52% 96%;
-    --secondary-hover: 142 52% 88%;
-    --secondary-active: 142 52% 82%;
-    --secondary-foreground: 142 95% 15%;
-    --secondary-accent: 142 76% 45%;
+    /* Secondary colors - Sophisticated gray-blue */
+    --secondary: 210 15% 93%;
+    --secondary-foreground: 210 40% 12%;
     
-    /* Accent colors - Modern purple */
-    --accent: 251 91% 95%;
-    --accent-hover: 251 91% 88%;
-    --accent-active: 251 91% 82%;
-    --accent-foreground: 251 91% 20%;
-    --accent-primary: 251 91% 60%;
+    /* Accent colors - Modern teal accent */
+    --accent: 195 85% 45%;
+    --accent-foreground: 0 0% 100%;
     
-    /* Destructive colors - Enhanced red with better contrast */
-    --destructive: 0 84% 55%;
-    --destructive-hover: 0 84% 50%;
+    /* Destructive colors - Clear error red */
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --destructive-light: 0 84% 95%;
     
-    /* Muted colors - Enhanced neutrals */
-    --muted: 220 14% 96%;
-    --muted-hover: 220 14% 92%;
-    --muted-foreground: 220 14% 40%;
-    --muted-dark: 220 14% 25%;
+    /* Muted colors - Balanced neutral tones */
+    --muted: 210 15% 95%;
+    --muted-foreground: 210 25% 45%;
     
-    /* Border colors - Enhanced definition */
-    --border: 220 13% 88%;
-    --border-hover: 220 13% 82%;
-    --border-focus: 217 91% 60%;
-    --input: 220 13% 88%;
-    --input-focus: 217 91% 60%;
+    /* Border colors - Subtle but defined */
+    --border: 210 20% 88%;
+    --input: 210 20% 88%;
     
-    /* Focus ring - Enhanced accessibility */
-    --ring: 217 91% 60%;
-    --ring-offset: 0 0% 100%;
+    /* Focus ring - Accessible focus indicator */
+    --ring: 215 100% 50%;
     
     /* Border radius */
     --radius: 0.5rem;
     
-    /* Enhanced Emergency colors with better visibility */
-    --emergency-critical: 0 84% 55%;
-    --emergency-critical-bg: 0 84% 97%;
-    --emergency-high: 25 95% 50%;
-    --emergency-high-bg: 25 95% 96%;
-    --emergency-medium: 43 96% 50%;
-    --emergency-medium-bg: 43 96% 96%;
-    --emergency-low: 188 95% 42%;
-    --emergency-low-bg: 188 95% 95%;
-    --emergency-resolved: 142 76% 40%;
-    --emergency-resolved-bg: 142 76% 95%;
+    /* Emergency colors - Enhanced visibility and urgency */
+    --emergency-critical: 0 85% 55%;
+    --emergency-high: 20 90% 50%;
+    --emergency-medium: 40 95% 48%;
+    --emergency-low: 200 100% 45%;
+    --emergency-resolved: 145 75% 40%;
     
-    /* Enhanced Zone colors with background variants */
-    --zone-safe: 142 76% 40%;
-    --zone-safe-bg: 142 76% 95%;
-    --zone-low-risk: 188 95% 42%;
-    --zone-low-risk-bg: 188 95% 95%;
-    --zone-moderate: 43 96% 50%;
-    --zone-moderate-bg: 43 96% 96%;
-    --zone-high-risk: 0 84% 55%;
-    --zone-high-risk-bg: 0 84% 97%;
-    --zone-restricted: 330 81% 35%;
-    --zone-restricted-bg: 330 81% 95%;
+    /* Zone colors - Clear risk indication */
+    --zone-safe: 145 75% 40%;
+    --zone-low-risk: 200 100% 45%;
+    --zone-moderate: 40 95% 48%;
+    --zone-high-risk: 0 85% 55%;
+    --zone-restricted: 270 80% 45%;
     
-    /* Enhanced Status colors */
-    --status-online: 142 76% 40%;
-    --status-online-bg: 142 76% 95%;
-    --status-offline: 220 14% 50%;
-    --status-offline-bg: 220 14% 95%;
-    --status-away: 43 96% 50%;
-    --status-away-bg: 43 96% 96%;
-    --status-busy: 0 84% 55%;
-    --status-busy-bg: 0 84% 97%;
-    --status-maintenance: 251 91% 60%;
-    --status-maintenance-bg: 251 91% 95%;
+    /* Status colors - Professional and clear */
+    --status-online: 145 75% 40%;
+    --status-offline: 210 25% 55%;
+    --status-away: 40 95% 48%;
+    --status-busy: 0 85% 55%;
+    --status-maintenance: 270 80% 45%;
     
     /* Animation variables */
     --animation-duration-fast: 150ms;
@@ -152,147 +115,97 @@
     --theme-transition-duration: 300ms;
     --theme-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
     
-    /* Enhanced Layout and Spacing Variables - 8pt Grid System */
-    --spacing-unit: 0.5rem;              /* 8px base unit */
-    --spacing-xs: calc(var(--spacing-unit) * 0.5);    /* 4px */
-    --spacing-sm: var(--spacing-unit);                 /* 8px */
-    --spacing-md: calc(var(--spacing-unit) * 2);      /* 16px */
-    --spacing-lg: calc(var(--spacing-unit) * 3);      /* 24px */
-    --spacing-xl: calc(var(--spacing-unit) * 4);      /* 32px */
-    --spacing-2xl: calc(var(--spacing-unit) * 6);     /* 48px */
-    --spacing-3xl: calc(var(--spacing-unit) * 8);     /* 64px */
+    /* Enhanced Spacing System - 8pt Grid */
+    --spacing-unit: 0.5rem; /* 8px base unit */
+    --spacing-xs: calc(var(--spacing-unit) * 0.5); /* 4px */
+    --spacing-sm: var(--spacing-unit); /* 8px */
+    --spacing-md: calc(var(--spacing-unit) * 2); /* 16px */
+    --spacing-lg: calc(var(--spacing-unit) * 3); /* 24px */
+    --spacing-xl: calc(var(--spacing-unit) * 4); /* 32px */
+    --spacing-2xl: calc(var(--spacing-unit) * 6); /* 48px */
+    --spacing-3xl: calc(var(--spacing-unit) * 8); /* 64px */
+    --spacing-4xl: calc(var(--spacing-unit) * 12); /* 96px */
     
     /* Dashboard Layout Variables */
-    --dashboard-container-padding: var(--spacing-lg); /* 24px */
-    --dashboard-section-spacing: var(--spacing-2xl);  /* 48px */
-    --dashboard-card-spacing: var(--spacing-md);      /* 16px */
-    --dashboard-content-max-width: 1400px;
+    --dashboard-sidebar-width: 20rem; /* 320px */
+    --dashboard-header-height: 4rem; /* 64px */
+    --dashboard-content-padding: var(--spacing-lg); /* 24px */
+    --dashboard-card-spacing: var(--spacing-md); /* 16px */
+    --dashboard-section-spacing: var(--spacing-2xl); /* 48px */
     
-    /* Component Spacing Variables */
-    --card-padding: var(--spacing-lg);                /* 24px */
-    --card-margin: var(--spacing-md);                 /* 16px */
-    --button-padding-x: var(--spacing-lg);            /* 24px */
-    --button-padding-y: calc(var(--spacing-unit) * 1.5); /* 12px */
-    --input-padding-x: var(--spacing-md);             /* 16px */
-    --input-padding-y: calc(var(--spacing-unit) * 1.5); /* 12px */
-    --modal-padding: var(--spacing-xl);               /* 32px */
+    /* Container Spacing */
+    --container-padding-mobile: var(--spacing-md); /* 16px */
+    --container-padding-tablet: var(--spacing-lg); /* 24px */
+    --container-padding-desktop: var(--spacing-xl); /* 32px */
+    --container-padding-wide: var(--spacing-2xl); /* 48px */
     
-    /* Responsive Breakpoint Variables */
-    --container-padding-mobile: var(--spacing-md);    /* 16px */
-    --container-padding-tablet: var(--spacing-lg);    /* 24px */
-    --container-padding-desktop: var(--spacing-xl);   /* 32px */
-    
-    /* Layout Grid Variables */
-    --grid-gap: var(--spacing-md);                    /* 16px */
-    --grid-gap-large: var(--spacing-lg);              /* 24px */
-    --sidebar-width: 280px;
-    --header-height: 64px;
-    --footer-height: 80px;
+    /* Component Spacing */
+    --component-gap-xs: var(--spacing-xs); /* 4px */
+    --component-gap-sm: var(--spacing-sm); /* 8px */
+    --component-gap-md: var(--spacing-md); /* 16px */
+    --component-gap-lg: var(--spacing-lg); /* 24px */
     
     /* Color scheme meta */
     color-scheme: light;
   }
 
   /* =========================================================================
-     DARK THEME OVERRIDES - RICH & ENGAGING DARK PALETTE
-     Sophisticated dark colors with excellent card/background contrast
+     ENHANCED DARK THEME OVERRIDES
+     Rich, sophisticated dark colors with excellent contrast
      ========================================================================= */
   .dark {
-    /* Base colors - Rich deep backgrounds with warm undertones */
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
+    /* Base colors - Deep professional background */
+    --background: 222 47% 6%;
+    --foreground: 210 40% 96%;
     
-    /* Card colors - Enhanced contrast from background */
-    --card: 224 47% 8%;
-    --card-foreground: 213 31% 91%;
-    --card-border: 224 32% 18%;
-    --card-shadow: 224 71% 2%;
+    /* Card colors - Rich dark cards with clear contrast */
+    --card: 220 40% 10%;
+    --card-foreground: 210 40% 96%;
     
-    /* Popover colors - Rich depth */
-    --popover: 224 47% 8%;
-    --popover-foreground: 213 31% 91%;
-    --popover-border: 224 32% 18%;
+    /* Popover colors - Sophisticated popup backgrounds */
+    --popover: 220 40% 8%;
+    --popover-foreground: 210 40% 96%;
     
-    /* Primary colors - Vibrant electric blue */
-    --primary: 217 91% 65%;
-    --primary-hover: 217 91% 70%;
-    --primary-active: 217 91% 75%;
-    --primary-foreground: 224 71% 4%;
-    --primary-light: 217 91% 15%;
-    --primary-dark: 217 91% 45%;
+    /* Primary colors - Vibrant blue that pops in dark mode */
+    --primary: 215 100% 60%;
+    --primary-foreground: 220 47% 6%;
     
-    /* Secondary colors - Rich emerald */
-    --secondary: 158 64% 20%;
-    --secondary-hover: 158 64% 25%;
-    --secondary-active: 158 64% 30%;
-    --secondary-foreground: 158 64% 85%;
-    --secondary-accent: 158 64% 52%;
+    /* Secondary colors - Rich gray-blue with depth */
+    --secondary: 220 30% 15%;
+    --secondary-foreground: 210 40% 90%;
     
-    /* Accent colors - Rich violet */
-    --accent: 251 47% 20%;
-    --accent-hover: 251 47% 25%;
-    --accent-active: 251 47% 30%;
-    --accent-foreground: 251 47% 85%;
-    --accent-primary: 251 91% 65%;
+    /* Accent colors - Modern teal that glows */
+    --accent: 195 85% 55%;
+    --accent-foreground: 220 47% 6%;
     
-    /* Destructive colors - Vibrant but controlled red */
-    --destructive: 0 75% 60%;
-    --destructive-hover: 0 75% 65%;
-    --destructive-foreground: 213 31% 91%;
-    --destructive-light: 0 75% 15%;
+    /* Destructive colors - Clear but not harsh */
+    --destructive: 0 70% 60%;
+    --destructive-foreground: 210 40% 96%;
     
-    /* Muted colors - Sophisticated grays with blue undertones */
-    --muted: 224 32% 18%;
-    --muted-hover: 224 32% 22%;
-    --muted-foreground: 224 32% 65%;
-    --muted-dark: 224 32% 35%;
+    /* Muted colors - Sophisticated neutral depths */
+    --muted: 220 25% 18%;
+    --muted-foreground: 210 15% 70%;
     
-    /* Border colors - Defined but subtle */
-    --border: 224 32% 18%;
-    --border-hover: 224 32% 25%;
-    --border-focus: 217 91% 65%;
-    --input: 224 32% 18%;
-    --input-focus: 217 91% 65%;
+    /* Border colors - Subtle but visible definition */
+    --border: 220 25% 22%;
+    --input: 220 25% 22%;
     
     /* Focus ring - Bright and accessible */
-    --ring: 217 91% 65%;
-    --ring-offset: 224 71% 4%;
+    --ring: 215 100% 60%;
     
-    /* Enhanced Emergency colors - Rich and vibrant */
-    --emergency-critical: 0 84% 65%;
-    --emergency-critical-bg: 0 84% 12%;
-    --emergency-high: 25 95% 58%;
-    --emergency-high-bg: 25 95% 15%;
-    --emergency-medium: 43 96% 58%;
-    --emergency-medium-bg: 43 96% 15%;
-    --emergency-low: 188 95% 52%;
-    --emergency-low-bg: 188 95% 12%;
-    --emergency-resolved: 142 76% 50%;
-    --emergency-resolved-bg: 142 76% 12%;
+    /* Emergency colors (enhanced for dark theme) */
+    --emergency-critical: 0 80% 70%;
+    --emergency-high: 20 90% 65%;
+    --emergency-medium: 40 95% 60%;
+    --emergency-low: 200 100% 60%;
+    --emergency-resolved: 145 75% 55%;
     
-    /* Enhanced Zone colors with rich backgrounds */
-    --zone-safe: 142 76% 50%;
-    --zone-safe-bg: 142 76% 12%;
-    --zone-low-risk: 188 95% 52%;
-    --zone-low-risk-bg: 188 95% 12%;
-    --zone-moderate: 43 96% 58%;
-    --zone-moderate-bg: 43 96% 15%;
-    --zone-high-risk: 0 84% 65%;
-    --zone-high-risk-bg: 0 84% 12%;
-    --zone-restricted: 330 81% 50%;
-    --zone-restricted-bg: 330 81% 12%;
-    
-    /* Enhanced Status colors */
-    --status-online: 142 76% 50%;
-    --status-online-bg: 142 76% 12%;
-    --status-offline: 224 32% 50%;
-    --status-offline-bg: 224 32% 12%;
-    --status-away: 43 96% 58%;
-    --status-away-bg: 43 96% 15%;
-    --status-busy: 0 84% 65%;
-    --status-busy-bg: 0 84% 12%;
-    --status-maintenance: 251 91% 65%;
-    --status-maintenance-bg: 251 91% 12%;
+    /* Zone colors (optimized for dark backgrounds) */
+    --zone-safe: 145 75% 55%;
+    --zone-low-risk: 200 100% 60%;
+    --zone-moderate: 40 95% 60%;
+    --zone-high-risk: 0 80% 70%;
+    --zone-restricted: 270 80% 65%;
     
     /* Color scheme meta */
     color-scheme: dark;
@@ -439,105 +352,171 @@
   }
 
   /* =========================================================================
-     ENHANCED LAYOUT UTILITY CLASSES
-     Modern spacing and layout classes for dashboard components
+     ENHANCED LAYOUT UTILITIES
+     Modern spacing system with 8pt grid for consistent layouts
      ========================================================================= */
   .dashboard-container {
-    padding: var(--dashboard-container-padding);
-    max-width: var(--dashboard-content-max-width);
+    padding: var(--dashboard-content-padding);
+    min-height: calc(100vh - var(--dashboard-header-height));
+    max-width: 100%;
     margin: 0 auto;
-    width: 100%;
   }
-  
+
+  .dashboard-grid {
+    display: grid;
+    gap: var(--dashboard-card-spacing);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
   .dashboard-section {
     margin-bottom: var(--dashboard-section-spacing);
   }
-  
-  .dashboard-grid {
-    display: grid;
-    gap: var(--grid-gap);
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  }
-  
-  .dashboard-grid-large {
-    display: grid;
-    gap: var(--grid-gap-large);
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  }
-  
-  .card-enhanced {
-    padding: var(--card-padding);
-    margin-bottom: var(--card-margin);
-    border-radius: var(--radius);
+
+  .dashboard-card {
     background: hsl(var(--card));
-    border: 1px solid hsl(var(--card-border));
-    box-shadow: 0 1px 3px hsl(var(--card-shadow) / 0.1);
+    border: 1px solid hsl(var(--border));
+    border-radius: calc(var(--radius) + 2px);
+    padding: var(--spacing-lg);
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
     transition: var(--theme-transition);
   }
-  
-  .card-enhanced:hover {
-    border-color: hsl(var(--border-hover));
-    box-shadow: 0 4px 12px hsl(var(--card-shadow) / 0.15);
+
+  .dashboard-card:hover {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     transform: translateY(-1px);
   }
-  
-  .card-content {
-    padding: var(--card-padding);
-  }
-  
+
   .card-header {
-    padding: var(--card-padding);
-    padding-bottom: calc(var(--card-padding) * 0.5);
+    padding-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
     border-bottom: 1px solid hsl(var(--border));
   }
-  
+
+  .card-content {
+    padding: 0;
+  }
+
   .card-footer {
-    padding: var(--card-padding);
-    padding-top: calc(var(--card-padding) * 0.5);
+    padding-top: var(--spacing-md);
+    margin-top: var(--spacing-md);
     border-top: 1px solid hsl(var(--border));
   }
-  
-  .spacing-section {
-    margin-bottom: var(--spacing-2xl);
+
+  /* Responsive container spacing */
+  .container-responsive {
+    padding-left: var(--container-padding-mobile);
+    padding-right: var(--container-padding-mobile);
   }
-  
-  .spacing-component {
-    margin-bottom: var(--spacing-lg);
+
+  @media (min-width: 768px) {
+    .container-responsive {
+      padding-left: var(--container-padding-tablet);
+      padding-right: var(--container-padding-tablet);
+    }
   }
-  
-  .spacing-element {
-    margin-bottom: var(--spacing-md);
+
+  @media (min-width: 1024px) {
+    .container-responsive {
+      padding-left: var(--container-padding-desktop);
+      padding-right: var(--container-padding-desktop);
+    }
   }
-  
-  .spacing-tight {
-    margin-bottom: var(--spacing-sm);
+
+  @media (min-width: 1536px) {
+    .container-responsive {
+      padding-left: var(--container-padding-wide);
+      padding-right: var(--container-padding-wide);
+    }
   }
-  
-  /* Responsive spacing adjustments */
+
+  /* Component spacing utilities */
+  .component-stack-xs > * + * {
+    margin-top: var(--component-gap-xs);
+  }
+
+  .component-stack-sm > * + * {
+    margin-top: var(--component-gap-sm);
+  }
+
+  .component-stack-md > * + * {
+    margin-top: var(--component-gap-md);
+  }
+
+  .component-stack-lg > * + * {
+    margin-top: var(--component-gap-lg);
+  }
+
+  /* Grid layouts with proper spacing */
+  .grid-dashboard {
+    display: grid;
+    gap: var(--dashboard-card-spacing);
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  }
+
+  .grid-cards {
+    display: grid;
+    gap: var(--spacing-md);
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  .grid-stats {
+    display: grid;
+    gap: var(--spacing-md);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  /* Sidebar and main content layout */
+  .layout-with-sidebar {
+    display: grid;
+    grid-template-columns: var(--dashboard-sidebar-width) 1fr;
+    min-height: 100vh;
+  }
+
+  .main-content {
+    padding: var(--dashboard-content-padding);
+    min-height: calc(100vh - var(--dashboard-header-height));
+    overflow-x: auto;
+  }
+
+  /* Emergency spacing adjustments */
+  .emergency-layout {
+    padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
+  }
+
+  .emergency-layout .dashboard-card {
+    padding: var(--spacing-md);
+  }
+
+  /* Mobile-first responsive adjustments */
   @media (max-width: 768px) {
     .dashboard-container {
-      padding: var(--container-padding-mobile);
+      padding: var(--spacing-md);
     }
     
-    .dashboard-section {
-      margin-bottom: calc(var(--dashboard-section-spacing) * 0.75);
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-md);
     }
     
-    .card-enhanced {
-      padding: calc(var(--card-padding) * 0.75);
+    .layout-with-sidebar {
+      grid-template-columns: 1fr;
+    }
+    
+    .dashboard-card {
+      padding: var(--spacing-md);
     }
   }
-  
-  @media (min-width: 769px) and (max-width: 1024px) {
-    .dashboard-container {
-      padding: var(--container-padding-tablet);
-    }
+
+  /* Dark theme adjustments for depth */
+  .dark .dashboard-card {
+    background: hsl(var(--card));
+    border-color: hsl(var(--border));
+    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 0.3);
   }
-  
-  @media (min-width: 1025px) {
-    .dashboard-container {
-      padding: var(--container-padding-desktop);
-    }
+
+  .dark .dashboard-card:hover {
+    box-shadow: 0 8px 25px -5px rgb(0 0 0 / 0.3), 0 4px 6px -2px rgb(0 0 0 / 0.1);
   }
 
   /* =========================================================================

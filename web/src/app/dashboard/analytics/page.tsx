@@ -257,33 +257,33 @@ function AnalyticsPage() {
 
   // Render overview tab content
   const renderOverview = () => (
-    <div className="space-y-6">
+    <div className="component-stack-lg">
       {/* Key Metrics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid-dashboard">
         {OVERVIEW_METRICS.map((metric) => {
           const Icon = metric.icon;
           const trendInfo = getTrendInfo(metric.trend as 'up' | 'down');
           const TrendIcon = trendInfo.icon;
           
           return (
-            <div key={metric.title} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
-              <div className="flex items-center justify-between">
-                <div className={cn('p-3 rounded-full', metric.bg)}>
-                  <Icon className={cn('h-6 w-6', metric.color)} />
+            <div key={metric.title} className="dashboard-card hover:shadow-lg transition-all duration-300 group">
+              <div className="flex items-center justify-between mb-4">
+                <div className={cn('p-4 rounded-xl shadow-sm group-hover:scale-110 transition-transform', metric.bg)}>
+                  <Icon className={cn('h-7 w-7', metric.color)} />
                 </div>
-                <div className={cn('flex items-center text-sm font-medium', trendInfo.color)}>
-                  <TrendIcon className={cn('h-4 w-4 mr-1', trendInfo.rotation)} />
+                <div className={cn('flex items-center text-sm font-semibold px-3 py-2 rounded-full', trendInfo.color.replace('text-', 'bg-').replace('-600', '-100'), trendInfo.color.replace('-600', '-700'))}>
+                  <TrendIcon className={cn('h-4 w-4 mr-2', trendInfo.rotation)} />
                   {metric.change}
                 </div>
               </div>
-              <div className="mt-4">
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">
+              <div>
+                <div className="text-3xl font-bold text-foreground mb-2">
                   {metric.value}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-lg font-semibold text-muted-foreground mb-1">
                   {metric.title}
                 </div>
-                <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                <div className="text-sm text-muted-foreground">
                   {metric.description}
                 </div>
               </div>
@@ -293,22 +293,25 @@ function AnalyticsPage() {
       </div>
 
       {/* Quick Stats */}
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+      <div className="dashboard-card">
+        <h3 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
+          <Activity className="w-7 h-7 text-primary" />
           Quick Statistics
         </h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {QUICK_STATS.map((stat) => {
             const Icon = stat.icon;
             return (
-              <div key={stat.label} className="text-center">
-                <div className="flex justify-center mb-2">
-                  <Icon className="h-8 w-8 text-blue-600" />
+              <div key={stat.label} className="text-center p-4 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors">
+                <div className="flex justify-center mb-3">
+                  <div className="p-3 bg-primary/10 rounded-xl">
+                    <Icon className="h-8 w-8 text-primary" />
+                  </div>
                 </div>
-                <div className="text-xl font-bold text-gray-900 dark:text-white">
+                <div className="text-2xl font-bold text-foreground mb-1">
                   {stat.value}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-sm font-medium text-muted-foreground">
                   {stat.label}
                 </div>
               </div>
@@ -318,30 +321,31 @@ function AnalyticsPage() {
       </div>
 
       {/* Recent Insights */}
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-6">
+      <div className="dashboard-card">
+        <h3 className="text-2xl font-bold text-foreground mb-8 flex items-center gap-3">
+          <Zap className="w-7 h-7 text-primary" />
           Recent Insights
         </h3>
         
-        <div className="space-y-4">
+        <div className="component-stack-md">
           {RECENT_INSIGHTS.map((insight) => {
             const Icon = insight.icon;
             
             return (
-              <div key={insight.id} className="flex items-start space-x-4 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                <div className={cn('p-2 rounded-full flex-shrink-0', insight.bg)}>
-                  <Icon className={cn('h-5 w-5', insight.color)} />
+              <div key={insight.id} className="flex items-start space-x-5 p-6 border-2 border-border rounded-xl hover:border-primary/30 hover:bg-muted/30 transition-all duration-300 group">
+                <div className={cn('p-3 rounded-xl shadow-sm flex-shrink-0 group-hover:scale-110 transition-transform', insight.bg)}>
+                  <Icon className={cn('h-6 w-6', insight.color)} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-sm font-medium text-gray-900 dark:text-white">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="text-lg font-semibold text-foreground">
                       {insight.title}
                     </h4>
-                    <span className="text-xs text-gray-500 dark:text-gray-500">
+                    <span className="text-sm font-medium text-muted-foreground bg-muted/50 px-3 py-1 rounded-full">
                       {insight.timestamp}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  <p className="text-muted-foreground leading-relaxed">
                     {insight.description}
                   </p>
                 </div>
@@ -354,23 +358,24 @@ function AnalyticsPage() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="dashboard-container component-stack-lg">
       {/* Page Header */}
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+      <div className="dashboard-card">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-4xl font-bold text-foreground mb-3 flex items-center gap-4">
+              <BarChart3 className="w-10 h-10 text-primary" />
               Analytics Dashboard
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">
+            <p className="text-lg text-muted-foreground leading-relaxed">
               Comprehensive analytics and insights for the tourist safety system
             </p>
           </div>
           
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-6">
             <div className="text-right">
-              <div className="text-sm text-gray-600 dark:text-gray-400">Last Updated</div>
-              <div className="text-lg font-semibold text-gray-900 dark:text-white">
+              <div className="text-sm font-medium text-muted-foreground">Last Updated</div>
+              <div className="text-2xl font-bold text-foreground">
                 {new Date().toLocaleTimeString('en-IN', { 
                   hour: '2-digit', 
                   minute: '2-digit' 
@@ -378,27 +383,27 @@ function AnalyticsPage() {
               </div>
             </div>
             
-            <div className="h-8 w-px bg-gray-300 dark:bg-gray-600" />
+            <div className="h-12 w-px bg-border" />
             
             <button
               onClick={handleRefresh}
               disabled={refreshing}
-              className="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-xl border border-border transition-colors disabled:opacity-50"
             >
-              <RefreshCw className={cn('h-4 w-4 mr-2', refreshing && 'animate-spin')} />
+              <RefreshCw className={cn('w-4 h-4', refreshing && 'animate-spin')} />
               Refresh
             </button>
             
             {hasPermission('export_analytics') && (
-              <button className="flex items-center px-4 py-2 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded-md">
-                <Download className="h-4 w-4 mr-2" />
+              <button className="flex items-center gap-2 px-6 py-3 text-sm text-white bg-primary hover:bg-primary/90 rounded-xl shadow-sm transition-colors">
+                <Download className="w-4 h-4" />
                 Export
               </button>
             )}
             
             {hasPermission('manage_analytics') && (
-              <button className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md">
-                <Settings className="h-4 w-4 mr-2" />
+              <button className="flex items-center gap-2 px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-xl border border-border transition-colors">
+                <Settings className="w-4 h-4" />
                 Settings
               </button>
             )}
@@ -407,9 +412,9 @@ function AnalyticsPage() {
       </div>
 
       {/* Tab Navigation */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
-        <div className="border-b border-gray-200 dark:border-gray-700">
-          <nav className="flex space-x-8 px-6" aria-label="Analytics tabs">
+      <div className="dashboard-card">
+        <div className="border-b border-border">
+          <nav className="flex space-x-8 px-2" aria-label="Analytics tabs">
             {ANALYTICS_TABS.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -419,14 +424,19 @@ function AnalyticsPage() {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={cn(
-                    'flex items-center py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap',
+                    'flex items-center py-4 px-3 border-b-3 font-semibold text-sm whitespace-nowrap transition-all',
                     isActive
-                      ? 'border-blue-500 text-blue-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+                      ? 'border-primary text-primary bg-primary/5'
+                      : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
                   )}
                 >
-                  <Icon className={cn('h-5 w-5 mr-2', isActive ? tab.color : 'text-gray-400')} />
-                  {tab.label}
+                  <div className={cn('p-2 rounded-lg mr-3', isActive ? tab.bg : 'bg-muted/50')}>
+                    <Icon className={cn('w-5 h-5', isActive ? tab.color : 'text-muted-foreground')} />
+                  </div>
+                  <div className="text-left">
+                    <div>{tab.label}</div>
+                    <div className="text-xs opacity-75 font-normal">{tab.description}</div>
+                  </div>
                 </button>
               );
             })}
@@ -434,14 +444,14 @@ function AnalyticsPage() {
         </div>
 
         {/* Tab Content */}
-        <div className="p-6">
+        <div className="p-8">
           {activeTab === 'overview' && (
             <div>
-              <div className="mb-6">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+              <div className="mb-8">
+                <h3 className="text-2xl font-bold text-foreground mb-3">
                   Analytics Overview
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-lg text-muted-foreground">
                   Key performance indicators and system insights at a glance
                 </p>
               </div>
@@ -451,11 +461,11 @@ function AnalyticsPage() {
 
           {activeTab === 'tourists' && (
             <div>
-              <div className="mb-6">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+              <div className="mb-8">
+                <h3 className="text-2xl font-bold text-foreground mb-3">
                   Tourist Analytics
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-lg text-muted-foreground">
                   Detailed analysis of tourist behavior, demographics, and engagement patterns
                 </p>
               </div>
@@ -465,11 +475,11 @@ function AnalyticsPage() {
 
           {activeTab === 'safety' && (
             <div>
-              <div className="mb-6">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+              <div className="mb-8">
+                <h3 className="text-2xl font-bold text-foreground mb-3">
                   Safety Incident Analytics
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-lg text-muted-foreground">
                   Monitor safety incidents, response times, and identify patterns for prevention
                 </p>
               </div>
@@ -479,11 +489,11 @@ function AnalyticsPage() {
 
           {activeTab === 'performance' && (
             <div>
-              <div className="mb-6">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+              <div className="mb-8">
+                <h3 className="text-2xl font-bold text-foreground mb-3">
                   System Performance Analytics
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-lg text-muted-foreground">
                   Monitor system health, performance metrics, and service availability
                 </p>
               </div>
@@ -493,11 +503,11 @@ function AnalyticsPage() {
 
           {activeTab === 'reports' && (
             <div>
-              <div className="mb-6">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+              <div className="mb-8">
+                <h3 className="text-2xl font-bold text-foreground mb-3">
                   Custom Reports
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-lg text-muted-foreground">
                   Create, schedule, and manage custom analytics reports for various stakeholders
                 </p>
               </div>

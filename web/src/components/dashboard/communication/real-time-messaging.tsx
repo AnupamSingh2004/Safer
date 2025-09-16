@@ -428,9 +428,9 @@ export function RealTimeMessaging({
   };
 
   return (
-    <div className={cn('flex h-[600px] bg-white dark:bg-gray-800 rounded-lg shadow', className)}>
+    <div className={cn('flex min-h-[600px] max-h-[800px] bg-white dark:bg-gray-800 rounded-lg shadow', className)}>
       {/* Conversations Sidebar */}
-      <div className="w-1/3 border-r border-gray-200 dark:border-gray-700 flex flex-col">
+      <div className="w-1/3 border-r border-gray-200 dark:border-gray-700 flex flex-col min-h-[600px]">
         {/* Search Header */}
         <div className="p-4 border-b border-gray-200 dark:border-gray-700">
           <div className="relative">
@@ -446,7 +446,7 @@ export function RealTimeMessaging({
         </div>
 
         {/* Conversations List */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto max-h-[500px]">
           {filteredConversations.map((conversation) => {
             const isSelected = selectedConversation?.id === conversation.id;
             const RoleIcon = getRoleIcon(conversation.participants[0]?.role || 'tourist');
@@ -530,7 +530,7 @@ export function RealTimeMessaging({
       </div>
 
       {/* Chat Area */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-h-[600px]">
         {selectedConversation ? (
           <>
             {/* Chat Header */}
@@ -584,7 +584,7 @@ export function RealTimeMessaging({
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[300px] max-h-[450px]">
               {conversationMessages.map((message) => {
                 const isOwnMessage = message.senderId === user?.id;
                 const RoleIcon = getRoleIcon(message.senderRole);

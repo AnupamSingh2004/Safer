@@ -421,7 +421,7 @@ function CommunicationPage() {
       </div>
 
       {/* Chat Window */}
-      <div className="lg:col-span-2 dashboard-card flex flex-col">
+      <div className="lg:col-span-2 dashboard-card flex flex-col min-h-[600px]">
         {/* Chat Header */}
         <div className="p-4 border-b border-border flex items-center justify-between">
           <div className="flex items-center space-x-3">
@@ -452,7 +452,7 @@ function CommunicationPage() {
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 max-h-[400px]">
           {messages.map((message) => (
             <div
               key={message.id}

@@ -200,98 +200,144 @@ const config: Config = {
     extend: {
       colors: {
         border: "hsl(var(--border))",
+        "border-hover": "hsl(var(--border-hover))",
+        "border-focus": "hsl(var(--border-focus))",
         input: "hsl(var(--input))",
+        "input-focus": "hsl(var(--input-focus))",
         ring: "hsl(var(--ring))",
+        "ring-offset": "hsl(var(--ring-offset))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
+          hover: "hsl(var(--primary-hover))",
+          active: "hsl(var(--primary-active))",
           foreground: "hsl(var(--primary-foreground))",
+          light: "hsl(var(--primary-light))",
+          dark: "hsl(var(--primary-dark))",
           ...simpleTokens.colors.primary,
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
+          hover: "hsl(var(--secondary-hover))",
+          active: "hsl(var(--secondary-active))",
           foreground: "hsl(var(--secondary-foreground))",
+          accent: "hsl(var(--secondary-accent))",
           ...simpleTokens.colors.secondary,
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
+          hover: "hsl(var(--destructive-hover))",
           foreground: "hsl(var(--destructive-foreground))",
+          light: "hsl(var(--destructive-light))",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
+          hover: "hsl(var(--muted-hover))",
           foreground: "hsl(var(--muted-foreground))",
+          dark: "hsl(var(--muted-dark))",
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",
+          hover: "hsl(var(--accent-hover))",
+          active: "hsl(var(--accent-active))",
           foreground: "hsl(var(--accent-foreground))",
+          primary: "hsl(var(--accent-primary))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
+          border: "hsl(var(--popover-border))",
         },
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+          border: "hsl(var(--card-border))",
+          shadow: "hsl(var(--card-shadow))",
         },
         // Neutral colors
         neutral: simpleTokens.colors.neutral,
         
-        // Emergency service colors
+        // Emergency service colors - Enhanced with background variants
         emergency: {
           critical: {
             DEFAULT: "hsl(var(--emergency-critical))",
+            bg: "hsl(var(--emergency-critical-bg))",
             ...simpleTokens.colors.emergency.critical,
           },
           high: {
             DEFAULT: "hsl(var(--emergency-high))",
+            bg: "hsl(var(--emergency-high-bg))",
             ...simpleTokens.colors.emergency.high,
           },
           medium: {
             DEFAULT: "hsl(var(--emergency-medium))",
+            bg: "hsl(var(--emergency-medium-bg))",
             ...simpleTokens.colors.emergency.medium,
           },
           low: {
             DEFAULT: "hsl(var(--emergency-low))",
+            bg: "hsl(var(--emergency-low-bg))",
             ...simpleTokens.colors.emergency.low,
           },
           resolved: {
             DEFAULT: "hsl(var(--emergency-resolved))",
+            bg: "hsl(var(--emergency-resolved-bg))",
             ...simpleTokens.colors.emergency.resolved,
           },
         },
         
-        // Zone risk colors
+        // Zone risk colors - Enhanced with background variants
         zone: {
           safe: {
             DEFAULT: "hsl(var(--zone-safe))",
+            bg: "hsl(var(--zone-safe-bg))",
             ...simpleTokens.colors.zones.safe,
           },
           lowRisk: {
             DEFAULT: "hsl(var(--zone-low-risk))",
+            bg: "hsl(var(--zone-low-risk-bg))",
             ...simpleTokens.colors.zones.lowRisk,
           },
           moderate: {
             DEFAULT: "hsl(var(--zone-moderate))",
+            bg: "hsl(var(--zone-moderate-bg))",
             ...simpleTokens.colors.zones.moderate,
           },
           highRisk: {
             DEFAULT: "hsl(var(--zone-high-risk))",
+            bg: "hsl(var(--zone-high-risk-bg))",
             ...simpleTokens.colors.zones.highRisk,
           },
           restricted: {
             DEFAULT: "hsl(var(--zone-restricted))",
+            bg: "hsl(var(--zone-restricted-bg))",
             ...simpleTokens.colors.zones.restricted,
           },
         },
         
-        // Status colors
+        // Status colors - Enhanced with background variants
         status: {
-          online: "hsl(var(--status-online))",
-          offline: "hsl(var(--status-offline))",
-          away: "hsl(var(--status-away))",
-          busy: "hsl(var(--status-busy))",
-          maintenance: "hsl(var(--status-maintenance))",
+          online: {
+            DEFAULT: "hsl(var(--status-online))",
+            bg: "hsl(var(--status-online-bg))",
+          },
+          offline: {
+            DEFAULT: "hsl(var(--status-offline))",
+            bg: "hsl(var(--status-offline-bg))",
+          },
+          away: {
+            DEFAULT: "hsl(var(--status-away))",
+            bg: "hsl(var(--status-away-bg))",
+          },
+          busy: {
+            DEFAULT: "hsl(var(--status-busy))",
+            bg: "hsl(var(--status-busy-bg))",
+          },
+          maintenance: {
+            DEFAULT: "hsl(var(--status-maintenance))",
+            bg: "hsl(var(--status-maintenance-bg))",
+          },
         }
       },
       borderRadius: {
@@ -306,6 +352,58 @@ const config: Config = {
       },
       spacing: {
         ...simpleTokens.spacing,
+        // 8pt grid system for modern design
+        '0.5': '0.125rem',   // 2px
+        '1': '0.25rem',      // 4px
+        '1.5': '0.375rem',   // 6px
+        '2': '0.5rem',       // 8px (base unit)
+        '2.5': '0.625rem',   // 10px
+        '3': '0.75rem',      // 12px
+        '3.5': '0.875rem',   // 14px
+        '4': '1rem',         // 16px (2 * base)
+        '5': '1.25rem',      // 20px
+        '6': '1.5rem',       // 24px (3 * base)
+        '7': '1.75rem',      // 28px
+        '8': '2rem',         // 32px (4 * base)
+        '9': '2.25rem',      // 36px
+        '10': '2.5rem',      // 40px (5 * base)
+        '11': '2.75rem',     // 44px
+        '12': '3rem',        // 48px (6 * base)
+        '14': '3.5rem',      // 56px (7 * base)
+        '16': '4rem',        // 64px (8 * base)
+        '18': '4.5rem',      // 72px (9 * base)
+        '20': '5rem',        // 80px (10 * base)
+        '24': '6rem',        // 96px (12 * base)
+        '28': '7rem',        // 112px (14 * base)
+        '32': '8rem',        // 128px (16 * base)
+        '36': '9rem',        // 144px (18 * base)
+        '40': '10rem',       // 160px (20 * base)
+        '44': '11rem',       // 176px (22 * base)
+        '48': '12rem',       // 192px (24 * base)
+        '52': '13rem',       // 208px (26 * base)
+        '56': '14rem',       // 224px (28 * base)
+        '60': '15rem',       // 240px (30 * base)
+        '64': '16rem',       // 256px (32 * base)
+        '72': '18rem',       // 288px (36 * base)
+        '80': '20rem',       // 320px (40 * base)
+        '96': '24rem',       // 384px (48 * base)
+        
+        // Dashboard specific spacing
+        'dashboard-gutter': '1.5rem',      // 24px - Dashboard content padding
+        'dashboard-margin': '2rem',        // 32px - Dashboard section margins
+        'card-padding': '1.5rem',          // 24px - Default card padding
+        'card-margin': '1rem',             // 16px - Card spacing
+        'section-spacing': '3rem',         // 48px - Between major sections
+        'component-spacing': '1.5rem',     // 24px - Between components
+        'element-spacing': '0.75rem',      // 12px - Between small elements
+        
+        // Component specific spacing
+        'button-padding-x': '1.5rem',      // 24px - Button horizontal padding
+        'button-padding-y': '0.75rem',     // 12px - Button vertical padding
+        'input-padding-x': '1rem',         // 16px - Input horizontal padding
+        'input-padding-y': '0.75rem',      // 12px - Input vertical padding
+        'modal-padding': '2rem',           // 32px - Modal content padding
+        'drawer-padding': '1.5rem',        // 24px - Drawer content padding
       },
       fontSize: {
         ...Object.entries(simpleTokens.typography.fontSize).reduce((acc, [key, value]) => {

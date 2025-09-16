@@ -25,6 +25,17 @@ import {
   ChevronRight,
   Activity,
   UserPlus,
+  ClipboardList,
+  Target,
+  TrendingUp,
+  UserCog,
+  Key,
+  Database,
+  Briefcase,
+  User,
+  Edit,
+  Phone,
+  Heart,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth-store';
@@ -61,6 +72,16 @@ const menuItems: MenuItem[] = [
     href: '/dashboard',
     icon: LayoutDashboard,
     permissions: ['analytics.view'],
+    children: [
+      {
+        id: 'dashboard-operators',
+        label: 'Operators Overview',
+        href: '/dashboard/operators',
+        icon: UserCog,
+        permissions: ['admin.view_operators'],
+        roles: ['admin', 'super_admin'],
+      },
+    ],
   },
   {
     id: 'tourists',
@@ -68,6 +89,7 @@ const menuItems: MenuItem[] = [
     href: '/dashboard/tourists',
     icon: Users,
     permissions: ['tourists.view'],
+    roles: ['admin', 'super_admin', 'operator'], // Tourists should not manage other tourists
     children: [
       {
         id: 'tourists-active',
@@ -75,6 +97,15 @@ const menuItems: MenuItem[] = [
         href: '/dashboard/tourists/active',
         icon: UserCheck,
         permissions: ['tourists.view'],
+        roles: ['admin', 'super_admin', 'operator'],
+      },
+      {
+        id: 'tourists-create',
+        label: 'Add New Tourist',
+        href: '/dashboard/tourists/create',
+        icon: UserPlus,
+        permissions: ['tourists.create'],
+        roles: ['admin', 'super_admin', 'operator'], // Only admin and operators can add tourists
       },
       {
         id: 'tourists-history',
@@ -82,6 +113,7 @@ const menuItems: MenuItem[] = [
         href: '/dashboard/tourists/history',
         icon: Clock,
         permissions: ['tourists.view'],
+        roles: ['admin', 'super_admin', 'operator'],
       },
       {
         id: 'tourists-reports',
@@ -89,6 +121,7 @@ const menuItems: MenuItem[] = [
         href: '/dashboard/tourists/reports',
         icon: FileText,
         permissions: ['tourists.view', 'reports.generate'],
+        roles: ['admin', 'super_admin', 'operator'],
       },
     ],
   },
@@ -195,6 +228,98 @@ const menuItems: MenuItem[] = [
     ],
   },
   {
+    id: 'operator',
+    label: 'Operator Dashboard',
+    href: '/operator',
+    icon: UserCog,
+    roles: ['operator'],
+    permissions: ['operator.dashboard'],
+    children: [
+      {
+        id: 'operator-assigned-tourists',
+        label: 'Assigned Tourists',
+        href: '/operator/assigned-tourists',
+        icon: Users,
+        roles: ['operator'],
+        permissions: ['operator.view_assignments'],
+      },
+      {
+        id: 'operator-assignments',
+        label: 'My Assignments',
+        href: '/operator/assignments',
+        icon: ClipboardList,
+        roles: ['operator'],
+        permissions: ['operator.view_assignments'],
+      },
+      {
+        id: 'operator-workload',
+        label: 'Workload & Schedule',
+        href: '/operator/workload',
+        icon: Target,
+        roles: ['operator'],
+        permissions: ['operator.view_workload'],
+      },
+      {
+        id: 'operator-reports',
+        label: 'My Reports',
+        href: '/operator/reports',
+        icon: TrendingUp,
+        roles: ['operator'],
+        permissions: ['operator.generate_reports'],
+      },
+    ],
+  },
+  {
+    id: 'my-profile',
+    label: 'My Profile',
+    href: '/profile',
+    icon: User,
+    roles: ['tourist'], // Tourist-specific section
+    permissions: [],
+    children: [
+      {
+        id: 'profile-view',
+        label: 'View Profile',
+        href: '/profile/view',
+        icon: User,
+        roles: ['tourist'],
+        permissions: [],
+      },
+      {
+        id: 'profile-edit',
+        label: 'Edit My Information',
+        href: '/profile/edit',
+        icon: Edit,
+        roles: ['tourist'],
+        permissions: [],
+      },
+      {
+        id: 'profile-emergency',
+        label: 'Emergency Contacts',
+        href: '/profile/emergency-contacts',
+        icon: Phone,
+        roles: ['tourist'],
+        permissions: [],
+      },
+      {
+        id: 'profile-safety',
+        label: 'Safety Information',
+        href: '/profile/safety',
+        icon: Heart,
+        roles: ['tourist'],
+        permissions: [],
+      },
+      {
+        id: 'profile-location',
+        label: 'Location Sharing',
+        href: '/profile/location',
+        icon: MapPin,
+        roles: ['tourist'],
+        permissions: [],
+      },
+    ],
+  },
+  {
     id: 'administration',
     label: 'Administration',
     href: '/dashboard/administration',
@@ -202,6 +327,38 @@ const menuItems: MenuItem[] = [
     roles: ['admin', 'super_admin'],
     permissions: ['system.manage_users', 'system.configure'],
     children: [
+      {
+        id: 'admin-operators',
+        label: 'Operator Management',
+        href: '/admin/operators',
+        icon: UserCog,
+        roles: ['admin', 'super_admin'],
+        permissions: ['admin.manage_operators'],
+      },
+      {
+        id: 'admin-operator-assignments',
+        label: 'Operator Assignments',
+        href: '/admin/operator-assignments',
+        icon: ClipboardList,
+        roles: ['admin', 'super_admin'],
+        permissions: ['admin.manage_assignments'],
+      },
+      {
+        id: 'admin-logs',
+        label: 'System Logs',
+        href: '/admin/logs',
+        icon: Database,
+        roles: ['admin', 'super_admin'],
+        permissions: ['admin.view_logs'],
+      },
+      {
+        id: 'admin-permissions',
+        label: 'Permissions',
+        href: '/admin/permissions',
+        icon: Key,
+        roles: ['admin', 'super_admin'],
+        permissions: ['admin.manage_permissions'],
+      },
       {
         id: 'admin-users',
         label: 'User Management',

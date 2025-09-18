@@ -6,6 +6,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
+import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { 
   Shield, 
@@ -19,7 +20,8 @@ import {
   LogOut,
   UserCheck,
   Menu,
-  X
+  X,
+  Home
 } from 'lucide-react';
 import { useAuth } from '@/stores/auth-store';
 import { ThemeToggle } from '@/components/theme/unified-theme-components';
@@ -246,6 +248,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <div className="text-sm font-medium text-muted-foreground bg-muted/50 px-4 py-2 rounded-xl">
                 {currentTime.toLocaleString()}
               </div>
+              <Link 
+                href="/"
+                className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors"
+                title="Go to Home"
+              >
+                <Home className="w-5 h-5" />
+              </Link>
               <ThemeToggle variant="icon" size="sm" />
             </div>
           </div>

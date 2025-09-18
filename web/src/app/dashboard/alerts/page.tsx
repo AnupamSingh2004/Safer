@@ -142,13 +142,13 @@ export default function AlertsPage() {
       <div className="dashboard-section">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold text-foreground mb-3 flex items-center gap-4">
-              <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-xl shadow-sm">
-                <Activity className="w-10 h-10 text-red-600" />
+            <h1 className="text-2xl font-bold text-foreground mb-1 flex items-center gap-3">
+              <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded-xl shadow-sm">
+                <Activity className="w-6 h-6 text-red-600" />
               </div>
               Live Emergency Alerts
             </h1>
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="text-base text-muted-foreground">
               {canManageAlerts 
                 ? 'Real-time monitoring and emergency response management' 
                 : 'View live tourist safety alerts and reports'

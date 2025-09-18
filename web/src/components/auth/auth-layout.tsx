@@ -7,7 +7,8 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Shield, MapPin, Users, AlertTriangle, TrendingUp, Globe, Moon, Sun } from 'lucide-react';
+import Link from 'next/link';
+import { Shield, MapPin, Users, AlertTriangle, TrendingUp, Globe, Moon, Sun, Home } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { APP_CONFIG } from '@/lib/constants';
 import { ThemeToggle } from '@/components/theme/unified-theme-components';
@@ -71,8 +72,17 @@ export function AuthLayout({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 relative">
-      {/* Theme Toggle Button */}
-      <div className="absolute top-4 right-4 z-50">
+      {/* Theme Toggle and Home Button */}
+      <div className="absolute top-4 right-4 z-50 flex items-center space-x-2">
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
+          <Link 
+            href="/"
+            className="flex items-center justify-center p-3 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+            title="Go to Home"
+          >
+            <Home className="w-5 h-5" />
+          </Link>
+        </div>
         <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
           <ThemeToggle variant="icon" size="sm" className="!p-3" />
         </div>

@@ -175,6 +175,15 @@ export function Navbar() {
 
           {/* Right side */}
           <div className="flex items-center space-x-4">
+            {/* Home Button */}
+            <Link 
+              href="/"
+              className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+              title="Go to Home"
+            >
+              <Home className="w-5 h-5" />
+            </Link>
+            
             {/* Theme Toggle */}
             <ThemeToggle variant="icon" size="sm" className="p-2" />
 

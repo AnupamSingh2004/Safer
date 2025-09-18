@@ -28,28 +28,28 @@ export default function NotFound() {
       icon: Home,
       title: "Go Home",
       description: "Return to the main dashboard",
-      href: "/dashboard",
+      href: "/",
       color: "from-blue-500 to-blue-600"
     },
     {
       icon: AlertTriangle,
       title: "Emergency Access",
       description: "Quick access to emergency services",
-      href: "/dashboard/alerts/active",
+      href: "/dashboard/alerts",
       color: "from-red-500 to-red-600"
     },
     {
       icon: MapPin,
       title: "Tourist Tracking",
       description: "View live tourist locations",
-      href: "/dashboard/tourists",
+      href: "/dashboard/location",
       color: "from-green-500 to-green-600"
     },
     {
       icon: Shield,
       title: "System Status",
       description: "Check system health and alerts",
-      href: "/dashboard/overview",
+      href: "/dashboard",
       color: "from-purple-500 to-purple-600"
     }
   ];

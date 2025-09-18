@@ -308,10 +308,10 @@ export default function DashboardPage() {
             {user.role === 'viewer' && <BarChart3 className="w-8 h-8 text-green-600 dark:text-green-400" />}
           </div>
           <div>
-            <h2 className="text-4xl font-bold text-foreground mb-2">
+            <h2 className="text-2xl font-bold text-foreground mb-1">
               {welcomeMessage.title}
             </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="text-base text-muted-foreground">
               {welcomeMessage.subtitle}
             </p>
           </div>
@@ -399,7 +399,7 @@ export default function DashboardPage() {
                     {activity.type === 'system_health' && <Activity className="w-5 h-5 text-green-600" />}
                   </div>
                   <div className="flex-1">
-                    <p className="font-semibold text-foreground text-lg mb-1">
+                    <p className="font-semibold text-foreground text-sm mb-1">
                       {activity.title}
                     </p>
                     <p className="text-sm text-muted-foreground leading-relaxed">

@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/stores/auth-store';
-import { loginSchema } from '@/lib/validations';
+import { loginSchema, type LoginFormData } from '@/lib/validations';
 import type { LoginCredentials } from '@/types/auth';
 
 // ============================================================================
@@ -65,7 +65,7 @@ export function LoginForm({
     setValue,
     watch,
     formState: { errors, isValid },
-  } = useForm<LoginCredentials>({
+  } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     mode: 'onBlur',
     defaultValues: {
@@ -85,7 +85,7 @@ export function LoginForm({
   }, [clearError]);
 
   // Demo account selection helper - Updated to match backend
-  const selectDemoAccount = (accountType: 'admin' | 'operator' | 'viewer') => {
+  const selectDemoAccount = (accountType: 'admin' | 'operator' | 'viewer' | 'police' | 'tourism') => {
     const demoAccounts = {
       admin: {
         email: 'admin@touristsafety.gov.in',
@@ -94,13 +94,23 @@ export function LoginForm({
       },
       operator: {
         email: 'operator@touristsafety.gov.in',
-        password: 'operator123',
+        password: 'admin123', // Using admin123 for demo consistency
         role: 'operator' as const,
       },
       viewer: {
         email: 'viewer@touristsafety.gov.in',
-        password: 'viewer123',
+        password: 'admin123', // Using admin123 for demo consistency
         role: 'viewer' as const,
+      },
+      police: {
+        email: 'police@touristsafety.gov.in',
+        password: 'police123',
+        role: 'police_admin' as const,
+      },
+      tourism: {
+        email: 'tourism@touristsafety.gov.in',
+        password: 'tourism123',
+        role: 'tourism_admin' as const,
       },
     };
 
@@ -110,7 +120,7 @@ export function LoginForm({
     setValue('role', account.role);
   };
 
-  const onSubmit = async (data: LoginCredentials) => {
+  const onSubmit = async (data: LoginFormData) => {
     try {
       setIsSubmitting(true);
       clearError();
@@ -121,9 +131,33 @@ export function LoginForm({
         setLoginSuccess(true);
         onSuccess?.();
         
+        // Determine redirect URL based on user role
+        let redirectUrl = redirect;
+        if (response.user) {
+          switch (response.user.role) {
+            case 'police_admin':
+              redirectUrl = '/dashboard/police';
+              break;
+            case 'tourism_admin':
+              redirectUrl = '/dashboard/tourism';
+              break;
+            case 'super_admin':
+              redirectUrl = '/dashboard/administration';
+              break;
+            case 'operator':
+              redirectUrl = '/dashboard/operator';
+              break;
+            case 'viewer':
+              redirectUrl = '/dashboard/overview';
+              break;
+            default:
+              redirectUrl = '/dashboard';
+          }
+        }
+        
         // Small delay to show success state
         setTimeout(() => {
-          router.push(redirect);
+          router.push(redirectUrl);
         }, 1000);
       } else {
         onError?.(response.message || 'Login failed');
@@ -141,6 +175,8 @@ export function LoginForm({
     { value: 'super_admin', label: 'Administrator', description: 'Full system access' },
     { value: 'operator', label: 'Operator', description: 'Safety operations' },
     { value: 'viewer', label: 'Viewer', description: 'Read-only access' },
+    { value: 'police_admin', label: 'Police Admin', description: 'Police dashboard & investigations' },
+    { value: 'tourism_admin', label: 'Tourism Admin', description: 'Tourism dashboard & analytics' },
   ];
 
   return (
@@ -148,7 +184,7 @@ export function LoginForm({
       {/* Demo Account Quick Selection - Compact */}
       <div className="bg-white/90 backdrop-blur-sm border border-white/20 rounded-lg p-3 shadow-sm">
         <p className="text-md font-medium text-gray-900 mb-2">Quick Demo Access:</p>
-        <div className="grid grid-cols-3 gap-1">
+        <div className="grid grid-cols-3 gap-1 mb-2">
           <button
             type="button"
             onClick={() => selectDemoAccount('admin')}
@@ -169,6 +205,22 @@ export function LoginForm({
             className="px-2 py-1.5 text-xs bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors shadow-sm"
           >
             Viewer
+          </button>
+        </div>
+        <div className="grid grid-cols-2 gap-1">
+          <button
+            type="button"
+            onClick={() => selectDemoAccount('police')}
+            className="px-2 py-1.5 text-xs bg-red-600 text-white rounded hover:bg-red-700 transition-colors shadow-sm"
+          >
+            Police
+          </button>
+          <button
+            type="button"
+            onClick={() => selectDemoAccount('tourism')}
+            className="px-2 py-1.5 text-xs bg-green-600 text-white rounded hover:bg-green-700 transition-colors shadow-sm"
+          >
+            Tourism
           </button>
         </div>
       </div>

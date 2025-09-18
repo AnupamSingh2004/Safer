@@ -9,6 +9,8 @@
 
 export type UserRole = 
   | 'super_admin'
+  | 'police_admin'
+  | 'tourism_admin'
   | 'operator'
   | 'viewer';
 
@@ -293,6 +295,19 @@ export type Permission =
   | 'manage_blockchain'
   | 'generate_digital_id'
   | 'verify_digital_id'
+  
+  // Police permissions
+  | 'manage_investigations'
+  | 'access_digital_ids'
+  | 'generate_efir'
+  | 'manage_cases'
+  | 'track_missing_persons'
+  
+  // Tourism permissions
+  | 'view_clusters'
+  | 'manage_flows'
+  | 'view_heatmaps'
+  | 'tourist_analytics'
   
   // System permissions
   | 'manage_users'

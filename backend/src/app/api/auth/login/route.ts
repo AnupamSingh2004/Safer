@@ -52,6 +52,22 @@ const mockUsers = [
     name: 'Safety Viewer',
     role: 'viewer',
     permissions: ['read', 'view_reports']
+  },
+  {
+    id: '4',
+    email: 'police@touristsafety.gov.in',
+    password: '$2a$10$JnypgARsABQ6B4xtFGZ/9.K9MFHFbsCaCEqlT0UAZu4ODeZzqnbya', // 'police123'
+    name: 'Police Administrator',
+    role: 'police_admin',
+    permissions: ['read', 'write', 'manage_investigations', 'access_digital_ids', 'generate_efir', 'manage_cases', 'track_missing_persons']
+  },
+  {
+    id: '5',
+    email: 'tourism@touristsafety.gov.in',
+    password: '$2a$10$OQsHSFQYfOzD5VQDzRWH4u1BtWCcdy6TEusWNvoyKxjfG7B.2/IDm', // 'tourism123'
+    name: 'Tourism Administrator',
+    role: 'tourism_admin',
+    permissions: ['read', 'write', 'view_clusters', 'manage_zones', 'view_heatmaps', 'tourist_analytics', 'manage_flows']
   }
 ];
 

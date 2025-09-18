@@ -158,12 +158,16 @@ export const API_ENDPOINTS = {
 // User Roles & Permissions - Aligned with backend
 export const USER_ROLES = {
   SUPER_ADMIN: 'super_admin',
+  POLICE_ADMIN: 'police_admin',
+  TOURISM_ADMIN: 'tourism_admin',
   OPERATOR: 'operator', 
   VIEWER: 'viewer',
 } as const;
 
 export const ROLE_HIERARCHY = {
-  [USER_ROLES.SUPER_ADMIN]: 3,
+  [USER_ROLES.SUPER_ADMIN]: 5,
+  [USER_ROLES.POLICE_ADMIN]: 4,
+  [USER_ROLES.TOURISM_ADMIN]: 4,
   [USER_ROLES.OPERATOR]: 2,
   [USER_ROLES.VIEWER]: 1,
 } as const;

@@ -427,6 +427,28 @@ export const fastTransition = quickFade;
 export const springTransition = smoothTransition;
 export const animationPresets = simpleAnimationPresets;
 
+// Grid variants for layout animations
+export const gridVariants: Variants = {
+  hidden: { 
+    opacity: 0, 
+    scale: 0.95,
+    transition: gentleTransition 
+  },
+  visible: { 
+    opacity: 1, 
+    scale: 1,
+    transition: {
+      ...gentleTransition,
+      staggerChildren: 0.1
+    }
+  },
+  exit: { 
+    opacity: 0, 
+    scale: 0.95,
+    transition: gentleTransition 
+  }
+};
+
 /**
  * Default export for convenience
  */

@@ -12,7 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { 
   ArrowLeft,
-  UserEdit,
+  User,
   Shield,
   Eye,
   EyeOff,
@@ -273,7 +273,7 @@ export default function EditUserPage({ params }: { params: { id: string } }) {
           </Button>
           <div>
             <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-              <UserEdit className="h-7 w-7 text-purple-600" />
+              <User className="h-7 w-7 text-purple-600" />
               Edit User
             </h1>
             <p className="text-gray-600 mt-1">

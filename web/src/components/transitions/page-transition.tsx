@@ -309,6 +309,47 @@ export function useSimplePageTransition() {
   };
 }
 
+// Additional hooks for compatibility
+export function useManualTransition() {
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  
+  const startTransition = () => setIsTransitioning(true);
+  const endTransition = () => setIsTransitioning(false);
+  
+  return {
+    isTransitioning,
+    startTransition,
+    endTransition
+  };
+}
+
+export function useTransitionState() {
+  const pathname = usePathname();
+  const [transitionState, setTransitionState] = useState('idle');
+  
+  useEffect(() => {
+    setTransitionState('transitioning');
+    const timer = setTimeout(() => setTransitionState('completed'), 300);
+    return () => clearTimeout(timer);
+  }, [pathname]);
+  
+  return { transitionState, pathname };
+}
+
+// Loading transition component
+export const LoadingTransition: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 // ============================================================================
 // EXPORTS
 // ============================================================================

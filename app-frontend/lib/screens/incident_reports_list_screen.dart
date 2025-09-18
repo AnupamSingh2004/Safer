@@ -270,8 +270,9 @@ class _IncidentReportsListScreenState extends State<IncidentReportsListScreen>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: theme.colorScheme.background,
       appBar: AppBar(
         title: const ThemeAwareText.heading('📍 Nearby Incidents'),
         centerTitle: true,

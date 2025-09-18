@@ -108,9 +108,9 @@ const mockTourists: Tourist[] = [
     },
     homeAddress: {
       street: '123 Main St',
-      city: 'New York',
-      state: 'NY',
-      country: 'United States',
+      city: 'Guwahati ',
+      state: 'Assam',
+      country: 'India',
       postalCode: '10001'
     },
     emergencyContacts: [

@@ -1,5 +1,5 @@
-name: juris_lead
-description: "Juris-Lead - Your Legal Analysis Platform"
+name: safer_app
+description: "Safer - Your Emergency Safety Platform"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -78,8 +78,14 @@ dependencies:
   flutter_map: ^8.1.1
   latlong2: ^0.9.1
   location: ^8.0.1
+
+    # Local notifications for smartphone notifications
+  flutter_local_notifications: ^17.2.3
   geolocator: ^14.0.2
   permission_handler: ^12.0.1
+
+    # Sensors for shake detection
+  sensors_plus: ^5.0.1
 
 dev_dependencies:
   flutter_test:

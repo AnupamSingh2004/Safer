@@ -2,14 +2,21 @@ import 'package:flutter/material.dart';
 import '../theme/emergency_theme.dart';
 import '../widgets/theme_aware_text.dart';
 import '../widgets/responsive_utils.dart';
+import '../services/push_notification_service.dart';
+import '../services/shake_detection_service.dart';
 import 'ai_emergency_detection_screen.dart';
 import 'advanced_emergency_response_screen.dart';
 import 'enhanced_chatbot_screen.dart';
 import 'incident_report_screen.dart';
 import 'incident_reports_list_screen.dart';
-import 'notification_demo_screen.dart';
+
 import 'notifications_screen.dart';
 import 'settings_screen.dart';
+// NEW BLOCKCHAIN FEATURES
+import 'profile_management_screen.dart';
+import 'notification_center_screen.dart';
+import 'analytics_screen.dart';
+import 'community_interaction_screen.dart';
 
 class EnhancedDashboardScreen extends StatefulWidget {
   const EnhancedDashboardScreen({Key? key}) : super(key: key);
@@ -25,7 +32,7 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
   
   // Mock data for demonstration
   double _safetyScore = 87.5;
-  String _currentLocation = 'Times Square, NYC';
+  String _currentLocation = 'Guwahati, India';
   String _riskLevel = 'Low Risk';
   int _nearbyTourists = 156;
   int _activeAlerts = 2;
@@ -34,7 +41,7 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
     {
       'type': 'location',
       'title': 'Safe zone entered',
-      'subtitle': 'Times Square Tourist Zone',
+      'subtitle': 'Guwahati Tourist Zone',
       'time': '5 min ago',
       'icon': Icons.location_on,
       'color': EmergencyColorPalette.secondary[500],
@@ -88,11 +95,30 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
       'color': EmergencyColorPalette.secondary[500],
       'route': '/chatbot',
     },
+    // NEW BLOCKCHAIN FEATURES
     {
-      'title': 'Notifications',
-      'icon': Icons.notifications_active,
-      'color': EmergencyColorPalette.primary[600],
-      'route': '/notifications',
+      'title': '👤 Profile\nManagement',
+      'icon': Icons.person,
+      'color': Colors.blue,
+      'route': '/profile-management',
+    },
+    {
+      'title': '🔔 Notification\nCenter',
+      'icon': Icons.notifications,
+      'color': Colors.purple,
+      'route': '/notification-center',
+    },
+    {
+      'title': '📊 Analytics\nDashboard',
+      'icon': Icons.analytics,
+      'color': Colors.green,
+      'route': '/analytics',
+    },
+    {
+      'title': '🤝 Community\nInteraction',
+      'icon': Icons.people,
+      'color': Colors.orange,
+      'route': '/community',
     },
   ];
 
@@ -109,6 +135,171 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
     )..repeat(reverse: true);
     
     _safetyScoreController.forward();
+    
+    // Initialize blockchain-enhanced services
+    _initializeServices();
+  }
+
+  /// Initialize all blockchain-enhanced services
+  Future<void> _initializeServices() async {
+    try {
+      // Initialize Push Notification Service
+      final pushService = PushNotificationService();
+      await pushService.initialize();
+      
+      // Listen for notifications
+      pushService.notificationStream.listen((notification) {
+        _showNotificationSnackbar(notification);
+      });
+      
+      // Initialize Shake Detection Service
+      final shakeService = ShakeDetectionService();
+      await shakeService.initializeWithEmergencyCallback(() {
+        _handleEmergencyActivation();
+      });
+      
+      print('✅ All blockchain services initialized');
+    } catch (e) {
+      print('⚠️ Error initializing services: $e');
+    }
+  }
+
+  /// Handle emergency activation from shake or button
+  void _handleEmergencyActivation() {
+    final pushService = PushNotificationService();
+    
+    // Send emergency notification
+    pushService.sendEmergencyNotification(
+      title: 'EMERGENCY ACTIVATED',
+      body: 'Emergency services have been contacted. Your location is being shared with authorities.',
+      data: {
+        'location': _currentLocation,
+        'timestamp': DateTime.now().toIso8601String(),
+        'method': 'shake_gesture',
+        'safetyScore': _safetyScore,
+      },
+    );
+    
+    // Show emergency dialog
+    _showEmergencyDialog();
+  }
+
+  /// Show notification as snackbar
+  void _showNotificationSnackbar(PushNotification notification) {
+    if (!mounted) return;
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              notification.title,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text(notification.body),
+          ],
+        ),
+        backgroundColor: _getNotificationColor(notification.type),
+        duration: const Duration(seconds: 4),
+        action: SnackBarAction(
+          label: 'VIEW',
+          textColor: Colors.white,
+          onPressed: () {
+            // Navigate to appropriate screen based on notification type
+            _handleNotificationTap(notification);
+          },
+        ),
+      ),
+    );
+  }
+
+  /// Get notification color based on type
+  Color _getNotificationColor(String type) {
+    switch (type) {
+      case 'emergency':
+        return EmergencyColorPalette.danger[500]!;
+      case 'safety':
+        return EmergencyColorPalette.secondary[500]!;
+      case 'weather':
+        return EmergencyColorPalette.warning[500]!;
+      case 'blockchain':
+        return EmergencyColorPalette.info[500]!;
+      default:
+        return EmergencyColorPalette.primary[500]!;
+    }
+  }
+
+  /// Handle notification tap
+  void _handleNotificationTap(PushNotification notification) {
+    switch (notification.type) {
+      case 'emergency':
+        Navigator.pushNamed(context, '/emergency-response');
+        break;
+      case 'blockchain':
+        Navigator.pushNamed(context, '/blockchain-history');
+        break;
+      default:
+        Navigator.pushNamed(context, '/notifications');
+        break;
+    }
+  }
+
+  /// Show emergency activation dialog
+  void _showEmergencyDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            Icon(
+              Icons.emergency,
+              color: EmergencyColorPalette.danger[500],
+              size: 32,
+            ),
+            const SizedBox(width: 12),
+            const Text('🚨 EMERGENCY ACTIVATED'),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('✅ Emergency services contacted'),
+            const Text('📍 Location shared with authorities'),
+            const Text('🔒 Alert logged on blockchain'),
+            const SizedBox(height: 16),
+            Text(
+              'Location: $_currentLocation',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'Time: ${DateTime.now().toString().substring(0, 19)}',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.pushNamed(context, '/emergency-response');
+            },
+            child: const Text('OPEN EMERGENCY PANEL'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: EmergencyColorPalette.danger[500],
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -122,7 +313,23 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const ThemeAwareText.heading('🛡️ Safer Dashboard'),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image(
+              image: const AssetImage('assets/logo/safer_logo.png'),
+              height: 32,
+              width: 32,
+              errorBuilder: (context, error, stackTrace) => const Icon(
+                Icons.security,
+                size: 28,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(width: 8),
+            const ThemeAwareText.heading('SAFER'),
+          ],
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications),
@@ -362,12 +569,12 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
                   size: 24,
                 ),
                 const SizedBox(width: 8),
-                const Text(
+                Text(
                   'Current Location Status',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
               ],
@@ -819,6 +1026,8 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
   void _navigateToAction(String route) {
     switch (route) {
       case '/emergency-response':
+        // Trigger emergency notification when emergency button is pressed
+        _handleEmergencyActivation();
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -862,7 +1071,40 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const NotificationDemoScreen(),
+            builder: (context) => const NotificationCenterScreen(),
+          ),
+        );
+        break;
+      // NEW BLOCKCHAIN FEATURES
+      case '/profile-management':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ProfileManagementScreen(),
+          ),
+        );
+        break;
+      case '/notification-center':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const NotificationCenterScreen(),
+          ),
+        );
+        break;
+      case '/analytics':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AnalyticsScreen(),
+          ),
+        );
+        break;
+      case '/community':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const CommunityInteractionScreen(),
           ),
         );
         break;

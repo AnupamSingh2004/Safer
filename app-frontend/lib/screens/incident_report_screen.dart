@@ -186,8 +186,9 @@ class _IncidentReportScreenState extends State<IncidentReportScreen>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: theme.colorScheme.background,
       appBar: AppBar(
         title: const ThemeAwareText.heading('📝 Report Incident'),
         centerTitle: true,
@@ -279,12 +280,12 @@ class _IncidentReportScreenState extends State<IncidentReportScreen>
                 const SizedBox(height: 12),
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: theme.colorScheme.surface,
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.grey.shade300),
+                    border: Border.all(color: theme.colorScheme.outline),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: theme.shadowColor.withOpacity(0.05),
                         blurRadius: 10,
                         offset: const Offset(0, 2),
                       ),
@@ -292,14 +293,15 @@ class _IncidentReportScreenState extends State<IncidentReportScreen>
                   ),
                   child: DropdownButtonFormField<String>(
                     value: _selectedCategory,
-                    decoration: const InputDecoration(
+                    dropdownColor: theme.colorScheme.surface,
+                    decoration: InputDecoration(
                       border: InputBorder.none,
-                      contentPadding: EdgeInsets.all(16),
-                      prefixIcon: Icon(Icons.category, color: Colors.grey),
+                      contentPadding: const EdgeInsets.all(16),
+                      prefixIcon: Icon(Icons.category, color: theme.colorScheme.onSurface.withOpacity(0.6)),
                     ),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
-                      color: Colors.black87,
+                      color: theme.colorScheme.onSurface,
                       fontWeight: FontWeight.w500,
                     ),
                     items: _categories.map((category) {
@@ -339,7 +341,7 @@ class _IncidentReportScreenState extends State<IncidentReportScreen>
                             decoration: BoxDecoration(
                               color: isSelected 
                                 ? _severityColors[severity]
-                                : Colors.white,
+                                : theme.colorScheme.surface,
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
                                 color: _severityColors[severity]!,
@@ -415,15 +417,15 @@ class _IncidentReportScreenState extends State<IncidentReportScreen>
                     width: double.infinity,
                     height: 120,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: theme.colorScheme.surface,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: Colors.grey.shade300,
+                        color: theme.colorScheme.outline,
                         style: BorderStyle.solid,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
+                          color: theme.shadowColor.withOpacity(0.05),
                           blurRadius: 10,
                           offset: const Offset(0, 2),
                         ),
@@ -445,13 +447,13 @@ class _IncidentReportScreenState extends State<IncidentReportScreen>
                               Icon(
                                 Icons.add_a_photo,
                                 size: 40,
-                                color: Colors.grey[600],
+                                color: theme.colorScheme.onSurface.withOpacity(0.6),
                               ),
                               const SizedBox(height: 8),
                               Text(
                                 'Tap to add photo',
                                 style: TextStyle(
-                                  color: Colors.grey[600],
+                                  color: theme.colorScheme.onSurface.withOpacity(0.6),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                 ),

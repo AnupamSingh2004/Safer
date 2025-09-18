@@ -32,7 +32,7 @@ const mockUsers = [
   {
     id: '1',
     email: 'admin@touristsafety.gov.in',
-    password: '$2a$10$Mxn7jZOBm3ZBYIfQel6/O.I1INZIQVDWz6YLPWCu5wK/kX875QbuC', // 'admin123'
+    password: '$2a$10$Lr5a7fWi6pWaD7mWoexw9OwdfcQUXsoYMu3zeECd3zXgrQ4W1yknq', // 'admin123'
     name: 'System Administrator',
     role: 'super_admin',
     permissions: ['read', 'write', 'delete', 'manage_users', 'view_analytics', 'system_config']
@@ -40,7 +40,7 @@ const mockUsers = [
   {
     id: '2',
     email: 'operator@touristsafety.gov.in',
-    password: '$2a$10$JnypgARsABQ6B4xtFGZ/9.K9MFHFbsCaCEqlT0UAZu4ODeZzqnbya', // 'operator123'
+    password: '$2a$10$AfTViKP0LEhPEIDeqFvYc.Tb5Q6eHGyOkBPc64veT9uzPbMQ6eCoC', // 'operator123'
     name: 'Safety Operator',
     role: 'operator',
     permissions: ['read', 'write', 'manage_alerts', 'track_tourists']
@@ -48,7 +48,7 @@ const mockUsers = [
   {
     id: '3',
     email: 'viewer@touristsafety.gov.in',
-    password: '$2a$10$OQsHSFQYfOzD5VQDzRWH4u1BtWCcdy6TEusWNvoyKxjfG7B.2/IDm', // 'viewer123'
+    password: '$2a$10$4a4zlNJ9UMXWvGB.kmlYWe4aC4.POc6D7mIb.6Basl/F81TCVjKGG', // 'viewer123'
     name: 'Safety Viewer',
     role: 'viewer',
     permissions: ['read', 'view_reports']
@@ -56,7 +56,7 @@ const mockUsers = [
   {
     id: '4',
     email: 'police@touristsafety.gov.in',
-    password: '$2a$10$JnypgARsABQ6B4xtFGZ/9.K9MFHFbsCaCEqlT0UAZu4ODeZzqnbya', // 'police123'
+    password: '$2a$10$zLlgju2hioPDYbOdDO5wNO5eJMWw6ID/m4/5F13kO8ipbUFL6mDb.', // 'police123'
     name: 'Police Administrator',
     role: 'police_admin',
     permissions: ['read', 'write', 'manage_investigations', 'access_digital_ids', 'generate_efir', 'manage_cases', 'track_missing_persons']
@@ -64,7 +64,7 @@ const mockUsers = [
   {
     id: '5',
     email: 'tourism@touristsafety.gov.in',
-    password: '$2a$10$OQsHSFQYfOzD5VQDzRWH4u1BtWCcdy6TEusWNvoyKxjfG7B.2/IDm', // 'tourism123'
+    password: '$2a$10$WSk9YstocgQlrpf2SwKh3OKeUXX2DRguYLFod4EMwiRDqnw.TptzS', // 'tourism123'
     name: 'Tourism Administrator',
     role: 'tourism_admin',
     permissions: ['read', 'write', 'view_clusters', 'manage_zones', 'view_heatmaps', 'tourist_analytics', 'manage_flows']

@@ -94,12 +94,12 @@ export function LoginForm({
       },
       operator: {
         email: 'operator@touristsafety.gov.in',
-        password: 'admin123', // Using admin123 for demo consistency
+        password: 'operator123',
         role: 'operator' as const,
       },
       viewer: {
         email: 'viewer@touristsafety.gov.in',
-        password: 'admin123', // Using admin123 for demo consistency
+        password: 'viewer123',
         role: 'viewer' as const,
       },
       police: {

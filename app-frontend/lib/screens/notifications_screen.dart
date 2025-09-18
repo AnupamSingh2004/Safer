@@ -23,13 +23,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notifications'),
+        title: ThemeAwareText.heading('🔔 Notifications'),
         backgroundColor: const Color(0xFF2E7D8A),
         foregroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
+      body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
+        child: ResponsiveColumn(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // General Notifications

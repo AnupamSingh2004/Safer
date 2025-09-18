@@ -370,7 +370,7 @@ describe('API Service', () => {
         location: {
           latitude: 40.7128,
           longitude: -74.0060,
-          address: 'New York, NY'
+          address: 'Guwahati, Assam'
         }
       };
 

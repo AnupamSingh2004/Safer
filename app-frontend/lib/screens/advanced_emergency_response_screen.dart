@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sensors_plus/sensors_plus.dart';
+import 'dart:async';
+import 'dart:math';
 import '../theme/emergency_theme.dart';
+import '../services/notification_service.dart';
 
 class AdvancedEmergencyResponseScreen extends StatefulWidget {
   const AdvancedEmergencyResponseScreen({Key? key}) : super(key: key);
@@ -19,6 +23,13 @@ class _AdvancedEmergencyResponseScreenState extends State<AdvancedEmergencyRespo
   bool _audioStreamingEnabled = true;
   bool _blockchainLoggingEnabled = true;
   bool _emergencyActive = false;
+  bool _shakeToActivateEnabled = true;
+  
+  // Shake detection variables
+  StreamSubscription<AccelerometerEvent>? _accelerometerSubscription;
+  List<double> _shakeBuffer = [];
+  DateTime _lastShakeTime = DateTime.now();
+  int _shakeCount = 0;
 
   List<Map<String, dynamic>> _emergencyContacts = [
     {'name': 'Emergency Services', 'number': '911', 'priority': 1, 'type': 'official'},
@@ -39,12 +50,52 @@ class _AdvancedEmergencyResponseScreenState extends State<AdvancedEmergencyRespo
       duration: const Duration(milliseconds: 500),
       vsync: this,
     );
+    
+    _initShakeDetection();
+  }
+  
+  void _initShakeDetection() {
+    if (_shakeToActivateEnabled) {
+      _accelerometerSubscription = accelerometerEvents.listen((AccelerometerEvent event) {
+        _onAccelerometerEvent(event);
+      });
+    }
+  }
+  
+  void _onAccelerometerEvent(AccelerometerEvent event) {
+    // Calculate shake intensity
+    double intensity = sqrt(event.x * event.x + event.y * event.y + event.z * event.z);
+    
+    // Detect significant shake (threshold around 15-20)
+    if (intensity > 18.0) {
+      DateTime now = DateTime.now();
+      
+      // Check if this shake is within reasonable time from last shake
+      if (now.difference(_lastShakeTime).inMilliseconds > 200) {
+        _shakeCount++;
+        _lastShakeTime = now;
+        
+        // If 3 shakes detected within 2 seconds, trigger emergency
+        if (_shakeCount >= 3) {
+          _shakeCount = 0; // Reset counter
+          if (!_emergencyActive) {
+            _activateEmergency();
+          }
+        }
+      }
+      
+      // Reset shake count if too much time has passed
+      if (now.difference(_lastShakeTime).inSeconds > 2) {
+        _shakeCount = 0;
+      }
+    }
   }
 
   @override
   void dispose() {
     _pulseController.dispose();
     _shakeController.dispose();
+    _accelerometerSubscription?.cancel();
     super.dispose();
   }
 
@@ -460,8 +511,9 @@ class _AdvancedEmergencyResponseScreenState extends State<AdvancedEmergencyRespo
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 8),
           Expanded(
+            flex: 3,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -471,6 +523,7 @@ class _AdvancedEmergencyResponseScreenState extends State<AdvancedEmergencyRespo
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
+                  overflow: TextOverflow.ellipsis,
                 ),
                 Text(
                   contact['number'],
@@ -478,29 +531,43 @@ class _AdvancedEmergencyResponseScreenState extends State<AdvancedEmergencyRespo
                     fontSize: 12,
                     color: EmergencyColorPalette.neutral[600],
                   ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: typeColor.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Text(
-              contact['type'].toUpperCase(),
-              style: TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w600,
-                color: typeColor,
+          const SizedBox(width: 4),
+          Flexible(
+            flex: 1,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+              decoration: BoxDecoration(
+                color: typeColor.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                contact['type'].toUpperCase(),
+                style: TextStyle(
+                  fontSize: 9,
+                  fontWeight: FontWeight.w600,
+                  color: typeColor,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.call, size: 20),
-            onPressed: () => _callContact(contact),
-            color: EmergencyColorPalette.secondary[500],
+          SizedBox(
+            width: 36,
+            child: IconButton(
+              icon: const Icon(Icons.call, size: 18),
+              onPressed: () => _callContact(contact),
+              color: EmergencyColorPalette.secondary[500],
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(
+                minWidth: 36,
+                minHeight: 36,
+              ),
+            ),
           ),
         ],
       ),
@@ -549,6 +616,22 @@ class _AdvancedEmergencyResponseScreenState extends State<AdvancedEmergencyRespo
               'Customize automatic messages',
               Icons.message,
               () => _showMessageSettings(),
+            ),
+            SwitchListTile(
+              title: const Text('Shake to Activate'),
+              subtitle: const Text('Shake device 3 times to trigger emergency'),
+              value: _shakeToActivateEnabled,
+              onChanged: (bool value) {
+                setState(() {
+                  _shakeToActivateEnabled = value;
+                  if (value) {
+                    _initShakeDetection();
+                  } else {
+                    _accelerometerSubscription?.cancel();
+                  }
+                });
+              },
+              secondary: const Icon(Icons.vibration),
             ),
             _buildSettingItem(
               'Biometric Verification',
@@ -638,11 +721,19 @@ class _AdvancedEmergencyResponseScreenState extends State<AdvancedEmergencyRespo
     HapticFeedback.heavyImpact();
     setState(() => _emergencyActive = true);
     
+    // Send smartphone notification instead of in-app snackbar
+    _sendEmergencyNotification();
+    
+    // Optional: Show brief confirmation snackbar
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('🚨 EMERGENCY ACTIVATED - Contacting emergency services...'),
+        content: const Text(
+          '🚨 Emergency activated - Check your notifications',
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+        ),
         backgroundColor: EmergencyColorPalette.danger[500],
-        duration: const Duration(seconds: 5),
+        duration: const Duration(seconds: 2),
         action: SnackBarAction(
           label: 'CANCEL',
           textColor: Colors.white,
@@ -650,6 +741,15 @@ class _AdvancedEmergencyResponseScreenState extends State<AdvancedEmergencyRespo
         ),
       ),
     );
+  }
+
+  void _sendEmergencyNotification() async {
+    try {
+      // Send smartphone notification
+      await NotificationService.showEmergencyActivatedNotification();
+    } catch (e) {
+      debugPrint('Error sending emergency notification: $e');
+    }
   }
 
   void _deactivateEmergency() {
@@ -667,10 +767,16 @@ class _AdvancedEmergencyResponseScreenState extends State<AdvancedEmergencyRespo
       context: context,
       builder: (context) => AlertDialog(
         title: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.warning, color: EmergencyColorPalette.warning[500]),
-            const SizedBox(width: 8),
-            const Text('Test Emergency System'),
+            Icon(Icons.warning, color: EmergencyColorPalette.warning[500], size: 20),
+            const SizedBox(width: 6),
+            const Flexible(
+              child: Text(
+                'Test Emergency System',
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ],
         ),
         content: const Text('This will test the emergency system without contacting authorities. Continue?'),

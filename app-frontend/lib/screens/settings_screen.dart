@@ -139,14 +139,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildSettingsSection(String title, List<Widget> children) {
+    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: theme.shadowColor.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -157,10 +158,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         children: [
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF2E7D8A),
+              color: theme.colorScheme.primary,
             ),
           ),
           const SizedBox(height: 16),
@@ -172,15 +173,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget _buildLanguageSelector() {
     final languages = ['English', 'Hindi', 'Bengali', 'Telugu', 'Tamil', 'Marathi'];
+    final theme = Theme.of(context);
     
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Select Language',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
@@ -188,13 +191,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey[300]!),
+            border: Border.all(color: theme.colorScheme.outline),
             borderRadius: BorderRadius.circular(8),
           ),
           child: DropdownButton<String>(
             value: selectedLanguage,
             isExpanded: true,
             underline: const SizedBox(),
+            dropdownColor: theme.colorScheme.surface,
             onChanged: (String? newValue) {
               setState(() {
                 selectedLanguage = newValue!;
@@ -203,7 +207,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
             items: languages.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
-                child: Text(value),
+                child: Text(
+                  value,
+                  style: TextStyle(color: theme.colorScheme.onSurface),
+                ),
               );
             }).toList(),
           ),
@@ -213,6 +220,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildSwitchTile(String title, String subtitle, bool value, ValueChanged<bool> onChanged) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Row(
@@ -223,17 +231,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   subtitle,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
-                    color: Colors.grey,
+                    color: theme.colorScheme.onSurface.withOpacity(0.6),
                   ),
                 ),
               ],
@@ -242,7 +251,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: const Color(0xFF2E7D8A),
+            activeColor: theme.colorScheme.primary,
           ),
         ],
       ),
@@ -256,15 +265,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
       'Emergency Notifications',
       'Reminder Notifications',
     ];
+    final theme = Theme.of(context);
     
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Notification Types',
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
@@ -276,9 +287,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Checkbox(
                   value: true,
                   onChanged: notificationsEnabled ? (value) {} : null,
-                  activeColor: const Color(0xFF2E7D8A),
+                  activeColor: theme.colorScheme.primary,
                 ),
-                Text(type),
+                Text(
+                  type,
+                  style: TextStyle(color: theme.colorScheme.onSurface),
+                ),
               ],
             ),
           ),
@@ -288,14 +302,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildLocationAccuracy() {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Location Accuracy',
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
@@ -305,9 +321,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
               value: 'High',
               groupValue: 'High',
               onChanged: locationEnabled ? (value) {} : null,
-              activeColor: const Color(0xFF2E7D8A),
+              activeColor: theme.colorScheme.primary,
             ),
-            const Text('High (GPS + Network)'),
+            Text(
+              'High (GPS + Network)',
+              style: TextStyle(color: theme.colorScheme.onSurface),
+            ),
           ],
         ),
         Row(
@@ -316,9 +335,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
               value: 'Medium',
               groupValue: 'High',
               onChanged: locationEnabled ? (value) {} : null,
-              activeColor: const Color(0xFF2E7D8A),
+              activeColor: theme.colorScheme.primary,
             ),
-            const Text('Medium (Network only)'),
+            Text(
+              'Medium (Network only)',
+              style: TextStyle(color: theme.colorScheme.onSurface),
+            ),
           ],
         ),
       ],
@@ -326,14 +348,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildSyncOptions() {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Sync Options',
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
@@ -342,9 +366,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Checkbox(
               value: true,
               onChanged: autoSync ? (value) {} : null,
-              activeColor: const Color(0xFF2E7D8A),
+              activeColor: theme.colorScheme.primary,
             ),
-            const Text('Sync on WiFi only'),
+            Text(
+              'Sync on WiFi only',
+              style: TextStyle(color: theme.colorScheme.onSurface),
+            ),
           ],
         ),
         Row(
@@ -352,9 +379,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Checkbox(
               value: false,
               onChanged: autoSync ? (value) {} : null,
-              activeColor: const Color(0xFF2E7D8A),
+              activeColor: theme.colorScheme.primary,
             ),
-            const Text('Sync on mobile data'),
+            Text(
+              'Sync on mobile data',
+              style: TextStyle(color: theme.colorScheme.onSurface),
+            ),
           ],
         ),
       ],
@@ -362,14 +392,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildThemeSelector() {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Theme',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
@@ -383,9 +415,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   selectedTheme = value!;
                 });
               },
-              activeColor: const Color(0xFF2E7D8A),
+              activeColor: theme.colorScheme.primary,
             ),
-            const Text('Light'),
+            Text(
+              'Light',
+              style: TextStyle(color: theme.colorScheme.onSurface),
+            ),
             const SizedBox(width: 20),
             Radio<String>(
               value: 'Dark',
@@ -395,9 +430,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   selectedTheme = value!;
                 });
               },
-              activeColor: const Color(0xFF2E7D8A),
+              activeColor: theme.colorScheme.primary,
             ),
-            const Text('Dark'),
+            Text(
+              'Dark',
+              style: TextStyle(color: theme.colorScheme.onSurface),
+            ),
           ],
         ),
       ],
@@ -405,30 +443,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildCacheSettings() {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Cache Settings',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
-        const Text(
+        Text(
           'Cache size: 45.2 MB',
           style: TextStyle(
             fontSize: 14,
-            color: Colors.grey,
+            color: theme.colorScheme.onSurface.withOpacity(0.6),
           ),
         ),
         const SizedBox(height: 4),
-        const Text(
+        Text(
           'Last cleared: 2 days ago',
           style: TextStyle(
             fontSize: 14,
-            color: Colors.grey,
+            color: theme.colorScheme.onSurface.withOpacity(0.6),
           ),
         ),
       ],
@@ -436,6 +476,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildAdvancedOption(String title, IconData icon, VoidCallback onTap) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: InkWell(
@@ -444,22 +485,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
           children: [
             Icon(
               icon,
-              color: const Color(0xFF2E7D8A),
+              color: theme.colorScheme.primary,
               size: 24,
             ),
             const SizedBox(width: 12),
             Expanded(
               child: Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
             ),
-            const Icon(
+            Icon(
               Icons.chevron_right,
-              color: Colors.grey,
+              color: theme.colorScheme.onSurface.withOpacity(0.6),
             ),
           ],
         ),
@@ -537,19 +579,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _exportData() {
+    final theme = Theme.of(context);
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Data export started...'),
-        backgroundColor: Color(0xFF2E7D8A),
+      SnackBar(
+        content: const Text('Data export started...'),
+        backgroundColor: theme.colorScheme.primary,
       ),
     );
   }
 
   void _clearCache() {
+    final theme = Theme.of(context);
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Cache cleared successfully'),
-        backgroundColor: Color(0xFF2E7D8A),
+      SnackBar(
+        content: const Text('Cache cleared successfully'),
+        backgroundColor: theme.colorScheme.primary,
       ),
     );
   }
@@ -563,10 +607,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       selectedTheme = 'Light';
     });
     
+    final theme = Theme.of(context);
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Settings reset to default'),
-        backgroundColor: Color(0xFF2E7D8A),
+      SnackBar(
+        content: const Text('Settings reset to default'),
+        backgroundColor: theme.colorScheme.primary,
       ),
     );
   }

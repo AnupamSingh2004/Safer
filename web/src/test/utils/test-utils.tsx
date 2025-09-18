@@ -24,7 +24,7 @@ export const createMockTourist = (overrides: any = {}) => ({
   currentLocation: {
     latitude: 40.7128,
     longitude: -74.0060,
-    address: 'New York, NY',
+    address: 'Guwahati, Assam',
     timestamp: new Date().toISOString(),
     accuracy: 10
   },
@@ -32,7 +32,7 @@ export const createMockTourist = (overrides: any = {}) => ({
   checkInTime: new Date().toISOString(),
   lastActivity: new Date().toISOString(),
   itinerary: {
-    destination: 'New York City',
+    destination: 'Guwahati',
     startDate: '2024-01-15',
     endDate: '2024-01-22',
     accommodation: 'Hotel ABC'

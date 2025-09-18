@@ -533,6 +533,14 @@ export default function TouristsPage() {
             >
               Admin Panel
             </Button>
+            <Button 
+              variant="default"
+              onClick={() => router.push('/geo-map.html')}
+              className="bg-green-600 text-white hover:bg-green-700"
+            >
+              <Navigation className="h-4 w-4 mr-2" />
+              Geo-Fencing Demo
+            </Button>
           </div>
         </CardContent>
       </Card>

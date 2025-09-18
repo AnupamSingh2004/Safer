@@ -491,23 +491,23 @@ const OverviewTab: React.FC = () => {
       </Card>
 
       {/* Nationality Breakdown */}
-      <Card className="p-6">
-        <h3 className="text-lg font-semibold mb-4 flex items-center">
-          <Globe className="h-5 w-5 mr-2 text-blue-500" />
+      <Card className="p-6 bg-card dark:bg-card border-border dark:border-border">
+        <h3 className="text-lg font-semibold mb-4 flex items-center text-foreground">
+          <Globe className="h-5 w-5 mr-2 text-blue-500 dark:text-blue-400" />
           Visitor Origins
         </h3>
         <div className="space-y-3">
           {mockTourismStats.nationalityBreakdown.map((country) => (
             <div key={country.country} className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <div className="w-6 h-4 bg-gray-200 rounded-sm flex items-center justify-center text-xs">
+                <div className="w-6 h-4 bg-gray-200 dark:bg-gray-700 rounded-sm flex items-center justify-center text-xs">
                   🏳️
                 </div>
-                <span className="text-sm font-medium">{country.country}</span>
+                <span className="text-sm font-medium text-foreground">{country.country}</span>
               </div>
               <div className="text-right">
-                <div className="text-sm font-medium">{country.count.toLocaleString()}</div>
-                <div className="text-xs text-gray-500">{country.percentage}%</div>
+                <div className="text-sm font-medium text-foreground">{country.count.toLocaleString()}</div>
+                <div className="text-xs text-muted-foreground">{country.percentage}%</div>
               </div>
             </div>
           ))}
@@ -515,9 +515,9 @@ const OverviewTab: React.FC = () => {
       </Card>
 
       {/* Live Activity Feed */}
-      <Card className="p-6">
-        <h3 className="text-lg font-semibold mb-4 flex items-center">
-          <Activity className="h-5 w-5 mr-2 text-purple-500" />
+      <Card className="p-6 bg-card dark:bg-card border-border dark:border-border">
+        <h3 className="text-lg font-semibold mb-4 flex items-center text-foreground">
+          <Activity className="h-5 w-5 mr-2 text-purple-500 dark:text-purple-400" />
           Live Activity
         </h3>
         <div className="space-y-3">
@@ -528,7 +528,7 @@ const OverviewTab: React.FC = () => {
             { action: 'Guided tour started', location: 'Qutub Minar', time: '12 min ago', type: 'activity' },
             { action: 'Weather advisory issued', location: 'Humayun\'s Tomb', time: '15 min ago', type: 'weather' }
           ].map((activity, index) => (
-            <div key={index} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+            <div key={index} className="flex items-start space-x-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
               <div className={`w-2 h-2 rounded-full mt-2 ${
                 activity.type === 'registration' ? 'bg-green-400' :
                 activity.type === 'safety' ? 'bg-blue-400' :
@@ -537,9 +537,9 @@ const OverviewTab: React.FC = () => {
                 'bg-orange-400'
               }`} />
               <div className="flex-1">
-                <div className="text-sm font-medium text-gray-900">{activity.action}</div>
-                <div className="text-xs text-gray-600">{activity.location}</div>
-                <div className="text-xs text-gray-500">{activity.time}</div>
+                <div className="text-sm font-medium text-foreground">{activity.action}</div>
+                <div className="text-xs text-muted-foreground">{activity.location}</div>
+                <div className="text-xs text-muted-foreground">{activity.time}</div>
               </div>
             </div>
           ))}
@@ -585,8 +585,8 @@ const TouristClustersTab: React.FC = () => {
                   }`} />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-900">{cluster.name}</h4>
-                  <p className="text-sm text-gray-600">
+                  <h4 className="font-semibold text-foreground">{cluster.name}</h4>
+                  <p className="text-sm text-muted-foreground">
                     {cluster.center[1].toFixed(4)}, {cluster.center[0].toFixed(4)}
                   </p>
                 </div>
@@ -603,29 +603,29 @@ const TouristClustersTab: React.FC = () => {
             <div className="space-y-3">
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <span className="text-gray-600">Tourists:</span>
+                  <span className="text-muted-foreground">Tourists:</span>
                   <div className="font-medium">{cluster.touristCount}</div>
                 </div>
                 <div>
-                  <span className="text-gray-600">Avg Stay:</span>
+                  <span className="text-muted-foreground">Avg Stay:</span>
                   <div className="font-medium">{cluster.averageStayDuration}min</div>
                 </div>
                 <div>
-                  <span className="text-gray-600">Safety:</span>
+                  <span className="text-muted-foreground">Safety:</span>
                   <div className="flex items-center">
                     <Star className="h-3 w-3 text-yellow-400 mr-1" />
                     <span className="font-medium">{cluster.safetyRating}</span>
                   </div>
                 </div>
                 <div>
-                  <span className="text-gray-600">Popularity:</span>
+                  <span className="text-muted-foreground">Popularity:</span>
                   <div className="font-medium">{cluster.popularityScore}%</div>
                 </div>
               </div>
 
               {/* Trends */}
               <div className="pt-3 border-t border-gray-200">
-                <div className="text-sm text-gray-600 mb-2">Trends</div>
+                <div className="text-sm text-muted-foreground mb-2">Trends</div>
                 <div className="grid grid-cols-3 gap-2 text-xs">
                   <div className="text-center">
                     <div className={`font-medium ${cluster.trends.hourlyChange > 0 ? 'text-green-600' : 'text-red-600'}`}>
@@ -650,7 +650,7 @@ const TouristClustersTab: React.FC = () => {
 
               {/* Amenities */}
               <div className="pt-3 border-t border-gray-200">
-                <div className="text-sm text-gray-600 mb-2">Amenities</div>
+                <div className="text-sm text-muted-foreground mb-2">Amenities</div>
                 <div className="flex flex-wrap gap-1">
                   {cluster.amenities.map((amenity) => (
                     <span key={amenity} className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
@@ -718,8 +718,8 @@ const HeatMapTab: React.FC = () => {
                   }`} />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-900">{zone.name}</h4>
-                  <p className="text-sm text-gray-600">
+                  <h4 className="font-semibold text-foreground">{zone.name}</h4>
+                  <p className="text-sm text-muted-foreground">
                     Safety Score: {zone.safetyScore}%
                   </p>
                 </div>
@@ -737,19 +737,19 @@ const HeatMapTab: React.FC = () => {
               {/* Metrics */}
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <span className="text-gray-600">Tourist Density:</span>
+                  <span className="text-muted-foreground">Tourist Density:</span>
                   <div className="font-medium">{zone.touristDensity}%</div>
                 </div>
                 <div>
-                  <span className="text-gray-600">Response Time:</span>
+                  <span className="text-muted-foreground">Response Time:</span>
                   <div className="font-medium">{zone.responseTime}min</div>
                 </div>
                 <div>
-                  <span className="text-gray-600">Incidents:</span>
+                  <span className="text-muted-foreground">Incidents:</span>
                   <div className="font-medium">{zone.incidentFrequency}/month</div>
                 </div>
                 <div>
-                  <span className="text-gray-600">Capacity:</span>
+                  <span className="text-muted-foreground">Capacity:</span>
                   <div className={`font-medium ${zone.touristDensity > 80 ? 'text-red-600' : 'text-green-600'}`}>
                     {zone.touristDensity > 80 ? 'High' : 'Normal'}
                   </div>
@@ -758,7 +758,7 @@ const HeatMapTab: React.FC = () => {
 
               {/* Facilities */}
               <div>
-                <div className="text-sm text-gray-600 mb-2">Available Facilities</div>
+                <div className="text-sm text-muted-foreground mb-2">Available Facilities</div>
                 <div className="grid grid-cols-3 gap-2 text-xs">
                   <div className="flex items-center space-x-1">
                     {zone.facilities.medical ? (
@@ -805,15 +805,15 @@ const HeatMapTab: React.FC = () => {
 
               {/* Weather Conditions */}
               <div>
-                <div className="text-sm text-gray-600 mb-2">Weather Conditions</div>
+                <div className="text-sm text-muted-foreground mb-2">Weather Conditions</div>
                 <div className="bg-gray-50 rounded-lg p-3">
                   <div className="grid grid-cols-2 gap-2 text-xs">
                     <div>
-                      <span className="text-gray-600">Current:</span>
+                      <span className="text-muted-foreground">Current:</span>
                       <div className="font-medium">{zone.weatherConditions.current}</div>
                     </div>
                     <div>
-                      <span className="text-gray-600">Forecast:</span>
+                      <span className="text-muted-foreground">Forecast:</span>
                       <div className="font-medium">{zone.weatherConditions.forecast}</div>
                     </div>
                   </div>
@@ -871,10 +871,10 @@ const VisitorFlowsTab: React.FC = () => {
                   <Navigation className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-900">
+                  <h4 className="font-semibold text-foreground">
                     {flow.sourceLocation} → {flow.destinationLocation}
                   </h4>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-muted-foreground">
                     {flow.touristCount} visitors • {flow.averageTime} min average
                   </p>
                 </div>
@@ -891,7 +891,7 @@ const VisitorFlowsTab: React.FC = () => {
                 <div className="text-sm font-medium text-gray-700 mb-2">Transport Modes</div>
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Walking:</span>
+                    <span className="text-muted-foreground">Walking:</span>
                     <span className="font-medium">{flow.transportModes.walking}</span>
                   </div>
                   <div className="flex justify-between text-sm">

@@ -17,6 +17,7 @@ import 'profile_management_screen.dart';
 import 'notification_center_screen.dart';
 import 'analytics_screen.dart';
 import 'community_interaction_screen.dart';
+import 'nearby_places_screen.dart';
 
 class EnhancedDashboardScreen extends StatefulWidget {
   const EnhancedDashboardScreen({Key? key}) : super(key: key);
@@ -119,6 +120,12 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
       'icon': Icons.people,
       'color': Colors.orange,
       'route': '/community',
+    },
+    {
+      'title': '📍 Nearby\nPlaces',
+      'icon': Icons.place,
+      'color': EmergencyColorPalette.info[600],
+      'route': '/nearby-places',
     },
   ];
 
@@ -1105,6 +1112,14 @@ class _EnhancedDashboardScreenState extends State<EnhancedDashboardScreen>
           context,
           MaterialPageRoute(
             builder: (context) => const CommunityInteractionScreen(),
+          ),
+        );
+        break;
+      case '/nearby-places':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const NearbyPlacesScreen(),
           ),
         );
         break;

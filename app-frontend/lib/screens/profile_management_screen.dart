@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import '../services/profile_management_service.dart';
 import '../models/tourist_profile.dart';
 import '../theme/emergency_theme.dart';
@@ -178,6 +179,9 @@ class _ProfileManagementScreenState extends State<ProfileManagementScreen> {
 
         // Blockchain Info
         _buildBlockchainSection(),
+
+        // Tourist QR Code
+        _buildTouristQRSection(),
 
         // Action Buttons
         Padding(
@@ -368,6 +372,140 @@ class _ProfileManagementScreenState extends State<ProfileManagementScreen> {
           _buildDetailRow('Blockchain Hash', 
               '${_profile!.blockchainHash.substring(0, 10)}...'),
           const SizedBox(height: 16),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTouristQRSection() {
+    final theme = Theme.of(context);
+    
+    // Generate QR data with tourist information
+    final qrData = {
+      'touristId': _profile!.passportNumber,
+      'name': _profile!.name,
+      'nationality': _profile!.nationality,
+      'verified': _profile!.isBlockchainVerified,
+      'emergency': _profile!.emergencyContacts.isNotEmpty ? 
+          _profile!.emergencyContacts.first.phone : '',
+      'trustScore': _profile!.trustScore,
+      'walletAddress': _profile!.walletAddress,
+      'timestamp': DateTime.now().millisecondsSinceEpoch,
+    };
+    
+    final qrString = qrData.entries
+        .map((e) => '${e.key}:${e.value}')
+        .join('|');
+    
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: theme.shadowColor.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(16),
+            child: ThemeAwareText.subheading('📱 Digital Tourist ID'),
+          ),
+          Center(
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: EmergencyColorPalette.primary[300]!),
+              ),
+              child: Column(
+                children: [
+                  QrImageView(
+                    data: qrString,
+                    version: QrVersions.auto,
+                    size: 200.0,
+                    backgroundColor: Colors.white,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Scan for Tourist Verification',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: EmergencyColorPalette.neutral[600],
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'ID: ${_profile!.passportNumber}',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: EmergencyColorPalette.neutral[500],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.info_outline,
+                      size: 16,
+                      color: EmergencyColorPalette.info[500],
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'This QR code contains your digital tourist ID with blockchain verification. Show this to authorities when required.',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: EmergencyColorPalette.neutral[600],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.security,
+                      size: 16,
+                      color: _profile!.isBlockchainVerified 
+                          ? EmergencyColorPalette.secondary[500]
+                          : EmergencyColorPalette.warning[500],
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      _profile!.isBlockchainVerified 
+                          ? 'Blockchain Verified • Secure'
+                          : 'Verification Pending',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: _profile!.isBlockchainVerified 
+                            ? EmergencyColorPalette.secondary[600]
+                            : EmergencyColorPalette.warning[600],
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

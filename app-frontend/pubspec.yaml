@@ -87,6 +87,9 @@ dependencies:
     # Sensors for shake detection
   sensors_plus: ^5.0.1
 
+    # QR code generation for tourist ID
+  qr_flutter: ^4.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

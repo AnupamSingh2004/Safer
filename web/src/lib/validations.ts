@@ -66,7 +66,7 @@ export const blockchainAddressSchema = z
 export const loginSchema = z.object({
   email: emailSchema,
   password: z.string().min(1, 'Password is required'),
-  role: z.enum(['super_admin', 'tourism_admin', 'police_admin', 'medical_admin', 'operator', 'field_agent', 'viewer', 'tourist']).default('operator'),
+  role: z.enum(['super_admin', 'police_admin', 'tourism_admin', 'operator', 'viewer']),
   rememberMe: z.boolean().optional(),
 });
 
@@ -77,7 +77,7 @@ export const registerSchema = z.object({
   phone: phoneSchema,
   password: passwordSchema,
   confirmPassword: z.string().min(1, 'Confirm password is required'),
-  role: z.enum([USER_ROLES.TOURISM_ADMIN, USER_ROLES.POLICE_ADMIN, USER_ROLES.MEDICAL_ADMIN, USER_ROLES.OPERATOR, USER_ROLES.FIELD_AGENT, USER_ROLES.VIEWER]),
+  role: z.enum([USER_ROLES.POLICE_ADMIN, USER_ROLES.TOURISM_ADMIN, USER_ROLES.OPERATOR, USER_ROLES.VIEWER]),
   department: z.string().min(1, 'Department is required'),
   badge: z.string().optional(),
   acceptTerms: z.boolean().refine((val) => val, 'You must accept the terms and conditions'),
@@ -142,7 +142,7 @@ export const userCreateSchema = z.object({
   lastName: nameSchema,
   email: emailSchema,
   phone: phoneSchema,
-  role: z.enum([USER_ROLES.TOURISM_ADMIN, USER_ROLES.POLICE_ADMIN, USER_ROLES.OPERATOR, USER_ROLES.VIEWER]),
+  role: z.enum([USER_ROLES.POLICE_ADMIN, USER_ROLES.TOURISM_ADMIN, USER_ROLES.OPERATOR, USER_ROLES.VIEWER]),
   department: z.string().min(1, 'Department is required'),
   badge: z.string().optional(),
   isActive: z.boolean().default(true),

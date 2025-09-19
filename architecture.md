@@ -9,7 +9,6 @@ The **Smart Tourist Safety System** is a cutting-edge platform integrating **rea
 ## 🎯 System Architecture (PPT-Ready)
 
 ```mermaid
-graph TD
     subgraph "👥 USER INTERFACES"
         U1[📱 Tourist<br/>Mobile App]
         U2[🏛️ Government<br/>Web Dashboard]
@@ -62,7 +61,6 @@ graph LR
 
 ---
 
-## 🏆 Technology Stack
 
 ```mermaid
 mindmap
@@ -96,7 +94,6 @@ mindmap
         Emergency Processing
         Location Tracking
 ```
-
 ---
 
 ## 💫 Key Innovations
@@ -110,7 +107,6 @@ graph TB
     F3[⚡ Real-time Response<br/>Instant Alerts]
     F4[🌐 Decentralized Security<br/>Tamper-Proof Records]
     
-    CENTER --> F1
     CENTER --> F2
     CENTER --> F3
     CENTER --> F4
@@ -182,7 +178,6 @@ flowchart TD
 graph TB
     subgraph "🛡️ SECURITY LAYERS"
         S1[🔐 End-to-End Encryption<br/>AES-256]
-        S2[🔑 Multi-Factor Auth<br/>JWT + OTP]
         S3[🚪 Role-Based Access<br/>Government Controls]
     end
     
@@ -207,7 +202,6 @@ graph TB
 ---
 
 ## 📊 Performance Metrics
-
 ```mermaid
 graph LR
     subgraph "⚡ SPEED"
@@ -229,7 +223,6 @@ graph LR
     style M2 fill:#26C6DA,stroke:#00838F,stroke-width:3px,color:#fff
     style M3 fill:#4CAF50,stroke:#2E7D32,stroke-width:3px,color:#fff
     style M4 fill:#66BB6A,stroke:#388E3C,stroke-width:3px,color:#fff
-    style M5 fill:#2196F3,stroke:#1565C0,stroke-width:3px,color:#fff
     style M6 fill:#42A5F5,stroke:#1976D2,stroke-width:3px,color:#fff
 ```
 
@@ -246,19 +239,10 @@ flowchart LR
     
     style A fill:#81C784,stroke:#4CAF50,stroke-width:2px,color:#fff
     style B fill:#4FC3F7,stroke:#03A9F4,stroke-width:2px,color:#fff
-    style C fill:#64B5F6,stroke:#2196F3,stroke-width:2px,color:#fff
     style D fill:#42A5F5,stroke:#1976D2,stroke-width:2px,color:#fff
     style E fill:#2E7D32,stroke:#1B5E20,stroke-width:3px,color:#fff
 ```
-
----
-
-## 🎯 Perfect for Hackathon Presentations
-
-### 📋 **PPT Slide Recommendations:**
-
 1. **🎯 Slide 1**: System Architecture - Shows complete solution overview
-2. **🚨 Slide 2**: Emergency Workflow - Demonstrates core functionality  
 3. **🏆 Slide 3**: Key Innovations - Highlights unique features
 4. **📊 Slide 4**: Performance Metrics - Shows scalability & reliability
 5. **🔐 Slide 5**: Security Architecture - Emphasizes trust & safety

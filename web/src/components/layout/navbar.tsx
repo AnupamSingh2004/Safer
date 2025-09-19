@@ -26,29 +26,67 @@ import {
   Home,
   Globe,
   Phone,
-  Mail
+  Mail,
+  HelpCircle,
+  Headphones
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/stores/auth-store';
 import { ThemeToggle } from '@/components/theme/unified-theme-components';
 
-// Navigation items for different user types
+// Navigation items for different user types with role-based access
 const navigationItems = {
   public: [
     { name: 'Home', href: '/', icon: Home },
     { name: 'About', href: '/about', icon: Globe },
+    { name: 'Help', href: '/help', icon: HelpCircle },
+    { name: 'Support', href: '/support', icon: Headphones },
     { name: 'Contact', href: '/contact', icon: Phone },
+    { name: 'Emergency', href: '/emergency', icon: AlertTriangle },
   ],
-  authenticated: [
+  // Super Admin - Full system access
+  super_admin: [
+    { name: 'Home', href: '/', icon: Home },
     { name: 'Dashboard', href: '/dashboard', icon: BarChart3 },
-    { name: 'Tourists', href: '/tourists', icon: Users },
-    { name: 'Alerts', href: '/alerts', icon: AlertTriangle },
-    { name: 'Zones', href: '/zones', icon: MapPin },
-    { name: 'Analytics', href: '/analytics', icon: BarChart3 },
+    { name: 'Administration', href: '/dashboard/admin', icon: Settings },
+    { name: 'Users', href: '/dashboard/admin/users', icon: Users },
+    { name: 'Operators', href: '/dashboard/operators', icon: Users },
+    { name: 'Tourists', href: '/dashboard/tourists', icon: Users },
+    { name: 'Alerts', href: '/dashboard/alerts', icon: AlertTriangle },
+    { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
+    { name: 'Blockchain', href: '/dashboard/blockchain', icon: Shield },
   ],
+  // Admin - Tourist and operator management
   admin: [
-    { name: 'Users', href: '/admin/users', icon: Users },
-    { name: 'Settings', href: '/admin/settings', icon: Settings },
+    { name: 'Home', href: '/', icon: Home },
+    { name: 'Dashboard', href: '/dashboard', icon: BarChart3 },
+    { name: 'Tourists', href: '/dashboard/tourists', icon: Users },
+    { name: 'Operators', href: '/dashboard/operators', icon: Users },
+    { name: 'Alerts', href: '/dashboard/alerts', icon: AlertTriangle },
+    { name: 'Zones', href: '/dashboard/zones', icon: MapPin },
+    { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
+  ],
+  // Operator - Assigned tourist monitoring
+  operator: [
+    { name: 'Home', href: '/', icon: Home },
+    { name: 'Dashboard', href: '/dashboard/operator', icon: BarChart3 },
+    { name: 'My Assignments', href: '/dashboard/operator/assignments', icon: Users },
+    { name: 'Alerts', href: '/dashboard/alerts', icon: AlertTriangle },
+    { name: 'Communication', href: '/dashboard/communication', icon: Phone },
+  ],
+  // Viewer - Read-only access
+  viewer: [
+    { name: 'Home', href: '/', icon: Home },
+    { name: 'Dashboard', href: '/dashboard/viewer', icon: BarChart3 },
+    { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
+    { name: 'Reports', href: '/dashboard/reports', icon: Globe },
+  ],
+  // Tourist - Personal management
+  tourist: [
+    { name: 'Home', href: '/', icon: Home },
+    { name: 'My Profile', href: '/profile', icon: Users },
+    { name: 'Emergency', href: '/emergency', icon: AlertTriangle },
+    { name: 'Safety Info', href: '/safety', icon: Shield },
   ],
 };
 
@@ -98,15 +136,29 @@ export function Navbar() {
     return session?.user?.image || user?.avatar || null;
   };
 
-  // Get navigation items based on user status
+  // Get navigation items based on user status and role
   const getNavItems = () => {
     if (!isLoggedIn) return navigationItems.public;
     
-    let items = [...navigationItems.authenticated];
-    if (isAdmin) {
-      items = [...items, ...navigationItems.admin];
+    // Return role-specific navigation items
+    const userRole = currentUser?.role;
+    switch (userRole) {
+      case 'super_admin':
+        return navigationItems.super_admin;
+      case 'admin':
+      case 'tourism_admin':
+      case 'police_admin':
+        return navigationItems.admin;
+      case 'operator':
+        return navigationItems.operator;
+      case 'viewer':
+        return navigationItems.viewer;
+      case 'tourist':
+        return navigationItems.tourist;
+      default:
+        // Default fallback for unknown roles
+        return navigationItems.viewer;
     }
-    return items;
   };
 
   const handleSignOut = async () => {
@@ -135,11 +187,11 @@ export function Navbar() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 group">
-            <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-primary to-primary-600 rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+            <div className="flex items-center justify-center w-10 h-10 bg-blue-600 dark:bg-blue-500 rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
               <Shield className="w-6 h-6 text-white" />
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-xl font-bold bg-gradient-to-r from-primary via-blue-500 to-primary-400 bg-clip-text text-transparent dark:from-primary-400 dark:via-blue-400 dark:to-primary-300">
+              <h1 className="text-xl font-bold text-gray-900 dark:text-white">
                 Smart Tourist Safety
               </h1>
               <p className="text-xs text-gray-500 dark:text-gray-400 -mt-1">
@@ -175,15 +227,6 @@ export function Navbar() {
 
           {/* Right side */}
           <div className="flex items-center space-x-4">
-            {/* Home Button */}
-            <Link 
-              href="/"
-              className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-              title="Go to Home"
-            >
-              <Home className="w-5 h-5" />
-            </Link>
-            
             {/* Theme Toggle */}
             <ThemeToggle variant="icon" size="sm" className="p-2" />
 
@@ -244,21 +287,41 @@ export function Navbar() {
                       </p>
                     </div>
                     
+                    {/* Role-specific profile link */}
                     <Link
-                      href="/profile"
+                      href={currentUser?.role === 'admin' || currentUser?.role === 'super_admin' 
+                        ? '/dashboard/admin/profile' 
+                        : currentUser?.role === 'operator' 
+                        ? '/dashboard/operator/profile'
+                        : currentUser?.role === 'viewer'
+                        ? '/dashboard/viewer/profile'
+                        : '/profile'}
                       className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                     >
                       <User className="w-4 h-4 mr-3" />
-                      Profile
+                      My Profile
                     </Link>
                     
-                    <Link
-                      href="/settings"
-                      className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
-                      <Settings className="w-4 h-4 mr-3" />
-                      Settings
-                    </Link>
+                    {/* Role-based settings access */}
+                    {(currentUser?.role === 'admin' || currentUser?.role === 'super_admin') && (
+                      <Link
+                        href="/dashboard/admin/settings"
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      >
+                        <Settings className="w-4 h-4 mr-3" />
+                        System Settings
+                      </Link>
+                    )}
+                    
+                    {(currentUser?.role !== 'admin' && currentUser?.role !== 'super_admin') && (
+                      <Link
+                        href="/dashboard/settings"
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      >
+                        <Settings className="w-4 h-4 mr-3" />
+                        Preferences
+                      </Link>
+                    )}
                     
                     <hr className="my-2 border-gray-200 dark:border-gray-700" />
                     
@@ -287,6 +350,16 @@ export function Navbar() {
                   Get Started
                 </Link>
               </div>
+            )}
+
+            {/* Dashboard Button for Logged-in Users */}
+            {isLoggedIn && pathname === '/' && (
+              <Link
+                href="/dashboard"
+                className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl"
+              >
+                Go to Dashboard
+              </Link>
             )}
 
             {/* Mobile menu button */}
@@ -369,11 +442,17 @@ export function Navbar() {
                 </div>
                 
                 <Link
-                  href="/profile"
+                  href={currentUser?.role === 'admin' || currentUser?.role === 'super_admin' 
+                    ? '/dashboard/admin/profile' 
+                    : currentUser?.role === 'operator' 
+                    ? '/dashboard/operator/profile'
+                    : currentUser?.role === 'viewer'
+                    ? '/dashboard/viewer/profile'
+                    : '/profile'}
                   className="flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
                 >
                   <User className="w-5 h-5 mr-3" />
-                  Profile
+                  My Profile
                 </Link>
                 
                 <button

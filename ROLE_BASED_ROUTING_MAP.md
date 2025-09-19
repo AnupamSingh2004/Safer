@@ -272,7 +272,7 @@ http://localhost:3001/api/blockchain/identity-records  # Identity Records
 
 ### Demo & Testing Routes
 ```
-http://localhost:8001/demo/integration                 # Mobile-Web Integration Demo
+**http://localhost:8001/demo/integration     **            # Mobile-Web Integration Demo
 http://localhost:8001/demo/mobile-simulator            # Mobile App Simulator
 http://localhost:8001/demo/transitions                 # UI Transition Examples
 http://localhost:8001/theme-test-simple                # Theme Testing

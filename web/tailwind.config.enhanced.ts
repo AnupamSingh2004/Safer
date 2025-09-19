@@ -1,4 +1,4 @@
-import { Config } from 'tailwindcss'
+aimport { Config } from 'tailwindcss'
 import { enhancedEmergencyColors } from './src/lib/theme/enhanced-theme-config'
 import { animationDurations } from './src/lib/theme/enhanced-animations'
 

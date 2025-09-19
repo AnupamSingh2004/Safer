@@ -66,7 +66,6 @@
 | **📱 Mobile App** | Flutter 3.8.1 + Dart | ✅ **Live** | GPS tracking, panic button, digital ID |
 | **🖥️ Web Dashboard** | Next.js 14 + TypeScript | ✅ **Live** | Real-time monitoring, emergency response |
 | **⚡ Backend API** | Next.js API Routes | ✅ **Live** | 50+ endpoints, WebSocket, JWT auth |
-| **🗄️ Database** | Supabase PostgreSQL | ✅ **Live** | Real-time sync, row-level security |
 | **⛓️ Blockchain** | Ethereum + Solidity | ✅ **Live** | Smart contracts deployed on testnet |
 | **🧠 AI Engine** | TensorFlow.js | 🚧 **Demo** | Anomaly detection mockups |
 | **🔐 Authentication** | NextAuth.js + Google OAuth | ✅ **Live** | Multi-platform SSO |
@@ -85,7 +84,6 @@ graph TB
         WD[🖥️ Web Dashboard<br/>Next.js]
         AP[👮 Admin Panel<br/>Next.js]
     end
-    
     subgraph "API Gateway"
         AG[⚡ Backend API<br/>Next.js Routes]
         WS[📡 WebSocket<br/>Socket.IO]
@@ -138,7 +136,6 @@ graph TB
 - **🧠 AI-Powered Safety Scoring** - Dynamic risk assessment algorithm
 - **⛓️ Blockchain Digital Identity** - NFT-based tourist verification
 - **📡 Hybrid Architecture** - Single backend serving mobile & web
-- **🌍 Multilingual Support** - Hindi, English, regional languages
 - **♿ Accessibility Features** - WCAG 2.1 compliant design
 - **🔒 Zero-Knowledge Privacy** - Privacy-first data architecture
 
@@ -172,7 +169,6 @@ npm run dev    # Runs on http://localhost:3001
 # 3. Web Dashboard Setup (Terminal 2)
 cd web
 npm install
-cp .env.local.example .env.local
 # Edit .env.local with your configuration  
 npm run dev    # Runs on http://localhost:8001
 
@@ -192,7 +188,6 @@ SUPABASE_ANON_KEY=your_supabase_anon_key
 DATABASE_URL=your_postgresql_url
 
 # Authentication
-JWT_SECRET=your_super_secure_jwt_secret
 NEXTAUTH_SECRET=your_nextauth_secret
 
 # Blockchain
@@ -217,7 +212,6 @@ NEXT_PUBLIC_DEFAULT_LNG=77.2090
 
 # Authentication
 GOOGLE_CLIENT_ID=your_google_oauth_client_id
-GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
 ```
 
 ---
@@ -239,7 +233,6 @@ GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
 | 🌍 **Multilingual** | Hindi, English, Regional | ✅ **Live** |
 
 </div>
-
 ### 🖥️ **Web Dashboard Features** (Next.js)
 <div align="center">
 
@@ -256,19 +249,10 @@ GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
 
 </div>
 
-### ⚡ **Backend API Features** (Next.js API)
 <div align="center">
 
 | **API Category** | **Endpoints** | **Demo Status** |
-|------------------|---------------|-----------------|
-| 🔐 **Authentication** | Login, Register, OAuth, JWT | ✅ **50+ Endpoints** |
-| 👥 **Tourist Management** | CRUD, Search, Tracking | ✅ **Complete** |
-| 🚨 **Alert System** | Create, Update, Resolve, History | ✅ **Complete** |
-| 🗺️ **Zone Management** | Geofences, Risk zones, Analytics | ✅ **Complete** |
-| ⛓️ **Blockchain** | Identity creation, Verification | ✅ **Complete** |
-| 📱 **Mobile APIs** | Panic, Profile, Safety score | ✅ **Complete** |
-| 📊 **Analytics** | Dashboard data, Reports, Metrics | ✅ **Complete** |
-| 📡 **WebSocket** | Real-time alerts, Live updates | ✅ **Complete** |
+|  **Analytics** | Dashboard data, Reports, Metrics | ✅ **Complete** |
 
 </div>
 
@@ -296,14 +280,12 @@ GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
 🗺️ Admin creates risk zone → 📱 Tourists get entry alerts → 
 🤖 AI monitors behavior patterns → ⚠️ Automatic risk assessment → 
 📈 Safety score updated in real-time
-```
 
 #### **Scenario 4: Cross-Platform Integration**
 ```
 📱 Mobile location update → 🖥️ Dashboard shows real-time → 
 📡 WebSocket broadcasts to all → 👮 Officers see live updates → 
 ⛓️ Blockchain logs all activities
-```
 
 ### 🎯 **Key Demo Points for Judges**
 
@@ -316,8 +298,7 @@ GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
 
 #### 🏛️ **Government Impact**
 - **👮 Police Dashboard** - Real emergency response system
-- **📊 Tourism Analytics** - Data-driven decision making
-- **🔐 Digital Identity** - Blockchain-secured tourist verification
+- ** Digital Identity** - Blockchain-secured tourist verification
 - **🗺️ Zone Management** - Dynamic risk assessment and alerts
 - **📱 Citizen Safety** - Immediate emergency response capability
 
@@ -331,7 +312,6 @@ GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
 ---
 
 ## 🛠️ Development & Deployment
-
 ### 📁 **Project Structure**
 ```
 sih-project/
@@ -361,7 +341,6 @@ sih-project/
 │   │   ├── services/         # Business logic services
 │   │   ├── types/            # TypeScript interfaces
 │   │   └── utils/            # Helper functions
-│   ├── contracts/            # Solidity smart contracts
 │   ├── scripts/              # Deployment & utility scripts
 │   └── test/                 # Comprehensive test suites
 │
@@ -381,44 +360,20 @@ graph TB
             MA[📱 Mobile App<br/>Flutter APK]
             WD[🖥️ Web Dashboard<br/>Vercel]
         end
-        
         subgraph "Backend Services"
             API[⚡ Backend API<br/>Vercel/Railway]
             WS[📡 WebSocket<br/>Socket.IO]
-            DB[(🗄️ Database<br/>Supabase)]
-        end
         
-        subgraph "Blockchain"
-            ETH[⛓️ Ethereum<br/>Mainnet/Testnet]
-            IPFS[📁 IPFS<br/>Decentralized Storage]
-        end
-        
-        subgraph "External APIs"
             GM[🗺️ Google Maps]
             SMS[📧 SMS/Email Gateway]
             AI[🧠 AI/ML Services]
         end
     end
-    
-    MA --> API
-    WD --> API
-    API --> DB
-    API --> ETH
-    API --> IPFS
-    API --> GM
-    API --> SMS
-    API --> AI
     WS --> MA
-    WS --> WD
 ```
 
 ### 🔧 **Production Deployment**
-
-#### **Automated Deployment**
-```bash
-# Backend (Vercel)
 cd backend && vercel --prod
-
 # Web Dashboard (Vercel) 
 cd web && vercel --prod
 

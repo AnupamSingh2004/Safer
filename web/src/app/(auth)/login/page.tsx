@@ -131,10 +131,10 @@ export default function LoginPage() {
 }
 
 // ============================================================================
-// ERROR BOUNDARY FALLBACK - Enhanced
+// ERROR BOUNDARY FALLBACK - Enhanced (Should be in error.tsx for app router)
 // ============================================================================
 
-export function ErrorBoundary() {
+function LoginErrorFallback() {
   return (
     <div className="h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center p-4 overflow-hidden">
       <div className="text-center max-w-md w-full">

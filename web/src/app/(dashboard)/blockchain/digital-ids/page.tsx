@@ -1,77 +1,316 @@
-/**
- * Smart Tourist Safety System - Digital IDs Management Page
- * Page for managing tourist identities, verification status, and blockchain records
- */
-
 'use client';
 
-import { useState, useEffect } from 'react';
-import { 
-  Search, 
-  Filter, 
-  Plus, 
-  Eye, 
-  Shield, 
-  CheckCircle, 
-  Clock, 
-  XCircle, 
-  AlertTriangle,
-  Download,
-  RefreshCw,
-  Users,
-  FileText
-} from 'lucide-react';
-import type { DigitalIdentity } from '@/types/blockchain';
-import DigitalIdViewer from '@/components/blockchain/digital-id-viewer';
-
-// Simple UI components for prototype
-const Card = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
-  <div className={`bg-white rounded-lg border border-gray-200 shadow-sm ${className}`}>
-    {children}
-  </div>
-);
-
-const Button = ({ 
-  children, 
-  onClick, 
-  variant = "default", 
-  size = "md", 
-  disabled = false,
-  className = ""
-}: {
-  children: React.ReactNode;
-  onClick?: () => void;
-  variant?: "default" | "outline" | "ghost";
-  size?: "sm" | "md" | "lg";
-  disabled?: boolean;
-  className?: string;
-}) => {
-  const baseClasses = "inline-flex items-center justify-center rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2";
-  const variantClasses = {
-    default: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500",
-    outline: "border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-blue-500",
-    ghost: "text-gray-700 hover:bg-gray-100 focus:ring-blue-500"
-  };
-  const sizeClasses = {
-    sm: "px-3 py-2 text-sm",
-    md: "px-4 py-2 text-sm",
-    lg: "px-6 py-3 text-base"
-  };
-  
+export default function DigitalIdsPage() {
   return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}
-    >
-      {children}
-    </button>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
+      <div className="max-w-4xl mx-auto text-center">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+          Digital Identity Management
+        </h1>
+        <p className="text-gray-600 dark:text-gray-300">
+          This feature is currently under development.
+        </p>
+      </div>
+    </div>
   );
-};
+}
 
-const Input = ({ 
-  placeholder, 
-  value, 
+export default function DigitalIdsPage() {
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
+      <div className="max-w-4xl mx-auto text-center">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+          Digital Identity Management
+        </h1>
+        <p className="text-gray-600 dark:text-gray-300">
+          This feature is currently under development.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export default function DigitalIdsPage() {
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="p-6 max-w-7xl mx-auto space-y-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <Link
+              href="/dashboard"
+              className="flex items-center px-3 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Dashboard
+            </Link>
+            <div className="h-6 w-px bg-gray-300 dark:bg-gray-600"></div>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+              Digital Identity Management
+            </h1>
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <div className="text-center py-12">
+            <Shield className="w-16 h-16 text-blue-600 dark:text-blue-400 mx-auto mb-4" />
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
+              Blockchain Digital Identity System
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+              Advanced blockchain-based identity verification and management system for secure tourist identity handling.
+              This module is currently under development.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg border border-blue-200 dark:border-blue-800">
+                <Users className="w-8 h-8 text-blue-600 dark:text-blue-400 mx-auto mb-3" />
+                <h3 className="font-semibold text-blue-900 dark:text-blue-300 mb-2">Identity Verification</h3>
+                <p className="text-sm text-blue-800 dark:text-blue-400">
+                  Blockchain-secured identity verification for enhanced security
+                </p>
+              </div>
+              
+              <div className="bg-green-50 dark:bg-green-900/20 p-6 rounded-lg border border-green-200 dark:border-green-800">
+                <FileText className="w-8 h-8 text-green-600 dark:text-green-400 mx-auto mb-3" />
+                <h3 className="font-semibold text-green-900 dark:text-green-300 mb-2">Document Management</h3>
+                <p className="text-sm text-green-800 dark:text-green-400">
+                  Secure storage and verification of travel documents
+                </p>
+              </div>
+              
+              <div className="bg-purple-50 dark:bg-purple-900/20 p-6 rounded-lg border border-purple-200 dark:border-purple-800">
+                <Clock className="w-8 h-8 text-purple-600 dark:text-purple-400 mx-auto mb-3" />
+                <h3 className="font-semibold text-purple-900 dark:text-purple-300 mb-2">Real-time Status</h3>
+                <p className="text-sm text-purple-800 dark:text-purple-400">
+                  Live updates on verification and approval status
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-8">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Coming Soon: Full blockchain identity management capabilities
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+export default function DigitalIdsPage() {import Link from 'next/link'; */
+
+  return (
+
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">import { ArrowLeft, Shield, Users, FileText, Clock } from 'lucide-react';
+
+      <div className="p-6 max-w-7xl mx-auto space-y-6">
+
+        <div className="flex items-center justify-between">'use client';
+
+          <div className="flex items-center space-x-4">
+
+            <Linkexport default function DigitalIdsPage() {
+
+              href="/dashboard"
+
+              className="flex items-center px-3 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"  return (import { useState, useEffect } from 'react';
+
+            >
+
+              <ArrowLeft className="w-4 h-4 mr-2" />    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">import { 
+
+              Back to Dashboard
+
+            </Link>      <div className="p-6 max-w-7xl mx-auto space-y-6">  Search, 
+
+            <div className="h-6 w-px bg-gray-300 dark:bg-gray-600"></div>
+
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">        <div className="flex items-center justify-between">  Filter, 
+
+              Blockchain Digital IDs
+
+            </h1>          <div className="flex items-center space-x-4">  Plus, 
+
+          </div>
+
+        </div>            <Link  Eye, 
+
+
+
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">              href="/dashboard"  Shield, 
+
+          <div className="text-center py-12">
+
+            <Shield className="w-16 h-16 text-blue-600 mx-auto mb-4" />              className="flex items-center px-3 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"  CheckCircle, 
+
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
+
+              Digital Identity Management            >  Clock, 
+
+            </h2>
+
+            <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">              <ArrowLeft className="w-4 h-4 mr-2" />  XCircle, 
+
+              Blockchain-powered digital identity verification system for secure tourist identification and verification.
+
+            </p>              Back to Dashboard  AlertTriangle,
+
+
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">            </Link>  Download,
+
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg border border-blue-200 dark:border-blue-800">
+
+                <Users className="w-8 h-8 text-blue-600 dark:text-blue-400 mx-auto mb-3" />            <div className="h-6 w-px bg-gray-300 dark:bg-gray-600"></div>  RefreshCw,
+
+                <h3 className="font-semibold text-blue-900 dark:text-blue-300 mb-2">Identity Verification</h3>
+
+                <p className="text-sm text-blue-800 dark:text-blue-400">            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">  Users,
+
+                  Secure blockchain-based identity verification for tourists
+
+                </p>              Digital Identity Management  FileText
+
+              </div>
+
+            </h1>} from 'lucide-react';
+
+              <div className="bg-green-50 dark:bg-green-900/20 p-6 rounded-lg border border-green-200 dark:border-green-800">
+
+                <Database className="w-8 h-8 text-green-600 dark:text-green-400 mx-auto mb-3" />          </div>import type { DigitalIdentity } from '@/types/blockchain';
+
+                <h3 className="font-semibold text-green-900 dark:text-green-300 mb-2">Secure Storage</h3>
+
+                <p className="text-sm text-green-800 dark:text-green-400">        </div>import DigitalIdViewer from '@/components/blockchain/digital-id-viewer';
+
+                  Decentralized storage of verified identity documents
+
+                </p>
+
+              </div>
+
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">// Simple UI components for prototype
+
+              <div className="bg-purple-50 dark:bg-purple-900/20 p-6 rounded-lg border border-purple-200 dark:border-purple-800">
+
+                <Shield className="w-8 h-8 text-purple-600 dark:text-purple-400 mx-auto mb-3" />          <div className="text-center py-12">const Card = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
+
+                <h3 className="font-semibold text-purple-900 dark:text-purple-300 mb-2">Privacy Protection</h3>
+
+                <p className="text-sm text-purple-800 dark:text-purple-400">            <Shield className="w-16 h-16 text-blue-600 dark:text-blue-400 mx-auto mb-4" />  <div className={`bg-white rounded-lg border border-gray-200 shadow-sm ${className}`}>
+
+                  Advanced encryption and privacy-preserving technology
+
+                </p>            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">    {children}
+
+              </div>
+
+            </div>              Blockchain Digital Identity System  </div>
+
+
+
+            <div className="mt-12 bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800">            </h2>);
+
+              <div className="flex items-center justify-center space-x-2 text-yellow-800 dark:text-yellow-400">
+
+                <AlertTriangle className="w-5 h-5" />            <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+
+                <span className="text-sm font-medium">
+
+                  This feature is currently under development and will be available in a future release.              Advanced blockchain-based identity verification and management system for secure tourist identity handling.const Button = ({ 
+
+                </span>
+
+              </div>              This module is currently under development.  children, 
+
+            </div>
+
+          </div>            </p>  onClick, 
+
+        </div>
+
+      </div>              variant = "default", 
+
+    </div>
+
+  );            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">  size = "md", 
+
+}
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg border border-blue-200 dark:border-blue-800">  disabled = false,
+
+                <Users className="w-8 h-8 text-blue-600 dark:text-blue-400 mx-auto mb-3" />  className = ""
+
+                <h3 className="font-semibold text-blue-900 dark:text-blue-300 mb-2">Identity Verification</h3>}: {
+
+                <p className="text-sm text-blue-800 dark:text-blue-400">  children: React.ReactNode;
+
+                  Blockchain-secured identity verification for enhanced security  onClick?: () => void;
+
+                </p>  variant?: "default" | "outline" | "ghost";
+
+              </div>  size?: "sm" | "md" | "lg";
+
+                disabled?: boolean;
+
+              <div className="bg-green-50 dark:bg-green-900/20 p-6 rounded-lg border border-green-200 dark:border-green-800">  className?: string;
+
+                <FileText className="w-8 h-8 text-green-600 dark:text-green-400 mx-auto mb-3" />}) => {
+
+                <h3 className="font-semibold text-green-900 dark:text-green-300 mb-2">Document Management</h3>  const baseClasses = "inline-flex items-center justify-center rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2";
+
+                <p className="text-sm text-green-800 dark:text-green-400">  const variantClasses = {
+
+                  Secure storage and verification of travel documents    default: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500",
+
+                </p>    outline: "border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-blue-500",
+
+              </div>    ghost: "text-gray-700 hover:bg-gray-100 focus:ring-blue-500"
+
+                };
+
+              <div className="bg-purple-50 dark:bg-purple-900/20 p-6 rounded-lg border border-purple-200 dark:border-purple-800">  const sizeClasses = {
+
+                <Clock className="w-8 h-8 text-purple-600 dark:text-purple-400 mx-auto mb-3" />    sm: "px-3 py-2 text-sm",
+
+                <h3 className="font-semibold text-purple-900 dark:text-purple-300 mb-2">Real-time Status</h3>    md: "px-4 py-2 text-sm",
+
+                <p className="text-sm text-purple-800 dark:text-purple-400">    lg: "px-6 py-3 text-base"
+
+                  Live updates on verification and approval status  };
+
+                </p>  
+
+              </div>  return (
+
+            </div>    <button
+
+      onClick={onClick}
+
+            <div className="mt-8">      disabled={disabled}
+
+              <p className="text-sm text-gray-500 dark:text-gray-400">      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}
+
+                Coming Soon: Full blockchain identity management capabilities    >
+
+              </p>      {children}
+
+            </div>    </button>
+
+          </div>  );
+
+        </div>};
+
+      </div>
+
+    </div>const Input = ({ 
+
+  );  placeholder, 
+
+}  value, 
   onChange, 
   className = "",
   type = "text"
@@ -168,7 +407,7 @@ export default function DigitalIdsPage() {
         fullName: 'John Doe',
         dateOfBirth: '1990-05-15',
         nationality: 'USA',
-        verificationStatus: 'verified',
+        verificationStatus: '✅ BLOCKCHAIN VERIFIED',
         verificationDate: '2024-01-10T10:00:00Z',
         verifierAddress: '0xverifier123456789012345678901234567890'
       },

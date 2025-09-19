@@ -20,7 +20,7 @@ export const APP_CONFIG = {
 
 // API Configuration
 export const API_CONFIG = {
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001',
+  baseURL: '', // Use relative URLs to use frontend's own API routes
   backendURL: process.env.BACKEND_API_URL || 'http://localhost:3001',
   version: 'v1',
   timeout: 30000, // 30 seconds
@@ -36,17 +36,17 @@ export const API_CONFIG = {
 export const API_ENDPOINTS = {
   // Authentication & User Management
   auth: {
-    base: '/auth',
-    login: '/auth/login',
-    logout: '/auth/logout',
-    register: '/auth/register',
-    refresh: '/auth/refresh',
-    verify: '/auth/verify',
-    profile: '/auth/profile',
-    changePassword: '/auth/change-password',
-    resetPassword: '/auth/reset-password',
-    forgotPassword: '/auth/forgot-password',
-    googleSignin: '/auth/google-signin',
+    base: '/api/auth',
+    login: '/api/auth/login',
+    logout: '/api/auth/logout',
+    register: '/api/auth/register',
+    refresh: '/api/auth/refresh',
+    verify: '/api/auth/verify',
+    profile: '/api/auth/profile',
+    changePassword: '/api/auth/change-password',
+    resetPassword: '/api/auth/reset-password',
+    forgotPassword: '/api/auth/forgot-password',
+    googleSignin: '/api/auth/google-signin',
   },
   
   // Tourist Management & Profiles
@@ -158,12 +158,16 @@ export const API_ENDPOINTS = {
 // User Roles & Permissions - Aligned with backend
 export const USER_ROLES = {
   SUPER_ADMIN: 'super_admin',
+  POLICE_ADMIN: 'police_admin',
+  TOURISM_ADMIN: 'tourism_admin',
   OPERATOR: 'operator', 
   VIEWER: 'viewer',
 } as const;
 
 export const ROLE_HIERARCHY = {
-  [USER_ROLES.SUPER_ADMIN]: 3,
+  [USER_ROLES.SUPER_ADMIN]: 5,
+  [USER_ROLES.POLICE_ADMIN]: 4,
+  [USER_ROLES.TOURISM_ADMIN]: 4,
   [USER_ROLES.OPERATOR]: 2,
   [USER_ROLES.VIEWER]: 1,
 } as const;

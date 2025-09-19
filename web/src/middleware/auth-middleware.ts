@@ -38,27 +38,35 @@ const PUBLIC_ROUTES = [
 
 const ROLE_ROUTES: Record<string, { roles: UserRole[], permissions?: Permission[] }> = {
   '/dashboard': { 
-    roles: ['super_admin', 'operator', 'viewer'], 
+    roles: ['super_admin', 'police_admin', 'tourism_admin', 'operator', 'viewer'], 
     permissions: ['view_dashboard'] 
+  },
+  '/dashboard/police': { 
+    roles: ['super_admin', 'police_admin'], 
+    permissions: ['manage_investigations'] 
+  },
+  '/dashboard/tourism': { 
+    roles: ['super_admin', 'tourism_admin'], 
+    permissions: ['view_clusters'] 
   },
   '/admin': { 
     roles: ['super_admin'], 
     permissions: ['system_admin'] 
   },
   '/tourists': { 
-    roles: ['super_admin', 'operator'], 
+    roles: ['super_admin', 'police_admin', 'tourism_admin', 'operator'], 
     permissions: ['view_tourists'] 
   },
   '/alerts': { 
-    roles: ['super_admin', 'operator'], 
+    roles: ['super_admin', 'police_admin', 'operator'], 
     permissions: ['view_alerts'] 
   },
   '/zones': { 
-    roles: ['super_admin', 'operator'], 
+    roles: ['super_admin', 'tourism_admin', 'operator'], 
     permissions: ['view_zones'] 
   },
   '/analytics': { 
-    roles: ['super_admin', 'operator'], 
+    roles: ['super_admin', 'police_admin', 'tourism_admin', 'operator'], 
     permissions: ['view_analytics'] 
   },
   '/settings': { 
@@ -70,11 +78,11 @@ const ROLE_ROUTES: Record<string, { roles: UserRole[], permissions?: Permission[
     permissions: ['manage_users'] 
   },
   '/blockchain': { 
-    roles: ['super_admin', 'operator'], 
+    roles: ['super_admin', 'police_admin', 'operator'], 
     permissions: ['view_blockchain'] 
   },
   '/emergency': { 
-    roles: ['super_admin', 'operator'], 
+    roles: ['super_admin', 'police_admin', 'operator'], 
     permissions: ['emergency_response'] 
   }
 };

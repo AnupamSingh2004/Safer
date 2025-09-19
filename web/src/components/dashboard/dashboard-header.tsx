@@ -5,7 +5,7 @@
 
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Search,
@@ -118,7 +118,7 @@ export function DashboardHeader({
   ];
 
   // Mock notifications
-  const mockNotifications: Notification[] = [
+  const mockNotifications: Notification[] = useMemo(() => [
     {
       id: '1',
       type: 'emergency',
@@ -145,12 +145,12 @@ export function DashboardHeader({
       timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
       read: true,
     },
-  ];
+  ], []);
 
   // Effects
   useEffect(() => {
     setRecentNotifications(mockNotifications);
-  }, []);
+  }, [mockNotifications]);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -240,6 +240,15 @@ export function DashboardHeader({
             >
               <Menu className="h-6 w-6" />
             </button>
+
+            {/* Home Button */}
+            <a
+              href="/"
+              className="ml-4 p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
+              title="Go to Home"
+            >
+              <Shield className="h-5 w-5" />
+            </a>
 
             {/* Search */}
             <div className="relative ml-4 w-96 max-w-xs sm:max-w-none" ref={searchRef}>

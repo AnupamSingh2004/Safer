@@ -1,3 +1,4 @@
+
 /**
  * Smart Tourist Safety System - Dashboard Layout
  * Shared layout for all dashboard pages with navigation and theme toggle
@@ -37,15 +38,31 @@ const navigationItems = [
     href: '/dashboard',
     icon: Activity,
     description: 'Main dashboard overview',
-    roles: ['super_admin', 'operator', 'viewer'], // All roles can see overview
+    roles: ['super_admin', 'operator', 'viewer'],
     permissions: []
+  },
+  {
+    name: 'Police Dashboard',
+    href: '/dashboard/police',
+    icon: Shield,
+    description: 'Police command center',
+    roles: ['super_admin', 'police_admin'],
+    permissions: ['read', 'write']
+  },
+  {
+    name: 'Tourism Dashboard',
+    href: '/dashboard/tourism',
+    icon: Users,
+    description: 'Tourism management portal',
+    roles: ['super_admin', 'tourism_admin'],
+    permissions: ['read', 'write']
   },
   {
     name: 'Alerts',
     href: '/dashboard/alerts',
     icon: AlertTriangle,
     description: 'Safety alerts and incidents',
-    roles: ['super_admin', 'operator'], // Only admin and operator can manage alerts
+    roles: ['super_admin', 'operator'],
     permissions: ['read', 'write']
   },
   {
@@ -53,7 +70,7 @@ const navigationItems = [
     href: '/dashboard/analytics',
     icon: BarChart3,
     description: 'Tourist statistics and trends',
-    roles: ['super_admin', 'operator', 'viewer'], // All roles can view analytics
+    roles: ['super_admin', 'operator', 'viewer'],
     permissions: ['read']
   },
   {
@@ -61,7 +78,7 @@ const navigationItems = [
     href: '/dashboard/location',
     icon: MapPin,
     description: 'Real-time location tracking',
-    roles: ['super_admin', 'operator'], // Only admin and operator can track locations
+    roles: ['super_admin', 'operator'],
     permissions: ['read', 'write']
   },
   {
@@ -69,7 +86,7 @@ const navigationItems = [
     href: '/dashboard/communication',
     icon: MessageSquare,
     description: 'Send alerts and notifications',
-    roles: ['super_admin', 'operator'], // Only admin and operator can send communications
+    roles: ['super_admin', 'operator'],
     permissions: ['write']
   },
   {

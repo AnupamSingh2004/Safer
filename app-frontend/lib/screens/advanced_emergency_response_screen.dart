@@ -461,11 +461,6 @@ class _AdvancedEmergencyResponseScreenState extends State<AdvancedEmergencyRespo
                     ),
                   ],
                 ),
-                TextButton.icon(
-                  onPressed: _addEmergencyContact,
-                  icon: const Icon(Icons.add),
-                  label: const Text('Add'),
-                ),
               ],
             ),
             const SizedBox(height: 16),
@@ -808,10 +803,6 @@ class _AdvancedEmergencyResponseScreenState extends State<AdvancedEmergencyRespo
         backgroundColor: EmergencyColorPalette.info[500],
       ),
     );
-  }
-
-  void _addEmergencyContact() {
-    // Navigate to add contact screen
   }
 
   void _callContact(Map<String, dynamic> contact) {

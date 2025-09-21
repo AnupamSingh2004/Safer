@@ -1266,15 +1266,6 @@ SAFER delivers measurable benefits across multiple dimensions of tourist safety 
 
 ---
 
-## 📞 Contact & Support
-
-### Project Information
-
-- **GitHub Repository**: [https://github.com/AnupamSingh2004/sih-project](https://github.com/AnupamSingh2004/sih-project)
-- **Project Lead**: Anupam Singh
-- **License**: MIT License (Open Source)
-- **Development Status**: Active Development & Deployment Ready
-
 ### Technical Support
 
 - **Documentation**: Comprehensive guides available in `/docs` directory

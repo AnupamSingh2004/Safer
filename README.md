@@ -14,7 +14,7 @@
 [![Tourism](https://img.shields.io/badge/Tourism-Safety%20First-green.svg)](https://www.incredibleindia.org/)
 [![Emergency](https://img.shields.io/badge/Emergency-Real%20Time-red.svg)](https://flutter.dev/)
 [![Geofencing](https://img.shields.io/badge/Geofencing-AI%20Powered-blue.svg)](https://developers.google.com/maps)
-[![SIH 2024](https://img.shields.io/badge/Smart%20India%20Hackathon-2024-orange.svg)](https://www.sih.gov.in/)
+
 
 </div>
 

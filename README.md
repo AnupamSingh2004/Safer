@@ -113,15 +113,39 @@ SAFER is a comprehensive **Smart Tourist Safety Monitoring & Incident Response S
 
 <div align="center">
   
-*[Web dashboard screenshots will be added here showcasing the administrative interface]*
+ ![WhatsApp Image 2025-09-19 at 3 36 49 PM](https://github.com/user-attachments/assets/d21c4892-59b0-4ff5-91da-4e22d6c744ab)
+![WhatsApp Image 2025-09-19 at 3 36 49 PM (1)](https://github.com/user-attachments/assets/a59e07c2-d90a-4c02-b83a-35146ecb4b06)
 
-**Key Dashboard Views:**
-- Real-time tourist distribution heat maps
-- Emergency alert management center
-- Digital identity verification system
-- Analytics and safety reporting dashboard
-- Geofence and risk zone management
-- Incident tracking and response coordination
+![WhatsApp Image 2025-09-19 at 3 36 49 PM (2)](https://github.com/user-attachments/assets/375fda88-c961-460a-b30b-1c6f8b2857b2)
+![WhatsApp Image 2025-09-19 at 3 36 49 PM (3)](https://github.com/user-attachments/assets/5a7695df-5d48-4624-bcc9-50be36c7df2b)
+
+
+![WhatsApp Image 2025-09-19 at 3 36 49 PM (4)](https://github.com/user-attachments/assets/40f846f3-4f62-4942-8f93-1fba922cf4a5)
+
+
+![WhatsApp Image 2025-09-19 at 3 36 49 PM (5)](https://github.com/user-attachments/assets/d0f78688-6cfa-4f5a-81c2-4a87f40ec34a)
+
+![WhatsApp Image 2025-09-19 at 3 36 50 PM](https://github.com/user-attachments/assets/4791338e-3d2c-4a54-a9ff-92f5fb70d38f)
+
+
+
+![WhatsApp Image 2025-09-19 at 3 36 50 PM (1)](https://github.com/user-attachments/assets/d19ae4ef-f4b5-4fd3-84b3-c82014abd2e4)
+
+
+![WhatsApp Image 2025-09-19 at 3 36 50 PM (2)](https://github.com/user-attachments/assets/ddf66420-902b-4c77-bd89-d926332f19f6)
+
+![WhatsApp Image 2025-09-19 at 3 36 50 PM (3)](https://github.com/user-attachments/assets/aa37ee3e-901b-4730-ace0-6ce121c5d69c)
+
+![WhatsApp Image 2025-09-19 at 3 36 50 PM (4)](https://github.com/user-attachments/assets/ba82cd48-ae5b-4b01-93fe-300a73cb276c)
+![WhatsApp Image 2025-09-19 at 3 36 51 PM](https://github.com/user-attachments/assets/9a8aa07f-9693-4298-8d72-523836a2597d)
+
+
+
+![WhatsApp Image 2025-09-19 at 3 36 51 PM (1)](https://github.com/user-attachments/assets/d5026f74-0c43-4d34-86bd-d024625140ca)
+
+
+
+
 
 </div>
 

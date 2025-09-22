@@ -91,21 +91,35 @@ SAFER is a comprehensive **Smart Tourist Safety Monitoring & Incident Response S
 
 ---
 
-## 📸 Application Screenshots
-
-### Mobile Application Interface
+### Mobile Interface
 
 <div align="center">
+  <img src="https://github.com/user-attachments/assets/2bcd5b17-f8ea-41b0-b174-d5574eda98f7" alt="WhatsApp Image 2025-09-22 at 9 06 11 AM" width="350" height="850"/>
+  <img src="https://github.com/user-attachments/assets/8afed76c-d25f-4fd8-8de7-fee002a59c00" alt="WhatsApp Image 2025-09-22 at 9 06 11 AM (1)" width="350" height="850"/>
+</div>
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/89d0b04c-bf7b-4886-83bb-b8b239bd825a" alt="WhatsApp Image 2025-09-22 at 9 06 11 AM (2)" width="350" height="850"/>
+  <img src="https://github.com/user-attachments/assets/45357863-00ac-40fc-a5dd-8bcfbfca455b" alt="WhatsApp Image 2025-09-22 at 9 06 12 AM" width="350" height="850"/>
+</div>
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/79082f41-75a7-4aab-a498-289a6aef3395" alt="WhatsApp Image 2025-09-22 at 9 06 12 AM (2)" width="350" height="850"/>
+  <img src="https://github.com/user-attachments/assets/d97f2031-5fce-41e9-bdf7-9471bccaa47d" alt="WhatsApp Image 2025-09-22 at 9 06 12 AM (3)" width="350" height="850"/>
+</div>
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/feb60909-b134-4b9c-a9a9-6873f8640354" alt="WhatsApp Image 2025-09-22 at 9 06 13 AM" width="350" height="850"/>
+  <img src="https://github.com/user-attachments/assets/4b9d49c1-bd46-4309-b657-7bb312c413b3" alt="WhatsApp Image 2025-09-22 at 9 06 13 AM (1)" width="350" height="850"/>
+</div>
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/0769d395-da79-4b36-b799-899b23be4a6d" alt="WhatsApp Image 2025-09-22 at 9 06 13 AM (2)" width="350" height="850"/>
+  <img src="https://github.com/user-attachments/assets/c6205468-bc75-4c42-9a38-7afef58fafb7" alt="WhatsApp Image 2025-09-22 at 9 06 14 AM" width="350" height="850"/>
+</div>
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/df18e775-cbb7-4578-b76d-f44a58c3cfbb" alt="WhatsApp Image 2025-09-22 at 9 06 14 AM (1)" width="350" height="850"/>
+  <img src="https://github.com/user-attachments/assets/359326a0-7f4a-4c59-8d20-e33db190d05e" alt="WhatsApp Image 2025-09-22 at 9 06 14 AM (2)" width="350" height="850"/>
+</div>
+<div align="center">
   
-*[Mobile app screenshots will be added here showcasing the complete tourist safety interface]*
 
-**Key Mobile Screens:**
-- Tourist registration and digital ID generation
-- Real-time safety score and location monitoring
-- Emergency panic button activation flow
-- Geofencing alerts and zone notifications
-- QR code digital identity display
-- Nearby services and emergency contacts
 
 </div>
 
